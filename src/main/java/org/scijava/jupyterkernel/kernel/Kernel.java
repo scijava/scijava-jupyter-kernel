@@ -137,7 +137,7 @@ public class Kernel extends Thread {
             } else {
                 execute_request_handler = new ExecuteRequestHandler();
                 execute_request_handler.addMessage(message);
-                execute_request_handler.start();    
+                execute_request_handler.start();
             }
         } else {
 
@@ -179,9 +179,8 @@ public class Kernel extends Thread {
     public MessageObject[] kernel_info_request(MessageObject message) {
         // TODO: this is odd. A 'kernel interrupt' in the notebook just leads to a 
         //       kernel_info_request message. 
-        
-        if(this.execute_request_handler.isAlive())
-        {
+
+        if (this.execute_request_handler.isAlive()) {
             this.execute_request_handler.interrupt();
         }
         message.msg.content = console.getKernelInfo();
@@ -230,9 +229,8 @@ public class Kernel extends Thread {
 
         String res = console.readAndClearStdout();
         String err = console.readAndClearStderr();
-        
-        if(obj!=null)
-        {
+
+        if (obj != null) {
             res = obj.toString();
         }
 

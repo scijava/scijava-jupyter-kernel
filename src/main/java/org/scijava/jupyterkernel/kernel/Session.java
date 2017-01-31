@@ -42,7 +42,7 @@ import org.apache.commons.cli.CommandLineParser;
  *
  * @author kay schluehr
  */
-public class Session extends Thread {        
+public class Session extends Thread {
 
     public static boolean _DEBUG_ = false;
 
@@ -108,7 +108,7 @@ public class Session extends Thread {
         } catch (Exception e) {
         }
     }
-    
+
     private byte[] getKey() throws InvalidKeyException, UnsupportedEncodingException {
         if (key == null) {
             String sKey = (String) connectionData.get("key");
@@ -176,6 +176,9 @@ public class Session extends Thread {
         sockets.register(Heartbeat, ZMQ.Poller.POLLIN);
         sockets.register(Shell, ZMQ.Poller.POLLIN);
         sockets.register(Stdin, ZMQ.Poller.POLLIN);
+
+        Logger.getLogger(Session.class.getName()).log(Level.INFO, "Sockets have been correctly created.");
+
         return true;
     }
 
@@ -191,8 +194,11 @@ public class Session extends Thread {
         } finally {
             fis.close();
         }
-        // parse connection file content into JSON object
-        return new JSONObject(new String(content, "UTF-8"));
+
+        // Parse connection file content into JSON object
+        JSONObject connectionInfo = new JSONObject(new String(content, "UTF-8"));
+        Logger.getLogger(Session.class.getName()).log(Level.INFO, "Reading connection file :\n" + connectionInfo.toString(2));
+        return connectionInfo;
     }
 
     @Override
@@ -205,9 +211,9 @@ public class Session extends Thread {
             kernel.setStdinTemplate(new MessageObject(null, Stdin, key));
             kernel.setIOPubTemplate(new MessageObject(null, IOPub, key));
             kernel.setConnectionData(connectionData);
-            System.out.println(
-                    String.format("[jupyter-kernel.jar] %s kernel started.", kernel.getKernel())
-            );
+
+            Logger.getLogger(Session.class.getName()).log(Level.INFO, "Jupyter Java Kernel has started.", kernel.getKernel());
+
             while (!this.isInterrupted()) {
                 byte[] message;
                 sockets.poll();
@@ -241,6 +247,7 @@ public class Session extends Thread {
             InvalidKeyException,
             UnsupportedEncodingException,
             IOException {
+        
         if (args.length > 0) {
             String connectionFilePath;
             String kernelName;
@@ -248,6 +255,7 @@ public class Session extends Thread {
             options.addOption("f", true, "connection file path");
             options.addOption("k", true, "kernel name");
             CommandLineParser parser = new PosixParser();
+            
             try {
                 CommandLine cmd = parser.parse(options, args);
                 connectionFilePath = cmd.getOptionValue("f");
@@ -292,7 +300,7 @@ public class Session extends Thread {
             InvalidKeyException,
             UnsupportedEncodingException,
             IOException {
-        if (args==null || args.length == 0) {
+        if (args == null || args.length == 0) {
             // Used for debugging the kernel. 
             // Start this application in your IDE first. 
             runKernelDebug();
