@@ -1,5 +1,7 @@
 # jupyter-kernel-jsr223
 
+*Note : this is a work in progress that is currently not working. Any help is welcome !*
+
 jupyter-kernel-jsr223 is a JSR223 Jupyter kernel implementation in Java. It's a friendly fork of https://github.com/fiber-space/jupyter-kernel-jsr223.
 
 ## Install
