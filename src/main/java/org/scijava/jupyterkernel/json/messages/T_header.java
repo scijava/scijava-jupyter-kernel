@@ -8,7 +8,8 @@ package org.scijava.jupyterkernel.json.messages;
 import org.scijava.jupyterkernel.util.JSONField;
 
 /**
- *
+ * See http://jupyter-client.readthedocs.io/en/latest/messaging.html#general-message-format.
+ * 
  * @author kay schluehr
  */
 public class T_header extends T_JSON {

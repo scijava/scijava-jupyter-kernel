@@ -15,18 +15,36 @@
  */
 package org.scijava.jupyterkernel.kernel;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import org.scijava.jupyterkernel.console.InteractiveConsole;
-import org.scijava.jupyterkernel.json.messages.*;
-import javax.script.*;
 import java.util.ArrayDeque;
+import javax.script.ScriptEngine;
+import javax.script.ScriptEngineManager;
 
-import java.lang.reflect.*;
 import org.json.JSONArray;
 
 import org.json.JSONObject;
 import org.scijava.jupyterkernel.console.ConsoleFactory;
 import org.scijava.jupyterkernel.console.ConsoleInputReader;
 import org.scijava.jupyterkernel.console.JupyterStreamWriter;
+import org.scijava.jupyterkernel.json.messages.T_comm_close;
+import org.scijava.jupyterkernel.json.messages.T_comm_open;
+import org.scijava.jupyterkernel.json.messages.T_complete_reply;
+import org.scijava.jupyterkernel.json.messages.T_complete_request;
+import org.scijava.jupyterkernel.json.messages.T_connect_reply;
+import org.scijava.jupyterkernel.json.messages.T_execute_reply;
+import org.scijava.jupyterkernel.json.messages.T_execute_reply_err;
+import org.scijava.jupyterkernel.json.messages.T_execute_reply_ok;
+import org.scijava.jupyterkernel.json.messages.T_execute_request;
+import org.scijava.jupyterkernel.json.messages.T_execute_result;
+import org.scijava.jupyterkernel.json.messages.T_header;
+import org.scijava.jupyterkernel.json.messages.T_history_reply;
+import org.scijava.jupyterkernel.json.messages.T_input_request;
+import org.scijava.jupyterkernel.json.messages.T_inspect_reply;
+import org.scijava.jupyterkernel.json.messages.T_message;
+import org.scijava.jupyterkernel.json.messages.T_shutdown_request;
+import org.scijava.jupyterkernel.json.messages.T_stream;
 
 /**
  *
@@ -130,15 +148,17 @@ public class Kernel extends Thread {
         message.read();
         T_header header = message.msg.header;
         String msgType = header.msg_type;
+        System.out.println(message.msg.header.msg_type);
         // handle execute_request as a special case
-        if (msgType.equals("execute_request")) {
-            if (execute_request_handler.isAlive()) {
-                execute_request_handler.addMessage(message);
-            } else {
+        if (!msgType.equals("execute_request")) {
+            
+            if (!execute_request_handler.isAlive()) {
                 execute_request_handler = new ExecuteRequestHandler();
-                execute_request_handler.addMessage(message);
-                execute_request_handler.start();
             }
+
+            execute_request_handler.addMessage(message);
+            execute_request_handler.start();
+
         } else {
 
             T_header parentHeader = (T_header) header.clone();
