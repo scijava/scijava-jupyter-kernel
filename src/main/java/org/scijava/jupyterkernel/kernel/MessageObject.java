@@ -42,9 +42,9 @@ import org.scijava.jupyterkernel.util.UUID;
  *
  */
 public class MessageObject {
-    
+
     final String[] supportedProtocolVersions = {"5.0"};
-    final String delimiter  = "<IDS|MSG>";
+    final String delimiter = "<IDS|MSG>";
     final byte[] bDelimiter = delimiter.getBytes();
 
     /* Expresses message parts according to the wire protocol
@@ -70,7 +70,7 @@ public class MessageObject {
         public static final int METADATA = 5;
         public static final int CONTENT = 6;
         public static final int BLOB = 7;
-    }        
+    }
 
     public T_message msg;
     // The socket from which the message was received.
@@ -79,7 +79,7 @@ public class MessageObject {
     byte[] uuid;
     // HMAC key
     byte[] key;
-    
+
     ZMsg zmsg;
 
     public MessageObject(ZMsg zmsg, Socket socket, byte[] key) {
@@ -88,29 +88,27 @@ public class MessageObject {
         this.zmsg = zmsg;
         this.msg = new T_message();
     }
-    
+
     public MessageObject(MessageObject other) {
         this.socket = other.socket;
         this.key = other.key;
         this.zmsg = other.zmsg;
-        this.msg = (T_message)other.msg.clone();        
+        this.msg = (T_message) other.msg.clone();
     }
-    
-    private void checkAllowedProtocolVersion(String protocol)
-    {
-        for(String version: supportedProtocolVersions)
-        {
-            if(version.equals(protocol))
+
+    private void checkAllowedProtocolVersion(String protocol) {
+        for (String version : supportedProtocolVersions) {
+            if (version.equals(protocol)) {
                 return;
+            }
         }
-        throw new RuntimeException("[jupyter-kernel] Protocol version "+protocol+"not supported by this kernel");
+        throw new RuntimeException("[jupyter-kernel] Protocol version " + protocol + "not supported by this kernel");
     }
-    
-        
-    private byte[] computeSignature(byte[] header, 
-                                    byte[] parent, 
-                                    byte[] meta, 
-                                    byte[] content) {
+
+    private byte[] computeSignature(byte[] header,
+            byte[] parent,
+            byte[] meta,
+            byte[] content) {
         byte[][] data = {header, parent, meta, content};
         try {
             SecretKeySpec keySpec = new SecretKeySpec(key, "HmacSHA256");
@@ -152,11 +150,11 @@ public class MessageObject {
                 throw new RuntimeException("[jupyter-kernel.jar] Message incomplete. Didn't receive required message parts");
             }
             uuid = zframes[MessageParts.UUID].getData();
-            String delim = new String(zframes[MessageParts.DELIM].getData(), 
-                                      StandardCharsets.UTF_8);
+            String delim = new String(zframes[MessageParts.DELIM].getData(),
+                    StandardCharsets.UTF_8);
             if (!delim.equals(delimiter)) {
                 throw new RuntimeException("[jupyter-kernel.jar] Incorrectly formatted message. Delimiter <IDS|MSG> not found");
-            }                        
+            }
             byte[] header = zframes[MessageParts.HEADER].getData();
             byte[] parent = zframes[MessageParts.PARENT].getData();
             byte[] meta = zframes[MessageParts.METADATA].getData();
@@ -166,47 +164,46 @@ public class MessageObject {
             byte[] hmac = zframes[MessageParts.HMAC].getData();
             // hmac is an UTF-8 string and has to be converted into a byte array first
             hmac = DatatypeConverter.parseHexBinary(new String(hmac));
-            
+
             mildlySecureMACCompare(digest, hmac);
-            
+
             JSONObject jsonHeader = new JSONObject(new String(header, StandardCharsets.UTF_8));
-            if(null == T_JSON.message_protocol_version)
-            {
-                String protocolVersion = (String)jsonHeader.get("version");
+            if (null == T_JSON.message_protocol_version) {
+                String protocolVersion = (String) jsonHeader.get("version");
                 checkAllowedProtocolVersion(protocolVersion);
                 // set protocol version for protocol specific serialization / deserialization
                 T_JSON.setProtocolVersion(protocolVersion);
             }
-            msg.header = (T_header)T_JSON.fromJSON("T_header", jsonHeader);                    
-            msg.parent_header = (T_header)T_JSON.fromJSON("T_header", 
+            msg.header = (T_header) T_JSON.fromJSON("T_header", jsonHeader);
+            msg.parent_header = (T_header) T_JSON.fromJSON("T_header",
                     new JSONObject(new String(parent, StandardCharsets.UTF_8)));
             msg.metadata = new JSONObject(new String(meta, StandardCharsets.UTF_8));
-            msg.content = T_JSON.fromJSON("T_"+msg.header.msg_type, 
+            msg.content = T_JSON.fromJSON("T_" + msg.header.msg_type,
                     new JSONObject(new String(content, StandardCharsets.UTF_8)));
-            
+
         } finally {
             zmsg.destroy();
         }
     }
-    
-    public void send() {  
+
+    public void send() {
         msg.header.msg_id = UUID.newID();
-        JSONObject jsonMsg = msg.toJSON();        
+        JSONObject jsonMsg = msg.toJSON();
         ZMsg newZmsg = new ZMsg();
         newZmsg.add(uuid);
         newZmsg.add(bDelimiter);
-        byte[] header  = jsonMsg.getJSONObject("header").toString().getBytes();
-        byte[] parent  = jsonMsg.getJSONObject("parent_header").toString().getBytes();        
-        byte[] meta    = jsonMsg.getJSONObject("metadata").toString().getBytes();
+        byte[] header = jsonMsg.getJSONObject("header").toString().getBytes();
+        byte[] parent = jsonMsg.getJSONObject("parent_header").toString().getBytes();
+        byte[] meta = jsonMsg.getJSONObject("metadata").toString().getBytes();
         byte[] content = jsonMsg.getJSONObject("content").toString().getBytes();
-        byte[] digest  = computeSignature(header, parent, meta, content);
+        byte[] digest = computeSignature(header, parent, meta, content);
         digest = DatatypeConverter.printHexBinary(digest).toLowerCase().getBytes();
         newZmsg.add(digest);
         newZmsg.add(header);
         newZmsg.add(parent);
         newZmsg.add(meta);
-        newZmsg.add(content);        
-        newZmsg.send(socket);                
+        newZmsg.add(content);
+        newZmsg.send(socket);
     }
 
 }
