@@ -16,7 +16,7 @@ Add the jupyter-kernel-jsr223 artifact to your Java installation :
 Then execute the `install-kernel.py` script to install the Jython kernel to your Python installation :
 
 ```bash
-wget -O - https://raw.githubusercontent.com/hadim/jupyter-kernel-jsr223/master/install-kernel.py | python --java-path=YOUR_JAVA_PATH
+wget -qO- https://raw.githubusercontent.com/hadim/jupyter-kernel-jsr223/master/install-kernel.py | python - --java-path=YOUR_JAVA_PATH
 ```
 
 **Note** : The `install-kernel.py` script will only support Python 3. *The reason is that Python 3 has been released 8 years ago now and it's time to move on.*
