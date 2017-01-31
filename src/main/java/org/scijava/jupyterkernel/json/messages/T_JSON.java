@@ -21,7 +21,7 @@ import org.scijava.jupyterkernel.util.JSONField;
 public class T_JSON {
     public static String message_protocol_version = null;
     
-    private static double protocol_version = 0.0;
+    private static double protocol_version = 5.0;
     
     public static void setProtocolVersion(String protocolVersion)
     {
@@ -36,7 +36,7 @@ public class T_JSON {
         T_JSON instance;
         Object value;
         try {
-            Class cls = Class.forName("org.jupyterkernel.json.messages." + classname);
+            Class cls = Class.forName("org.scijava.jupyterkernel.json.messages." + classname);
             try {
                 instance = (T_JSON) cls.newInstance();
                 if (jsonObj.length() == 0) {

@@ -63,23 +63,34 @@ public class JythonConsole extends InteractiveConsole {
     }
 
     private void setDisplayhook() {
-        InputStream in = getClass().getResourceAsStream("resources/start.py");
-        BufferedReader reader = new BufferedReader(new InputStreamReader(in));
-        StringBuilder sb = new StringBuilder();
-        String line;
+        InputStream in = null;
         try {
-            while ((line = reader.readLine()) != null) {
-                sb.append(line);
-                sb.append("\n");
+            in = this.getClass().getClassLoader().getResource("start.py").openStream();
+            BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+            StringBuilder sb = new StringBuilder();
+            String line;
+            try {
+                while ((line = reader.readLine()) != null) {
+                    sb.append(line);
+                    sb.append("\n");
+                }
+            } catch (IOException ex) {
+                Logger.getLogger(JythonConsole.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            String sourceCode = sb.toString();
+            try {
+                engine.eval(sourceCode);
+            } catch (ScriptException ex) {
+                Logger.getLogger(JythonConsole.class.getName()).log(Level.SEVERE, null, ex);
             }
         } catch (IOException ex) {
             Logger.getLogger(JythonConsole.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        String sourceCode = sb.toString();
-        try {
-            engine.eval(sourceCode);
-        } catch (ScriptException ex) {
-            Logger.getLogger(JythonConsole.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                in.close();
+            } catch (IOException ex) {
+                Logger.getLogger(JythonConsole.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
 

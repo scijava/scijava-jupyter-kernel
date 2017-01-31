@@ -16,7 +16,7 @@ except:
 
 kernel_json_model = {"argv": ["{java_bin_path}",
                               "-classpath", "{classpath}",
-                               "org.jupyterkernel.kernel.Session",
+                               "org.scijava.jupyterkernel.kernel.Session",
                                "-k", "python",
                                "-f", "{connection_file}"],
                      "display_name": "Jython",
@@ -76,11 +76,11 @@ def main(java_path):
     print("Find Java binary and JAR files.")
     java_bin_path = find_jar("Java binary", "^java$", java_path)
     jars = []
-    jars.append(find_jar("jupyter-kernel-jsr223", "^jupyter-kernel-jsr223.*\.jar$", java_path))
     jars.append(find_jar("Jython", "^jython.*\.jar$", java_path))
     jars.append(find_jar("jeromq", "^jeromq.*\.jar$", java_path))
     jars.append(find_jar("JSON", "^json.*\.jar$", java_path))
     jars.append(find_jar("Commons CLI", "^commons-cli-.*\.jar$", java_path))
+    jars.append(find_jar("jupyter-kernel-jsr223", "^jupyter-kernel-jsr223.*\.jar$", java_path))
 
     # Define the new kernel spec
     kernel_json = kernel_json_model.copy()
