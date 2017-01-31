@@ -19,6 +19,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import org.scijava.jupyterkernel.console.InteractiveConsole;
 import java.util.ArrayDeque;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 
@@ -29,6 +31,7 @@ import org.scijava.jupyterkernel.console.ConsoleFactory;
 import org.scijava.jupyterkernel.console.ConsoleInputReader;
 import org.scijava.jupyterkernel.console.JupyterStreamWriter;
 import org.scijava.jupyterkernel.json.messages.T_comm_close;
+import org.scijava.jupyterkernel.json.messages.T_comm_info_reply;
 import org.scijava.jupyterkernel.json.messages.T_comm_open;
 import org.scijava.jupyterkernel.json.messages.T_complete_reply;
 import org.scijava.jupyterkernel.json.messages.T_complete_request;
@@ -42,6 +45,7 @@ import org.scijava.jupyterkernel.json.messages.T_header;
 import org.scijava.jupyterkernel.json.messages.T_history_reply;
 import org.scijava.jupyterkernel.json.messages.T_input_request;
 import org.scijava.jupyterkernel.json.messages.T_inspect_reply;
+import org.scijava.jupyterkernel.json.messages.T_is_complete_reply;
 import org.scijava.jupyterkernel.json.messages.T_message;
 import org.scijava.jupyterkernel.json.messages.T_shutdown_request;
 import org.scijava.jupyterkernel.json.messages.T_stream;
@@ -64,7 +68,8 @@ public class Kernel extends Thread {
     // TODO: this class is not currently used because I have no model for 
     //       evaluating cells aynchronously. I might take a look on how 
     //       Mathematica does it with multiple kernels but it doesn't look too
-    //       promising either.
+    //       promising either
+    // Note : this class is used.
     private class ExecuteRequestHandler extends Thread {
 
         final ArrayDeque<MessageObject> requestMessages = new ArrayDeque<>();
@@ -148,10 +153,12 @@ public class Kernel extends Thread {
         message.read();
         T_header header = message.msg.header;
         String msgType = header.msg_type;
-        System.out.println(message.msg.header.msg_type);
+
+        Logger.getLogger(Session.class.getName()).log(Level.INFO, "Message Type : " + msgType);
+
         // handle execute_request as a special case
-        if (!msgType.equals("execute_request")) {
-            
+        if (msgType.equals("execute_request")) {
+
             if (!execute_request_handler.isAlive()) {
                 execute_request_handler = new ExecuteRequestHandler();
             }
@@ -342,5 +349,20 @@ public class Kernel extends Thread {
     public MessageObject[] input_reply(MessageObject message) {
 
         return new MessageObject[]{};
+    }
+
+    public MessageObject[] is_complete_request(MessageObject message) {
+        message.msg.header.msg_type = "is_complete_reply";
+        T_is_complete_reply reply = new T_is_complete_reply();
+        reply.status = "complete";
+        message.msg.content = reply;
+        return new MessageObject[]{message};
+    }
+    
+    public MessageObject[] comm_info_request(MessageObject message) {
+        message.msg.header.msg_type = "comm_info_reply";
+        T_comm_info_reply reply = new T_comm_info_reply();
+        message.msg.content = reply;
+        return new MessageObject[]{message};
     }
 }
