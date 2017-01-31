@@ -21,6 +21,11 @@ wget -qO- https://raw.githubusercontent.com/hadim/jupyter-kernel-jsr223/master/i
 
 **Note** : The `install-kernel.py` script will only support Python 3. *The reason is that Python 3 has been released 8 years ago now and it's time to move on.*
 
+## TODO
+
+- Implement Jupyter messaging protocol v5.0
+- Encrypt messaging
+
 ## License
 
 Under Apache 2.0 license. See [LICENSE](LICENSE).
