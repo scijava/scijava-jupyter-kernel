@@ -69,19 +69,15 @@
     </mailingLists>
 
     <scm>
-        <connection>scm:git:git://github.com/fiji/KymographBuilder</connection>
-        <developerConnection>scm:git:git@github.com:fiji/KymographBuilder</developerConnection>
+        <connection>scm:git:git://github.com/hadim/jupyter-kernel-jsr223</connection>
+        <developerConnection>scm:git:git@github.com:hadim/jupyter-kernel-jsr223</developerConnection>
         <tag>HEAD</tag>
-        <url>https://github.com/fiji/KymographBuilder</url>
+        <url>https://github.com/hadim/jupyter-kernel-jsr223</url>
     </scm>
     <issueManagement>
         <system>GitHub Issues</system>
-        <url>https://github.com/fiji/KymographBuilder/issues</url>
+        <url>https://github.com/hadim/jupyter-kernel-jsr223/issues</url>
     </issueManagement>
-    <ciManagement>
-        <system>Jenkins</system>
-        <url>http://jenkins.imagej.net/job/KymographBuilder/</url>
-    </ciManagement>
 
     <repositories>
         <repository>
