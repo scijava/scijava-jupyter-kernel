@@ -31,7 +31,6 @@ import java.io.StringWriter;
 import java.io.PrintWriter;
 import java.net.URL;
 import java.net.URLClassLoader;
-import org.scijava.jupyterkernel.console.JupyterStreamWriter;
 import org.scijava.jupyterkernel.json.messages.T_kernel_info_reply;
 
 public class InteractiveConsole {

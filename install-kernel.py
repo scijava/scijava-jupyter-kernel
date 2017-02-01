@@ -19,7 +19,7 @@ kernel_json_model = {"argv": ["{java_bin_path}",
                                "org.scijava.jupyterkernel.kernel.Session",
                                "-k", "python",
                                "-f", "{connection_file}"],
-                     "display_name": "Jython",
+                     "display_name": "{name}",
                      "language": "python"
                     }
 
@@ -62,13 +62,13 @@ def install_kernel_spec(kernel_json, user=True, prefix=None):
 
 
         kernel_manager = KernelSpecManager()
-        destination = kernel_manager.install_kernel_spec(td, kernel_json_model["display_name"],
+        destination = kernel_manager.install_kernel_spec(td, kernel_json["display_name"],
                                                          user=True, replace=True, prefix=prefix)
 
         print('The kernel spec has been installed to {}'.format(destination))
 
 
-def main(java_path):
+def main(java_path, dev=False, additional_classpath="", name=""):
     """
     """
 
@@ -80,12 +80,25 @@ def main(java_path):
     jars.append(find_jar("jeromq", "^jeromq.*\.jar$", java_path))
     jars.append(find_jar("JSON", "^json.*\.jar$", java_path))
     jars.append(find_jar("Commons CLI", "^commons-cli-.*\.jar$", java_path))
-    jars.append(find_jar("jupyter-kernel-jsr223", "^jupyter-kernel-jsr223.*\.jar$", java_path))
+
+    if dev:
+         jars.append(find_jar("jupyter-kernel-jsr223", "^jupyter-kernel-jsr223.*\-SNAPSHOT.jar$",
+                              os.path.join(os.path.dirname(os.path.realpath(__file__)), "target")))
+    else:
+        jars.append(find_jar("jupyter-kernel-jsr223", "^jupyter-kernel-jsr223.*\.jar$", java_path))
 
     # Define the new kernel spec
     kernel_json = kernel_json_model.copy()
     kernel_json['argv'][0] = kernel_json['argv'][0].format(java_bin_path=java_bin_path)
-    kernel_json['argv'][2] = kernel_json['argv'][2].format(classpath=":".join(jars))
+
+    classpath = ":".join(jars)
+    classpath += ":{}".format(additional_classpath)
+    kernel_json['argv'][2] = kernel_json['argv'][2].format(classpath=classpath)
+
+    if name:
+        kernel_json['display_name'] = kernel_json['display_name'].format(name=name)
+    else:
+        kernel_json['display_name'] = kernel_json['display_name'].format(name='Jython')
 
     print("The new kernel spec has been defined : \n{}".format(json.dumps(kernel_json,
                                                                          sort_keys=True,
@@ -103,5 +116,14 @@ if __name__ == '__main__':
                         help="Path to your Java installation where Java binary and needed JAR "
                              "files will be searched.")
 
+    parser.add_argument('--dev', action='store_true', required=False, default=False,
+                        help="Use the `jupyter-kernel-jsr223` artifact located in the `target/` directory.")
+
+    parser.add_argument('--classpath', type=str, required=False, default="",
+                        help="Additional classpath.")
+
+    parser.add_argument('--name', type=str, required=False, default="",
+                        help="By default the name of the kernel will be Jython. You can rename it.")
+
     args = parser.parse_args()
-    main(java_path=args.java_path)
+    main(java_path=args.java_path, dev=args.dev, additional_classpath=args.classpath, name=args.name)
