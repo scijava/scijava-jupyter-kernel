@@ -15,15 +15,25 @@
  */
 package org.scijava.jupyterkernel.console;
 
+import org.scijava.Context;
+import org.scijava.plugin.Parameter;
+import org.scijava.script.ScriptService;
+
 /**
  *
  * @author kay schluehr
  */
 public class ConsoleFactory {
-    public static InteractiveConsole createConsole(String name)
-    {
-        switch(name)
-        {
+    
+    @Parameter
+	public ScriptService scriptService;
+
+    private ConsoleFactory(Context context) {
+        context.inject(this);
+    }
+    
+    public static InteractiveConsole createConsole(String name) {
+        switch (name) {
             case "python":
                 return new JythonConsole();
             case "clojure":
@@ -31,5 +41,16 @@ public class ConsoleFactory {
             default:
                 return new InteractiveConsole(name);
         }
-    }    
+    }
+
+    public static void main(String[] args) {
+        System.out.println("sss");
+        
+        Context context = new Context();
+        
+        ConsoleFactory test = new ConsoleFactory(context);
+        System.out.println(test.scriptService.getLanguages());
+    }
+
+    
 }
