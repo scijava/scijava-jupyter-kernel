@@ -16,7 +16,7 @@ Add the jupyter-kernel-jsr223 artifact somewhere in your classpath :
 </dependency>
 ```
 
-Be sure to also copy its dependencies in your classpath : 
+Be sure to also its dependencies in your classpath : 
 
 ```xml
 <dependency>
@@ -53,7 +53,7 @@ wget -qO- https://raw.githubusercontent.com/hadim/jupyter-kernel-jsr223/master/i
 
 ### Development
 
-During development it's convenient to use the `jupyter-kernel-jsr223` artifact created by Maven in `target\`.
+During development it's convenient to use the `jupyter-kernel-jsr223` artifact created by Maven in `target/`.
 
 To use it you can just add the `--dev` :
 
@@ -67,6 +67,14 @@ You can add JAVA classpaths to the Java Machine running the kernel with `--class
 
 ```bash
 python install-kernel.py --java-path=YOUR_JAVA_PATH --classpath="YOUR_CLASS_PATH"
+```
+
+### Test
+
+When doing development I often use this command line to quickly test the kernel :
+
+```bash
+jupyter console --kernel jython-dev
 ```
 
 ## License
