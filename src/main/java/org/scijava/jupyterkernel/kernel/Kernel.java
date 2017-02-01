@@ -46,6 +46,8 @@ import org.scijava.jupyterkernel.json.messages.T_history_reply;
 import org.scijava.jupyterkernel.json.messages.T_input_request;
 import org.scijava.jupyterkernel.json.messages.T_inspect_reply;
 import org.scijava.jupyterkernel.json.messages.T_is_complete_reply;
+import org.scijava.jupyterkernel.json.messages.T_kernel_info_reply;
+import org.scijava.jupyterkernel.json.messages.T_status;
 import org.scijava.jupyterkernel.json.messages.T_message;
 import org.scijava.jupyterkernel.json.messages.T_shutdown_request;
 import org.scijava.jupyterkernel.json.messages.T_stream;
@@ -58,12 +60,7 @@ import org.scijava.jupyterkernel.json.messages.T_stream;
  */
 public class Kernel extends Thread {
 
-    private class ExecutionStatus {
-
-        public static final int IDLE = 0;
-        public static final int BUSY = 1;
-        public static final int STARTING = 2;
-    }
+    public static boolean DEBUG = false;
 
     // TODO: this class is not currently used because I have no model for 
     //       evaluating cells aynchronously. I might take a look on how 
@@ -82,15 +79,26 @@ public class Kernel extends Thread {
         public void run() {
             while (!requestMessages.isEmpty()) {
                 synchronized (requestMessages) {
+
                     MessageObject message = requestMessages.pollFirst();
                     T_header parentHeader = (T_header) message.msg.header.clone();
+
+                    // Warn the frontend execution is starting
+                    sendKernelStatus("busy", message.msg.header);
+
+                    // Execute the request
                     MessageObject[] responseMessages = execute_request(message);
-                    // now send all messages in sequence 
+
+                    // Send all the response messages
                     for (MessageObject response : responseMessages) {
+                        logInfo("Message Sent : " + response.msg.header.msg_type);
                         response.msg.parent_header = parentHeader;
                         response.send();
                         response = null;
                     }
+
+                    // Warn the frontend, that kernel is done
+                    sendKernelStatus("idle", message.msg.header);
                 }
             }
         }
@@ -105,15 +113,12 @@ public class Kernel extends Thread {
 
     int execution_count = 0;
 
-    int execution_status = ExecutionStatus.IDLE;
-
     ConsoleInputReader stdinReader = null;
 
     boolean shutdown_requested = false;
     boolean restart_requested = false;
 
     // message templates which can be used as copy constructor arguments
-    // 
     MessageObject stdinTemplate;
     MessageObject iopubTemplate;
 
@@ -154,7 +159,7 @@ public class Kernel extends Thread {
         T_header header = message.msg.header;
         String msgType = header.msg_type;
 
-        Logger.getLogger(Session.class.getName()).log(Level.INFO, "Message Type : " + msgType);
+        logInfo("Message Received : " + msgType);
 
         // handle execute_request as a special case
         if (msgType.equals("execute_request")) {
@@ -192,29 +197,6 @@ public class Kernel extends Thread {
         }
     }
 
-    public MessageObject[] comm_open(MessageObject message) {
-        // TODO: figure out if you can do anything with comms
-        //       Currently the reply to a comm_open will just be comm_close.
-        T_comm_open commOpen = (T_comm_open) message.msg.content;
-        T_comm_close commClose = new T_comm_close();
-        commClose.comm_id = commOpen.comm_id;
-        message.msg.content = commClose;
-        message.msg.header.msg_type = "comm_close";
-        return new MessageObject[]{message};
-    }
-
-    public MessageObject[] kernel_info_request(MessageObject message) {
-        // TODO: this is odd. A 'kernel interrupt' in the notebook just leads to a 
-        //       kernel_info_request message. 
-
-        if (this.execute_request_handler.isAlive()) {
-            this.execute_request_handler.interrupt();
-        }
-        message.msg.content = console.getKernelInfo();
-        message.msg.header.msg_type = "kernel_info_reply";
-        return new MessageObject[]{message};
-    }
-
     private void setStdin(MessageObject message) {
         if (stdinReader == null) {
             T_input_request stdin = new T_input_request();
@@ -239,12 +221,41 @@ public class Kernel extends Thread {
         console.setStreamWriter(new JupyterStreamWriter(stdoutMsg));
     }
 
+    public MessageObject[] comm_open(MessageObject message) {
+        // TODO: figure out if you can do anything with comms
+        //       Currently the reply to a comm_open will just be comm_close.
+        T_comm_open commOpen = (T_comm_open) message.msg.content;
+        T_comm_close commClose = new T_comm_close();
+        commClose.comm_id = commOpen.comm_id;
+        message.msg.content = commClose;
+        message.msg.header.msg_type = "comm_close";
+        return new MessageObject[]{message};
+    }
+
+    public MessageObject[] kernel_info_request(MessageObject message) {
+        // TODO: this is odd. A 'kernel interrupt' in the notebook just leads to a 
+        //       kernel_info_request message. 
+
+        if (this.execute_request_handler.isAlive()) {
+            this.execute_request_handler.interrupt();
+        }
+
+        T_kernel_info_reply content = console.getKernelInfo();
+        content.banner += "The kernel is the Java JSR223 kernel from https://github.com/hadim/jupyter-kernel-jsr223.\n";
+        content.banner += "It is still an experimental project so please report any issue you might have.";
+
+        message.msg.content = content;
+        message.msg.header.msg_type = "kernel_info_reply";
+        return new MessageObject[]{message};
+    }
+
     public MessageObject[] execute_request(MessageObject message) {
         T_execute_request request = (T_execute_request) message.msg.content;
         if (request.store_history) {
             execution_count++;
             console.setCellNumber(execution_count);
         }
+
         String code = request.code;
 
         setStreamWriter(message);
@@ -358,11 +369,32 @@ public class Kernel extends Thread {
         message.msg.content = reply;
         return new MessageObject[]{message};
     }
-    
+
     public MessageObject[] comm_info_request(MessageObject message) {
         message.msg.header.msg_type = "comm_info_reply";
         T_comm_info_reply reply = new T_comm_info_reply();
         message.msg.content = reply;
         return new MessageObject[]{message};
+    }
+
+    private void sendKernelStatus(String status, T_header header) {
+        MessageObject statusMessage = new MessageObject(iopubTemplate);
+
+        statusMessage.msg.parent_header = header;
+        statusMessage.msg.header = (T_header) header.clone();
+        statusMessage.msg.header.msg_type = "status";
+
+        T_status statusContent = new T_status();
+        statusContent.execution_state = status;
+
+        statusMessage.msg.content = statusContent;
+        statusMessage.send();
+        statusMessage = null;
+    }
+
+    private static void logInfo(String message) {
+        if (DEBUG) {
+            Logger.getLogger(Kernel.class.getName()).log(Level.INFO, message);
+        }
     }
 }

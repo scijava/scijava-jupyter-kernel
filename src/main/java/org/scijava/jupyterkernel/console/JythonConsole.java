@@ -122,7 +122,7 @@ public class JythonConsole extends InteractiveConsole {
     public Object eval(String codeString) {
         ex = null;
         try {
-            if (codeString.indexOf('\n') == -1) {                                
+            if (codeString.indexOf('\n') == -1) {
                 engine.eval(String.format("exec(compile('''%s''', '<string>', 'single'), locals())", codeString));
                 stopStreaming();
                 return readPrintExpr();
@@ -174,7 +174,7 @@ public class JythonConsole extends InteractiveConsole {
                             + "exec(__code, locals())\n"
                             + "del(__code)";
                     code = String.format(code, lastBlock, lastBlock);
-                                        
+
                     engine.eval(code);
                     stopStreaming();
                     return readPrintExpr();
@@ -254,6 +254,8 @@ public class JythonConsole extends InteractiveConsole {
         }
         languageInfo.version = version;
         kernelInfoReply.language_info = languageInfo;
+        kernelInfoReply.banner = "Jython " + version + "\n";
+
         return kernelInfoReply;
     }
 }

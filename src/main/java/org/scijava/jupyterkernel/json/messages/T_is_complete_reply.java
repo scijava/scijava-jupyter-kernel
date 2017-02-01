@@ -11,7 +11,7 @@ import org.scijava.jupyterkernel.util.JSONField;
  *
  * @author kay schluehr
  */
-public class T_is_complete_reply extends T_JSON{
+public class T_is_complete_reply extends T_JSON {
     @JSONField
     public String status;    
     

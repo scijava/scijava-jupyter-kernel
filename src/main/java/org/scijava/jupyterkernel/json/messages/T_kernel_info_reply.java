@@ -5,6 +5,11 @@
  */
 package org.scijava.jupyterkernel.json.messages;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.scijava.jupyterkernel.util.JSONField;
 import org.json.JSONArray;
 
@@ -33,7 +38,7 @@ public class T_kernel_info_reply extends T_JSON {
     public JSONArray help_links;
 
     public T_kernel_info_reply() {
-        this.protocol_version = T_JSON.message_protocol_version;
+        this.protocol_version = T_JSON.message_protocol_version;  
     }
     
 }

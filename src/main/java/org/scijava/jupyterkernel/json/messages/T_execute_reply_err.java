@@ -11,7 +11,7 @@ import org.json.JSONArray;
  *
  * @author kay schluehr
  */
-public class T_execute_reply_err {
+public class T_execute_reply_err extends T_JSON {
     public String ename = "";
 
     public String evalue = "";

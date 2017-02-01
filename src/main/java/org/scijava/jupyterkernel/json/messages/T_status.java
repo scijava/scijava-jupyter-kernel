@@ -11,7 +11,11 @@ import org.scijava.jupyterkernel.util.JSONField;
  *
  * @author kay schluehr
  */
-public class T_kernel_status {
+public class T_status extends T_JSON {
+
     @JSONField
     public String execution_state;    // {busy, idle, starting}
+
+    public T_status() {
+    }
 }

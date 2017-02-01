@@ -44,7 +44,7 @@ import org.apache.commons.cli.CommandLineParser;
  */
 public class Session extends Thread {
 
-    public static boolean _DEBUG_ = false;
+    public static boolean DEBUG = false;
 
     private class SocketType {
 
@@ -177,15 +177,13 @@ public class Session extends Thread {
         sockets.register(Shell, ZMQ.Poller.POLLIN);
         sockets.register(Stdin, ZMQ.Poller.POLLIN);
 
-        Logger.getLogger(Session.class.getName()).log(Level.INFO, "Sockets have been correctly created.");
+        logInfo("Sockets have been correctly created.");
 
         return true;
     }
 
     public static JSONObject readConnectionFile(String connectionFilePath) throws FileNotFoundException, IOException {
-        if (Session._DEBUG_) {
-            System.out.println("ConnectionFilePath: " + connectionFilePath);
-        }
+
         File connectionFile = new File(connectionFilePath);
         FileInputStream fis = new FileInputStream(connectionFile);
         byte[] content = new byte[(int) connectionFile.length()];
@@ -197,7 +195,8 @@ public class Session extends Thread {
 
         // Parse connection file content into JSON object
         JSONObject connectionInfo = new JSONObject(new String(content, "UTF-8"));
-        Logger.getLogger(Session.class.getName()).log(Level.INFO, "Reading connection file :\n" + connectionInfo.toString(2));
+        logInfo("Reading connection file :\n" + connectionInfo.toString(2));
+
         return connectionInfo;
     }
 
@@ -212,7 +211,7 @@ public class Session extends Thread {
             kernel.setIOPubTemplate(new MessageObject(null, IOPub, key));
             kernel.setConnectionData(connectionData);
 
-            Logger.getLogger(Session.class.getName()).log(Level.INFO, "Jupyter Java Kernel has started.", kernel.getKernel());
+            logInfo("Jupyter Java Kernel has started.");
 
             while (!this.isInterrupted()) {
                 byte[] message;
@@ -243,11 +242,17 @@ public class Session extends Thread {
         }
     }
 
+    private static void logInfo(String message) {
+        if (DEBUG) {
+            Logger.getLogger(Session.class.getName()).log(Level.INFO, message);
+        }
+    }
+
     static void runKernel(String[] args) throws FileNotFoundException,
             InvalidKeyException,
             UnsupportedEncodingException,
             IOException {
-        
+
         if (args.length > 0) {
             String connectionFilePath;
             String kernelName;
@@ -255,7 +260,7 @@ public class Session extends Thread {
             options.addOption("f", true, "connection file path");
             options.addOption("k", true, "kernel name");
             CommandLineParser parser = new PosixParser();
-            
+
             try {
                 CommandLine cmd = parser.parse(options, args);
                 connectionFilePath = cmd.getOptionValue("f");
@@ -266,11 +271,6 @@ public class Session extends Thread {
             }
 
             JSONObject connectionData = readConnectionFile(connectionFilePath);
-            if (Session._DEBUG_) {
-                System.out.println("Connection File\n------------------------------------");
-                System.out.println(connectionData.toString(4));
-            }
-
             Session session = new Session(connectionData, new Kernel(kernelName));
 
             try {
@@ -285,14 +285,16 @@ public class Session extends Thread {
             InvalidKeyException,
             UnsupportedEncodingException,
             IOException {
-        Session._DEBUG_ = true;
+
         ZContext ctx = new ZContext();
         Socket channel = ctx.createSocket(ZMQ.REP);
         channel.bind("tcp://127.0.0.1:2222");
+
         byte[] msg = channel.recv();
         String sArgs = new String(msg, StandardCharsets.UTF_8);
         String[] newArgs = sArgs.split(" ");
         channel.send("ok");
+
         runKernel(newArgs);
     }
 
@@ -305,13 +307,6 @@ public class Session extends Thread {
             // Start this application in your IDE first. 
             runKernelDebug();
         } else {
-            if (Session._DEBUG_) {
-                System.out.println("BEGIN ARGS");
-                for (String arg : args) {
-                    System.out.println("   " + arg);
-                }
-                System.out.println("END ARGS");
-            }
             runKernel(args);
         }
     }

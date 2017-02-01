@@ -97,6 +97,9 @@ public class ClojureConsole extends InteractiveConsole {
         languageInfo.pygments_lexer = "clojure";
         languageInfo.version = version;
         kernelInfoReply.language_info = languageInfo;
+        
+        kernelInfoReply.banner = "Clojure " + version + " ";
+        
         return kernelInfoReply;
     }
 
