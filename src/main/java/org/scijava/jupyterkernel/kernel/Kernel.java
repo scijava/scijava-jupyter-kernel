@@ -246,6 +246,8 @@ public class Kernel extends Thread {
 
         message.msg.content = content;
         message.msg.header.msg_type = "kernel_info_reply";
+        
+        sendKernelStatus("idle", message.msg.header);
         return new MessageObject[]{message};
     }
 
@@ -375,6 +377,10 @@ public class Kernel extends Thread {
         T_comm_info_reply reply = new T_comm_info_reply();
         message.msg.content = reply;
         return new MessageObject[]{message};
+    }
+
+    private void sendKernelStatus(String status, MessageObject messageObject) {
+        sendKernelStatus(status, messageObject.msg.header);
     }
 
     private void sendKernelStatus(String status, T_header header) {

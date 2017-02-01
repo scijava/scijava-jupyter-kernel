@@ -212,7 +212,7 @@ public class Session extends Thread {
             kernel.setConnectionData(connectionData);
 
             logInfo("Jupyter Java Kernel has started.");
-
+            
             while (!this.isInterrupted()) {
                 byte[] message;
                 sockets.poll();
