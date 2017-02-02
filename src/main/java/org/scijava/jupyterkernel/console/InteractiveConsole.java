@@ -121,7 +121,11 @@ public class InteractiveConsole {
             traceback = XML.escape(tb[0] + "\n" + tb[1]);
         }
         //traceback = traceback.replaceAll("\n", "<br>");
-        stderrWriter.write("<pre><font color=\"red\">" + traceback + "</font></pre>");
+        //stderrWriter.write("<pre><font color=\"red\">" + traceback + "</font></pre>");
+        
+        // For now only return plain text traceback. 
+        // TODO : find a way to send both html and text answer.
+        stderrWriter.write(traceback);
     }
 
     public String[] getTraceback() {

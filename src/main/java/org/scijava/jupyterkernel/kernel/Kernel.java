@@ -292,6 +292,7 @@ public class Kernel extends Thread {
             reply.status = "ok";
             reply.setAnswer(new T_execute_reply_ok());
             return new MessageObject[]{message};
+            
         } else {
             T_execute_result result = new T_execute_result();
 
@@ -302,7 +303,7 @@ public class Kernel extends Thread {
                 reply.status = "error";
                 reply.setAnswer(new T_execute_reply_err());
                 result.data.put(mimetype, err);
-                System.out.println(result.toJSON().toString(2));
+                
             } else {
                 reply.status = "ok";
                 reply.setAnswer(new T_execute_reply_ok());
