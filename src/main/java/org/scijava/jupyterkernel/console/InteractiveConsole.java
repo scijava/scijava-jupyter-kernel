@@ -95,7 +95,7 @@ public class InteractiveConsole {
 
     public String getMIMEType() {
         if (ex != null) {
-            return "text/html";
+            return "text/plain";
         }
         return "text/plain";
     }
@@ -185,8 +185,8 @@ public class InteractiveConsole {
         languageInfo.version = version;
         kernelInfoReply.language_info = languageInfo;
 
-        kernelInfoReply.banner = this.scriptLanguage.getLanguageName() + version + "\n";
-        kernelInfoReply.banner += "The kernel is the Java JSR223 kernel from https://github.com/hadim/jupyter-kernel-jsr223.\n";
+        kernelInfoReply.banner = this.scriptLanguage.getLanguageName() + " " + version + "\n";
+        kernelInfoReply.banner += "The kernel is the SciJava JSR223 kernel from https://github.com/hadim/scijava-jupyter-kernel.\n";
         kernelInfoReply.banner += "It is still an experimental project so please report any issue you might have.";
 
         return kernelInfoReply;
