@@ -1,7 +1,16 @@
 # scijava-jupyter-kernel
 
-`scijava-jupyter-kernel` is a JSR223 Jupyter kernel implementation in Java. It's a friendly fork of https://github.com/fiber-space/jupyter-kernel-jsr223.
+`scijava-jupyter-kernel` is a JSR223 Jupyter kernel implementation in Java. It uses [SciJava Scripting Languages](https://github.com/scijava?utf8=%E2%9C%93&q=scripting&type=&language=) to execute the source code.
 
+Languages currently available are :
+
+- Jython
+- Groovy
+- Clojure (not tested)
+- Beanshell (not tested)
+- Java (not tested)
+- Javascript (not tested)
+- JRuby (not tested)
 
 ## Install
 
@@ -14,17 +23,17 @@ Add the scijava-jupyter-kernel artifact somewhere in your classpath :
 </dependency>
 ```
 
-Be sure to also its dependencies in your classpath :
+Be sure to also add its dependencies in your classpath :
 
 ```xml
 <dependency>
-    <groupId>commons-cli</groupId>
-    <artifactId>commons-cli</artifactId>
+    <groupId>org.scijava</groupId>
+    <artifactId>scijava-common</artifactId>
 </dependency>
 
 <dependency>
-    <groupId>org.scijava</groupId>
-    <artifactId>jython-shaded</artifactId>
+    <groupId>commons-cli</groupId>
+    <artifactId>commons-cli</artifactId>
 </dependency>
 
 <dependency>
@@ -38,47 +47,26 @@ Be sure to also its dependencies in your classpath :
 </dependency>
 ```
 
-Then execute the `install-kernel.py` script to install the Jython kernel to your Python installation :
+Then execute the `install-kernel.py` script to install the Jupyter kernel :
 
 ```bash
-wget -qO- https://raw.githubusercontent.com/hadim/scijava-jupyter-kernel/master/install-kernel.py | python - --java-path=YOUR_JAVA_PATH
+wget -qO- https://raw.githubusercontent.com/hadim/scijava-jupyter-kernel/master/install-kernel.py | python - --java-path=YOUR_JAVA_PATH --classpath=YOUR_CLASSPATH
 ```
 
-By default `install-kernel.py` will install the Jython kernel. You can install another kernel with `--language` :
+By default `install-kernel.py` will install the Jython Jupyter kernel. You can install another kernel with `--language` :
 
 ```bash
-wget -qO- https://raw.githubusercontent.com/hadim/scijava-jupyter-kernel/master/install-kernel.py | python - --java-path=YOUR_JAVA_PATH --language groovy
+wget -qO- https://raw.githubusercontent.com/hadim/scijava-jupyter-kernel/master/install-kernel.py | python - --java-path=YOUR_JAVA_PATH  --classpath=YOUR_CLASSPATH --language groovy
 ```
 
-**Note** : The `install-kernel.py` script will only support Python 3. *The reason is that Python 3 has been released 8 years ago now and it's time to move on.*
-
-
-## Advanced Installation
-
-### Development
+## Development
 
 During development it's convenient to use the `scijava-jupyter-kernel` artifact created by Maven in `target/`.
 
 To use it you can just add the `--dev` :
 
 ```bash
-python install-kernel.py --java-path=YOUR_JAVA_PATH --dev
-```
-
-### Classpath
-
-You can add JAVA classpaths to the Java Machine running the kernel with `--classpath`. For example :
-
-```bash
-python install-kernel.py --java-path=YOUR_JAVA_PATH --classpath="YOUR_CLASS_PATH"
-```
-
-### Test
-
-When doing development I often use this command line to quickly test the kernel :
-
-```bash
-jupyter console --kernel jython-dev
+python install-kernel.py --java-path=YOUR_JAVA_PATH --classpath=YOUR_CLASSPATH --dev
 ```
 
 ## License
@@ -88,3 +76,5 @@ Under Apache 2.0 license. See [LICENSE](LICENSE).
 ## Authors
 
 - Hadrien Mary <hadrien.mary@gmail.com>
+
+`scijava-jupyter-kernel` is a friendly fork of https://github.com/fiber-space/jupyter-kernel-jsr223.
