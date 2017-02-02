@@ -21,32 +21,48 @@ package org.scijava.jupyterkernel.console;
  *
  */
 import java.io.BufferedReader;
+
 import javax.script.ScriptEngine;
-import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
 import javax.script.CompiledScript;
-import javax.script.Compilable;
+
 import java.util.ArrayList;
 import java.io.StringWriter;
 import java.io.PrintWriter;
 import java.net.URL;
 import java.net.URLClassLoader;
+import org.json.XML;
+
 import org.scijava.jupyterkernel.json.messages.T_kernel_info_reply;
+import org.scijava.jupyterkernel.json.messages.T_language_info;
+import org.scijava.script.ScriptLanguage;
 
 public class InteractiveConsole {
 
-    ScriptEngine engine;
-    ScriptException ex;
+    protected ScriptEngine engine;
+    protected ScriptException ex;
 
-    ArrayList<CompiledScript> compiledChunks = new ArrayList<>();
+    protected ArrayList<CompiledScript> compiledChunks = new ArrayList<>();
 
-    StringWriter stdoutWriter = new StringWriter();
-    StringWriter stderrWriter = new StringWriter();
+    protected StringWriter stdoutWriter = new StringWriter();
+    protected StringWriter stderrWriter = new StringWriter();
 
-    int cellnum = 0;
-    int completionCursorPosition = -1;
+    protected int cellnum = 0;
+    protected int completionCursorPosition = -1;
 
-    public InteractiveConsole() {
+    private final ScriptLanguage scriptLanguage;
+
+    public InteractiveConsole(ScriptLanguage scriptLanguage) {
+        this.scriptLanguage = scriptLanguage;
+
+        engine = this.scriptLanguage.getScriptEngine();
+
+        if (engine == null) {
+            getClasses();
+            throw new RuntimeException("ScriptEngine not found. Please check your classpath.");
+        }
+        engine.getContext().setWriter(stdoutWriter);
+        engine.getContext().setErrorWriter(stderrWriter);
     }
 
     private void getClasses() {
@@ -62,17 +78,6 @@ public class InteractiveConsole {
         System.out.println("Classpath is " + strClassPath);
     }
 
-    public InteractiveConsole(String kernel) {
-        ScriptEngineManager manager = new ScriptEngineManager();
-        engine = manager.getEngineByName(kernel);
-        if (engine == null) {
-            getClasses();
-            throw new RuntimeException("ScriptEngine not found. Please check your classpath.");
-        }
-        engine.getContext().setWriter(stdoutWriter);
-        engine.getContext().setErrorWriter(stderrWriter);
-    }
-
     public void setStdinReader(ConsoleInputReader reader) {
         this.engine.getContext().setReader(new BufferedReader(reader));
     }
@@ -84,11 +89,14 @@ public class InteractiveConsole {
     public void stopStreaming() {
         JupyterStreamWriter streamWriter = ((JupyterStreamWriter) this.engine.getContext().getWriter());
         if (streamWriter != null) {
-            streamWriter.stopStreaming();            
-        }        
+            streamWriter.stopStreaming();
+        }
     }
 
     public String getMIMEType() {
+        if (ex != null) {
+            return "text/html";
+        }
         return "text/plain";
     }
 
@@ -102,7 +110,18 @@ public class InteractiveConsole {
     }
 
     protected void setErrorMessage() {
-        ex.printStackTrace(new PrintWriter(stderrWriter));
+        StringWriter sw = new StringWriter();
+        ex.getCause().printStackTrace(new PrintWriter(sw));
+        String err = sw.toString();
+        String[] tb = err.split("\n\n");
+        String traceback;
+        if (tb.length <= 2) {
+            traceback = XML.escape(tb[0]);
+        } else {
+            traceback = XML.escape(tb[0] + "\n" + tb[1]);
+        }
+        //traceback = traceback.replaceAll("\n", "<br>");
+        stderrWriter.write("<pre><font color=\"red\">" + traceback + "</font></pre>");
     }
 
     public String[] getTraceback() {
@@ -111,21 +130,21 @@ public class InteractiveConsole {
 
     /**
      *
-     * @param codeString source code which is evaluted by the ScriptEngine
+     * @param codeString source code which is evaluated by the ScriptEngine
      * @return result of the evaluation
      *
      */
     public Object eval(String codeString) {
-        CompiledScript compiledScript;
+        Object res = null;
         ex = null;
         try {
-            compiledScript = ((Compilable) engine).compile(codeString);
-            return compiledScript.eval();
+            res = engine.eval(codeString);
         } catch (ScriptException e) {
             ex = e;
             setErrorMessage();
         }
-        return null;
+        stopStreaming();
+        return res;
     }
 
     public String readAndClearStdout() {
@@ -150,6 +169,26 @@ public class InteractiveConsole {
     }
 
     public T_kernel_info_reply getKernelInfo() {
-        return new T_kernel_info_reply();
+
+        T_kernel_info_reply kernelInfoReply = new T_kernel_info_reply();
+
+        String lowerCaseName = this.scriptLanguage.getLanguageName().toLowerCase();
+        String version = this.scriptLanguage.getLanguageVersion();
+        kernelInfoReply.implementation = lowerCaseName;
+        kernelInfoReply.implementation_version = version;
+
+        T_language_info languageInfo = new T_language_info();
+        languageInfo.file_extension = this.scriptLanguage.getExtensions().toString();
+        languageInfo.name = lowerCaseName;
+        languageInfo.mimetype = this.scriptLanguage.getMimeTypes().toString();
+        languageInfo.pygments_lexer = lowerCaseName;
+        languageInfo.version = version;
+        kernelInfoReply.language_info = languageInfo;
+
+        kernelInfoReply.banner = this.scriptLanguage.getLanguageName() + version + "\n";
+        kernelInfoReply.banner += "The kernel is the Java JSR223 kernel from https://github.com/hadim/jupyter-kernel-jsr223.\n";
+        kernelInfoReply.banner += "It is still an experimental project so please report any issue you might have.";
+
+        return kernelInfoReply;
     }
 }

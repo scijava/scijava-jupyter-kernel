@@ -24,5 +24,5 @@ public class UnsupportedFunction extends RuntimeException {
     public UnsupportedFunction(String stdin_is_not_supported) {
         super(stdin_is_not_supported);
     }
-    
+
 }

@@ -27,6 +27,7 @@ import javax.script.ScriptEngineManager;
 import org.json.JSONArray;
 
 import org.json.JSONObject;
+import org.scijava.Context;
 import org.scijava.jupyterkernel.console.ConsoleFactory;
 import org.scijava.jupyterkernel.console.ConsoleInputReader;
 import org.scijava.jupyterkernel.console.JupyterStreamWriter;
@@ -104,41 +105,50 @@ public class Kernel extends Thread {
         }
     }
 
-    ScriptEngineManager manager;
-    ScriptEngine engine;
-    InteractiveConsole console;
-    String kernel;
+    private ExecuteRequestHandler execute_request_handler = new ExecuteRequestHandler();
 
-    JSONObject connectionData;
+    private ScriptEngineManager manager;
+    private ScriptEngine engine;
+    private InteractiveConsole console;
+    private String kernel;
 
-    int execution_count = 0;
+    private JSONObject connectionData;
 
-    ConsoleInputReader stdinReader = null;
+    private int execution_count = 0;
 
-    boolean shutdown_requested = false;
+    private ConsoleInputReader stdinReader = null;
+
+    private boolean shutdown_requested = false;
     boolean restart_requested = false;
 
     // message templates which can be used as copy constructor arguments
-    MessageObject stdinTemplate;
-    MessageObject iopubTemplate;
+    private MessageObject stdinTemplate;
+    private MessageObject iopubTemplate;
 
-    ExecuteRequestHandler execute_request_handler = new ExecuteRequestHandler();
+    // Scijava context
+    private Context context;
 
-    public Kernel(String name) {
-        kernel = name;
-        console = ConsoleFactory.createConsole(name);
+    public Kernel(String name, Context context) {
+        this.context = context;
+        this.kernel = name;
+
+        try {
+            this.console = ConsoleFactory.createConsole(name, context);
+        } catch (Exception ex) {
+            Logger.getLogger(Kernel.class.getName()).log(Level.SEVERE, "No console for that language " + name + " has beend found", ex);
+        }
     }
 
     public String getKernel() {
-        return kernel;
+        return this.kernel;
     }
 
     public boolean isShutdownRequested() {
-        return shutdown_requested;
+        return this.shutdown_requested;
     }
 
     public boolean isRestartRequested() {
-        return shutdown_requested;
+        return this.shutdown_requested;
     }
 
     public void setStdinTemplate(MessageObject messageObject) {
@@ -241,12 +251,10 @@ public class Kernel extends Thread {
         }
 
         T_kernel_info_reply content = console.getKernelInfo();
-        content.banner += "The kernel is the Java JSR223 kernel from https://github.com/hadim/jupyter-kernel-jsr223.\n";
-        content.banner += "It is still an experimental project so please report any issue you might have.";
 
         message.msg.content = content;
         message.msg.header.msg_type = "kernel_info_reply";
-        
+
         sendKernelStatus("idle", message.msg.header);
         return new MessageObject[]{message};
     }
