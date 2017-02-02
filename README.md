@@ -1,18 +1,16 @@
-# jupyter-kernel-jsr223
+# scijava-jupyter-kernel
 
-*Note : this is a work in progress that is currently not working. Any help is welcome !*
-
-jupyter-kernel-jsr223 is a JSR223 Jupyter kernel implementation in Java. It's a friendly fork of https://github.com/fiber-space/jupyter-kernel-jsr223.
+`scijava-jupyter-kernel` is a JSR223 Jupyter kernel implementation in Java. It's a friendly fork of https://github.com/fiber-space/jupyter-kernel-jsr223.
 
 
 ## Install
 
-Add the jupyter-kernel-jsr223 artifact somewhere in your classpath :
+Add the scijava-jupyter-kernel artifact somewhere in your classpath :
 
 ```xml
 <dependency>
     <groupId>org.scijava</groupId>
-    <artifactId>jupyter-kernel-jsr223</artifactId>
+    <artifactId>scijava-jupyter-kernel</artifactId>
 </dependency>
 ```
 
@@ -43,13 +41,13 @@ Be sure to also its dependencies in your classpath :
 Then execute the `install-kernel.py` script to install the Jython kernel to your Python installation :
 
 ```bash
-wget -qO- https://raw.githubusercontent.com/hadim/jupyter-kernel-jsr223/master/install-kernel.py | python - --java-path=YOUR_JAVA_PATH
+wget -qO- https://raw.githubusercontent.com/hadim/scijava-jupyter-kernel/master/install-kernel.py | python - --java-path=YOUR_JAVA_PATH
 ```
 
 By default `install-kernel.py` will install the Jython kernel. You can install another kernel with `--language` :
 
 ```bash
-wget -qO- https://raw.githubusercontent.com/hadim/jupyter-kernel-jsr223/master/install-kernel.py | python - --java-path=YOUR_JAVA_PATH --language groovy
+wget -qO- https://raw.githubusercontent.com/hadim/scijava-jupyter-kernel/master/install-kernel.py | python - --java-path=YOUR_JAVA_PATH --language groovy
 ```
 
 **Note** : The `install-kernel.py` script will only support Python 3. *The reason is that Python 3 has been released 8 years ago now and it's time to move on.*
@@ -59,7 +57,7 @@ wget -qO- https://raw.githubusercontent.com/hadim/jupyter-kernel-jsr223/master/i
 
 ### Development
 
-During development it's convenient to use the `jupyter-kernel-jsr223` artifact created by Maven in `target/`.
+During development it's convenient to use the `scijava-jupyter-kernel` artifact created by Maven in `target/`.
 
 To use it you can just add the `--dev` :
 

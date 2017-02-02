@@ -73,7 +73,7 @@ def main(java_path, dev=False, additional_classpath="", name="Jython", language=
 
     jars = []
     if dev:
-         jars.append(find_file("jupyter-kernel-jsr223", "^jupyter-kernel-jsr223.*\-SNAPSHOT.jar$",
+         jars.append(find_file("scijava-jupyter-kernel", "^scijava-jupyter-kernel.*\-SNAPSHOT.jar$",
                               os.path.join(os.path.dirname(os.path.realpath(__file__)), "target")))
 
     # Define the new kernel spec
@@ -99,7 +99,7 @@ def main(java_path, dev=False, additional_classpath="", name="Jython", language=
 if __name__ == '__main__':
 
 
-    parser = argparse.ArgumentParser(description="Jupyter Kernels Installer.")
+    parser = argparse.ArgumentParser(description="Java Jupyter Kernel Installer.")
 
     parser.add_argument('--java-path', type=str, required=True,
                         help="Path to your Java installation where Java binary will be searched.")
