@@ -89,10 +89,6 @@ def main(java_path, dev=False, additional_classpath="", name="Jython", language=
     kernel_json['display_name'] = kernel_json['display_name'].format(name=name)
     kernel_json['language'] = kernel_json['language'].format(language=language)
 
-    print("The new kernel spec has been defined : \n{}".format(json.dumps(kernel_json,
-                                                                         sort_keys=True,
-                                                                         indent=4)))
-
     install_kernel_spec(kernel_json)
 
 

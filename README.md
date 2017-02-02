@@ -59,6 +59,25 @@ By default `install-kernel.py` will install the Jython Jupyter kernel. You can i
 wget -qO- https://raw.githubusercontent.com/hadim/scijava-jupyter-kernel/master/install-kernel.py | python - --java-path=YOUR_JAVA_PATH  --classpath=YOUR_CLASSPATH --language groovy
 ```
 
+A typical [kernelspec file](https://jupyter-client.readthedocs.io/en/latest/kernels.html#kernel-specs) looks like this :
+
+```json
+{
+"argv": [
+    "/your/system/jdk1.8.0_66/jre/bin/java",
+    "-classpath",
+    "/path/to/kernel/scijava-jupyter-kernel-0.1.0-SNAPSHOT.jar:/your/java/jars/files/*",
+    "org.scijava.jupyterkernel.kernel.Session",
+    "-k",
+    "python",
+    "-f",
+    "{connection_file}"
+],
+"display_name": "Jython",
+"language": "python"
+}
+```
+
 ## Development
 
 During development it's convenient to use the `scijava-jupyter-kernel` artifact created by Maven in `target/`.
