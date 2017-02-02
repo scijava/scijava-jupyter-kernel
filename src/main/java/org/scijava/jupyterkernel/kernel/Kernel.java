@@ -299,6 +299,7 @@ public class Kernel extends Thread {
             // TODO: what is responded when history disabled?        
             result.execution_count = execution_count;
             String mimetype = console.getMIMEType();
+            
             if (!err.isEmpty()) {
                 reply.status = "error";
                 reply.setAnswer(new T_execute_reply_err());
