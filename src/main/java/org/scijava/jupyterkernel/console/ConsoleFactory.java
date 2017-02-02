@@ -15,8 +15,6 @@
  */
 package org.scijava.jupyterkernel.console;
 
-import javax.script.ScriptEngine;
-import javax.script.ScriptException;
 import org.scijava.Context;
 import org.scijava.script.ScriptLanguage;
 import org.scijava.script.ScriptService;
@@ -38,19 +36,6 @@ public class ConsoleFactory {
 
         InteractiveConsole console = new InteractiveConsole(scriptLanguage);
         return console;
-    }
-
-    public static void main(String[] args) throws ScriptException {
-        // Only for testing purpose
-
-        Context context = new Context();
-        ScriptService scriptService = context.getService(ScriptService.class);
-        ScriptLanguage scriptLanguage = scriptService.getLanguageByName("Groovy");
-        ScriptEngine engine = scriptLanguage.getScriptEngine();
-
-        engine.eval("println 'Hello'");
-
-        context.dispose();
     }
 
 }
