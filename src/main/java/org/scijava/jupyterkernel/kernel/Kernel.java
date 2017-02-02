@@ -104,7 +104,7 @@ public class Kernel extends Thread {
             }
         }
     }
-    
+
     private ExecuteRequestHandler execute_request_handler = new ExecuteRequestHandler();
 
     private ScriptEngineManager manager;
@@ -131,7 +131,12 @@ public class Kernel extends Thread {
     public Kernel(String name, Context context) {
         this.context = context;
         this.kernel = name;
-        this.console = ConsoleFactory.createConsole(name, context);
+
+        try {
+            this.console = ConsoleFactory.createConsole(name, context);
+        } catch (Exception ex) {
+            Logger.getLogger(Kernel.class.getName()).log(Level.SEVERE, "No console for that language " + name + " has beend found", ex);
+        }
     }
 
     public String getKernel() {
@@ -246,12 +251,10 @@ public class Kernel extends Thread {
         }
 
         T_kernel_info_reply content = console.getKernelInfo();
-        content.banner += "The kernel is the Java JSR223 kernel from https://github.com/hadim/jupyter-kernel-jsr223.\n";
-        content.banner += "It is still an experimental project so please report any issue you might have.";
 
         message.msg.content = content;
         message.msg.header.msg_type = "kernel_info_reply";
-        
+
         sendKernelStatus("idle", message.msg.header);
         return new MessageObject[]{message};
     }

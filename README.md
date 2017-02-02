@@ -16,7 +16,7 @@ Add the jupyter-kernel-jsr223 artifact somewhere in your classpath :
 </dependency>
 ```
 
-Be sure to also its dependencies in your classpath : 
+Be sure to also its dependencies in your classpath :
 
 ```xml
 <dependency>
@@ -44,6 +44,12 @@ Then execute the `install-kernel.py` script to install the Jython kernel to your
 
 ```bash
 wget -qO- https://raw.githubusercontent.com/hadim/jupyter-kernel-jsr223/master/install-kernel.py | python - --java-path=YOUR_JAVA_PATH
+```
+
+By default `install-kernel.py` will install the Jython kernel. You can install another kernel with `--language` :
+
+```bash
+wget -qO- https://raw.githubusercontent.com/hadim/jupyter-kernel-jsr223/master/install-kernel.py | python - --java-path=YOUR_JAVA_PATH --language groovy
 ```
 
 **Note** : The `install-kernel.py` script will only support Python 3. *The reason is that Python 3 has been released 8 years ago now and it's time to move on.*

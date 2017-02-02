@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.scijava.jupyterkernel.console;
+package org.scijava.jupyterkernel.console.deprecated;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -21,9 +21,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.script.ScriptException;
 import org.json.XML;
-import org.scijava.jupyterkernel.console.JythonConsole;
+import org.scijava.jupyterkernel.console.InteractiveConsole;
 import org.scijava.jupyterkernel.json.messages.T_kernel_info_reply;
 import org.scijava.jupyterkernel.json.messages.T_language_info;
+import org.scijava.script.ScriptLanguage;
 
 /**
  *
@@ -31,8 +32,8 @@ import org.scijava.jupyterkernel.json.messages.T_language_info;
  */
 public class ClojureConsole extends InteractiveConsole {
 
-    public ClojureConsole() {
-        super("clojure");
+    public ClojureConsole(ScriptLanguage scriptLanguage) {
+        super(scriptLanguage);
     }
 
     @Override
@@ -61,7 +62,7 @@ public class ClojureConsole extends InteractiveConsole {
 
     /**
      *
-     * @param codeString source code which is evaluted by the ScriptEngine
+     * @param codeString source code which is evaluated by the ScriptEngine
      * @return result of the evaluation
      *
      */
@@ -98,7 +99,7 @@ public class ClojureConsole extends InteractiveConsole {
         languageInfo.version = version;
         kernelInfoReply.language_info = languageInfo;
         
-        kernelInfoReply.banner = "Clojure " + version + " ";
+        kernelInfoReply.banner = "Clojure " + version + "\n";
         
         return kernelInfoReply;
     }

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.scijava.jupyterkernel.console;
+package org.scijava.jupyterkernel.console.deprecated;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -30,8 +30,10 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.json.XML;
+import org.scijava.jupyterkernel.console.InteractiveConsole;
 import org.scijava.jupyterkernel.json.messages.T_kernel_info_reply;
 import org.scijava.jupyterkernel.json.messages.T_language_info;
+import org.scijava.script.ScriptLanguage;
 
 /**
  *
@@ -41,8 +43,8 @@ public class JythonConsole extends InteractiveConsole {
 
     private final String compoundStmt = "(def|class|with|for|if|while|@|try|finally|except|else)(\n|.)*";
 
-    public JythonConsole() {
-        super("python");
+    public JythonConsole(ScriptLanguage scriptLanguage) {
+        super(scriptLanguage);
         setDisplayhook();
     }
 

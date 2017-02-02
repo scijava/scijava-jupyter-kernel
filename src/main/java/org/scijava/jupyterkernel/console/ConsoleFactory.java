@@ -15,6 +15,15 @@
  */
 package org.scijava.jupyterkernel.console;
 
+import org.scijava.jupyterkernel.console.deprecated.ClojureConsole;
+import org.scijava.jupyterkernel.console.deprecated.GroovyConsole;
+import org.scijava.jupyterkernel.console.deprecated.JythonConsole;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.script.ScriptEngine;
+import javax.script.ScriptEngineManager;
+import javax.script.ScriptException;
+import org.python.util.PythonInterpreter;
 import org.scijava.Context;
 import org.scijava.script.ScriptLanguage;
 import org.scijava.script.ScriptService;
@@ -25,23 +34,30 @@ import org.scijava.script.ScriptService;
  */
 public class ConsoleFactory {
 
-    public static InteractiveConsole createConsole(String name, Context context) {
+    public static InteractiveConsole createConsole(String name, Context context) throws Exception {
 
         ScriptService scriptService = context.getService(ScriptService.class);
-        for (ScriptLanguage scriptLanguage : scriptService.getLanguages()) {
-            if (scriptLanguage.getLanguageName().toLowerCase().equals(name.toLowerCase())) {
-                // For later that will be used to get the correct ScriptLanguage object
-            }
+        ScriptLanguage scriptLanguage = scriptService.getLanguageByName(name);
+
+        if (scriptLanguage == null) {
+            throw new Exception("ScriptLanguage for " + name + " not found.");
         }
 
-        switch (name) {
-            case "python":
-                return new JythonConsole();
-            case "clojure":
-                return new ClojureConsole();
-            default:
-                return new InteractiveConsole(name);
-        }
+        InteractiveConsole console = new InteractiveConsole(scriptLanguage);
+        return console;
+    }
+
+    public static void main(String[] args) throws ScriptException {
+        // Only for testing purpose
+
+        Context context = new Context();
+        ScriptService scriptService = context.getService(ScriptService.class);
+        ScriptLanguage scriptLanguage = scriptService.getLanguageByName("Groovy");
+        ScriptEngine engine = scriptLanguage.getScriptEngine();
+
+        engine.eval("println 'Hello'");
+
+        context.dispose();
     }
 
 }
