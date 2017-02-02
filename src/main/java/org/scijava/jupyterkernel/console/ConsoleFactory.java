@@ -15,15 +15,8 @@
  */
 package org.scijava.jupyterkernel.console;
 
-import org.scijava.jupyterkernel.console.deprecated.ClojureConsole;
-import org.scijava.jupyterkernel.console.deprecated.GroovyConsole;
-import org.scijava.jupyterkernel.console.deprecated.JythonConsole;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.script.ScriptEngine;
-import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
-import org.python.util.PythonInterpreter;
 import org.scijava.Context;
 import org.scijava.script.ScriptLanguage;
 import org.scijava.script.ScriptService;
