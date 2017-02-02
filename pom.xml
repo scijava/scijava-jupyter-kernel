@@ -78,6 +78,10 @@
         <system>GitHub Issues</system>
         <url>https://github.com/hadim/jupyter-kernel-jsr223/issues</url>
     </issueManagement>
+    <ciManagement>
+        <system>Jenkins</system>
+        <url>http://jenkins.imagej.net/job/jupyter-kernel-jsr223/</url>
+    </ciManagement>
 
     <repositories>
         <repository>

@@ -27,6 +27,7 @@ import javax.script.ScriptEngineManager;
 import org.json.JSONArray;
 
 import org.json.JSONObject;
+import org.scijava.Context;
 import org.scijava.jupyterkernel.console.ConsoleFactory;
 import org.scijava.jupyterkernel.console.ConsoleInputReader;
 import org.scijava.jupyterkernel.console.JupyterStreamWriter;
@@ -103,42 +104,46 @@ public class Kernel extends Thread {
             }
         }
     }
+    
+    private ExecuteRequestHandler execute_request_handler = new ExecuteRequestHandler();
 
-    ScriptEngineManager manager;
-    ScriptEngine engine;
-    InteractiveConsole console;
-    String kernel;
+    private ScriptEngineManager manager;
+    private ScriptEngine engine;
+    private InteractiveConsole console;
+    private String kernel;
 
-    JSONObject connectionData;
+    private JSONObject connectionData;
 
-    int execution_count = 0;
+    private int execution_count = 0;
 
-    ConsoleInputReader stdinReader = null;
+    private ConsoleInputReader stdinReader = null;
 
-    boolean shutdown_requested = false;
+    private boolean shutdown_requested = false;
     boolean restart_requested = false;
 
     // message templates which can be used as copy constructor arguments
-    MessageObject stdinTemplate;
-    MessageObject iopubTemplate;
+    private MessageObject stdinTemplate;
+    private MessageObject iopubTemplate;
 
-    ExecuteRequestHandler execute_request_handler = new ExecuteRequestHandler();
+    // Scijava context
+    private Context context;
 
-    public Kernel(String name) {
-        kernel = name;
-        console = ConsoleFactory.createConsole(name);
+    public Kernel(String name, Context context) {
+        this.context = context;
+        this.kernel = name;
+        this.console = ConsoleFactory.createConsole(name, context);
     }
 
     public String getKernel() {
-        return kernel;
+        return this.kernel;
     }
 
     public boolean isShutdownRequested() {
-        return shutdown_requested;
+        return this.shutdown_requested;
     }
 
     public boolean isRestartRequested() {
-        return shutdown_requested;
+        return this.shutdown_requested;
     }
 
     public void setStdinTemplate(MessageObject messageObject) {

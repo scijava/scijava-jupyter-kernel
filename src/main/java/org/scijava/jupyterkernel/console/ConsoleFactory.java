@@ -16,7 +16,7 @@
 package org.scijava.jupyterkernel.console;
 
 import org.scijava.Context;
-import org.scijava.plugin.Parameter;
+import org.scijava.script.ScriptLanguage;
 import org.scijava.script.ScriptService;
 
 /**
@@ -24,15 +24,16 @@ import org.scijava.script.ScriptService;
  * @author kay schluehr
  */
 public class ConsoleFactory {
-    
-    @Parameter
-	public ScriptService scriptService;
 
-    private ConsoleFactory(Context context) {
-        context.inject(this);
-    }
-    
-    public static InteractiveConsole createConsole(String name) {
+    public static InteractiveConsole createConsole(String name, Context context) {
+
+        ScriptService scriptService = context.getService(ScriptService.class);
+        for (ScriptLanguage scriptLanguage : scriptService.getLanguages()) {
+            if (scriptLanguage.getLanguageName().toLowerCase().equals(name.toLowerCase())) {
+                // For later that will be used to get the correct ScriptLanguage object
+            }
+        }
+
         switch (name) {
             case "python":
                 return new JythonConsole();
@@ -43,14 +44,4 @@ public class ConsoleFactory {
         }
     }
 
-    public static void main(String[] args) {
-        System.out.println("sss");
-        
-        Context context = new Context();
-        
-        ConsoleFactory test = new ConsoleFactory(context);
-        System.out.println(test.scriptService.getLanguages());
-    }
-
-    
 }
