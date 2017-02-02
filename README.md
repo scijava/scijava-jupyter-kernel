@@ -6,7 +6,7 @@ Languages currently available are :
 
 - Jython
 - Groovy
-- Clojure (not tested)
+- Clojure
 - Beanshell (not tested)
 - Java (not tested)
 - Javascript (not tested)
