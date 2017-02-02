@@ -260,7 +260,9 @@ public class Kernel extends Thread {
     }
 
     public MessageObject[] execute_request(MessageObject message) {
+        
         T_execute_request request = (T_execute_request) message.msg.content;
+        
         if (request.store_history) {
             execution_count++;
             console.setCellNumber(execution_count);

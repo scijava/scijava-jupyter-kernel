@@ -110,11 +110,14 @@ public class InteractiveConsole {
     }
 
     protected void setErrorMessage() {
+        
         StringWriter sw = new StringWriter();
         ex.getCause().printStackTrace(new PrintWriter(sw));
+        
         String err = sw.toString();
         String[] tb = err.split("\n\n");
         String traceback;
+        
         if (tb.length <= 2) {
             traceback = XML.escape(tb[0]);
         } else {
