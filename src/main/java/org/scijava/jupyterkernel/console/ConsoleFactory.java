@@ -34,7 +34,7 @@ public class ConsoleFactory {
             throw new Exception("ScriptLanguage for " + name + " not found.");
         }
 
-        InteractiveConsole console = new InteractiveConsole(scriptLanguage);
+        InteractiveConsole console = new InteractiveConsole(scriptLanguage, context);
         return console;
     }
 

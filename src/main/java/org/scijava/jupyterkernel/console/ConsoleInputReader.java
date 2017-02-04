@@ -52,7 +52,7 @@ public class ConsoleInputReader extends Reader {
         //       message has no effect
         // TODO: why is allow_stdin = true in execute_request if that functionality isn't supported?
         // requestInputMessage.send();
-        throw new UnsupportedFunction("reading from stdin is not supported by the notebook");
+        throw new UnsupportedFunction("Reading from stdin is not supported by the notebook.");
         /*
         if(userInput == null)
         {
