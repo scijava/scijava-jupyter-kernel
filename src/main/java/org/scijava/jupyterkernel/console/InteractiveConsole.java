@@ -20,7 +20,6 @@ package org.scijava.jupyterkernel.console;
  * @author kay schluehr
  *
  */
-import java.io.BufferedReader;
 
 import javax.script.ScriptException;
 import javax.script.CompiledScript;
