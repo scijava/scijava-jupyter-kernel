@@ -25,7 +25,7 @@ public class TestScriptEngine {
         ScriptLanguage scriptLanguage = scriptService.getLanguageByName("python");
         ScriptEngine engine = scriptLanguage.getScriptEngine();
 
-        engine.eval("print('Hello'");
+        engine.eval("print('Hello')");
 
         context.dispose();
     }
