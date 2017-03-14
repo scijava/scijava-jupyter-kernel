@@ -88,6 +88,12 @@ To use it you can just add the `--dev` :
 python install-kernel.py --java-path=YOUR_JAVA_PATH --classpath=YOUR_CLASSPATH --dev
 ```
 
+You may also want to only lancuh a jupyter console instead of the Notebook or Lab :
+
+```bash
+jupyter console --kernel=jython-dev
+```
+
 ## License
 
 Under Apache 2.0 license. See [LICENSE](LICENSE).
