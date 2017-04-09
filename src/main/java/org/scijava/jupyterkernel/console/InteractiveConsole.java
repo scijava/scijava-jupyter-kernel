@@ -20,49 +20,67 @@ package org.scijava.jupyterkernel.console;
  * @author kay schluehr
  *
  */
-import java.io.BufferedReader;
 
-import javax.script.ScriptEngine;
 import javax.script.ScriptException;
 import javax.script.CompiledScript;
 
 import java.util.ArrayList;
 import java.io.StringWriter;
 import java.io.PrintWriter;
+import java.io.StringReader;
 import java.net.URL;
 import java.net.URLClassLoader;
 import org.json.XML;
+import org.scijava.Context;
 
 import org.scijava.jupyterkernel.json.messages.T_kernel_info_reply;
 import org.scijava.jupyterkernel.json.messages.T_language_info;
+import org.scijava.script.ScriptInfo;
 import org.scijava.script.ScriptLanguage;
+import org.scijava.script.ScriptModule;
 
 public class InteractiveConsole {
 
-    protected ScriptEngine engine;
-    protected ScriptException ex;
+    protected ScriptException exception;
 
     protected ArrayList<CompiledScript> compiledChunks = new ArrayList<>();
-
-    protected StringWriter stdoutWriter = new StringWriter();
-    protected StringWriter stderrWriter = new StringWriter();
 
     protected int cellnum = 0;
     protected int completionCursorPosition = -1;
 
+    private final Context context;
     private final ScriptLanguage scriptLanguage;
+    private ScriptModule module = null;
+    private ScriptInfo info;
 
-    public InteractiveConsole(ScriptLanguage scriptLanguage) {
+    private JupyterStreamWriter streamWriter;
+    private StringWriter errorWriter;
+
+    public InteractiveConsole(ScriptLanguage scriptLanguage, Context context) {
+        this.context = context;
         this.scriptLanguage = scriptLanguage;
 
-        engine = this.scriptLanguage.getScriptEngine();
+        this.initModule();
+    }
 
-        if (engine == null) {
-            getClasses();
-            throw new RuntimeException("ScriptEngine not found. Please check your classpath.");
+    private void initModule() {
+
+        this.setScriptInfo("");
+        this.module = new ScriptModule(this.info);
+        context.inject(module);
+        this.module.setLanguage(scriptLanguage);
+
+        this.module.setOutputWriter(new StringWriter());
+
+        this.errorWriter = new StringWriter();
+        this.module.setErrorWriter(this.errorWriter);
+    }
+
+    public void setScriptInfo(String script) {
+        this.info = new ScriptInfo(context, "dummy.py", new StringReader(""));
+        if (this.module != null) {
+            this.module.setInfo(this.info);
         }
-        engine.getContext().setWriter(stdoutWriter);
-        engine.getContext().setErrorWriter(stderrWriter);
     }
 
     private void getClasses() {
@@ -79,24 +97,22 @@ public class InteractiveConsole {
     }
 
     public void setStdinReader(ConsoleInputReader reader) {
-        this.engine.getContext().setReader(new BufferedReader(reader));
+        this.info = new ScriptInfo(this.context, "dummy.py", reader);
+        this.module.setInfo(this.info);
     }
 
     public void setStreamWriter(JupyterStreamWriter streamWriter) {
-        this.engine.getContext().setWriter(streamWriter);
+        this.streamWriter = streamWriter;
+        this.module.setOutputWriter(streamWriter);
     }
 
     public void stopStreaming() {
-        JupyterStreamWriter streamWriter = ((JupyterStreamWriter) this.engine.getContext().getWriter());
-        if (streamWriter != null) {
-            streamWriter.stopStreaming();
+        if (this.streamWriter != null) {
+            this.streamWriter.stopStreaming();
         }
     }
 
     public String getMIMEType() {
-        if (ex != null) {
-            return "text/plain";
-        }
         return "text/plain";
     }
 
@@ -110,62 +126,55 @@ public class InteractiveConsole {
     }
 
     protected void setErrorMessage() {
-        
         StringWriter sw = new StringWriter();
-        ex.getCause().printStackTrace(new PrintWriter(sw));
-        
-        String err = sw.toString();
-        String[] tb = err.split("\n\n");
-        String traceback;
-        
-        if (tb.length <= 2) {
-            traceback = XML.escape(tb[0]);
-        } else {
-            traceback = XML.escape(tb[0] + "\n" + tb[1]);
+        if (this.exception != null) {
+            this.exception.getCause().printStackTrace(new PrintWriter(sw));
+
+            String err = sw.toString();
+            String[] tb = err.split("\n\n");
+            String traceback;
+
+            if (tb.length <= 2) {
+                traceback = XML.escape(tb[0]);
+            } else {
+                traceback = XML.escape(tb[0] + "\n" + tb[1]);
+            }
+            //traceback = traceback.replaceAll("\n", "<br>");
+            //stderrWriter.write("<pre><font color=\"red\">" + traceback + "</font></pre>");
+
+            // For now only return plain text traceback. 
+            // TODO : find a way to send both html and text answer.
+            this.errorWriter.write(traceback);
         }
-        //traceback = traceback.replaceAll("\n", "<br>");
-        //stderrWriter.write("<pre><font color=\"red\">" + traceback + "</font></pre>");
-        
-        // For now only return plain text traceback. 
-        // TODO : find a way to send both html and text answer.
-        stderrWriter.write(traceback);
     }
 
     public String[] getTraceback() {
         return null;
     }
 
-    /**
-     *
-     * @param codeString source code which is evaluated by the ScriptEngine
-     * @return result of the evaluation
-     *
-     */
     public Object eval(String codeString) {
-        Object res = null;
-        ex = null;
-        try {
-            res = engine.eval(codeString);
-        } catch (ScriptException e) {
-            ex = e;
-            setErrorMessage();
-        }
-        stopStreaming();
-        return res;
+        this.exception = null;
+
+        this.setScriptInfo(codeString);
+        this.module.run();
+        this.setErrorMessage();
+        this.stopStreaming();
+
+        return this.module.getReturnValue();
     }
 
     public String readAndClearStdout() {
-        String S = stdoutWriter.toString();
-        stdoutWriter.flush();
-        StringBuffer sb = stdoutWriter.getBuffer();
+        String S = this.streamWriter.toString();
+        this.streamWriter.flush();
+        StringBuffer sb = this.streamWriter.getBuffer();
         sb.delete(0, sb.length());
         return S;
     }
 
     public String readAndClearStderr() {
-        String S = stderrWriter.toString();
-        stderrWriter.flush();
-        StringBuffer sb = stderrWriter.getBuffer();
+        String S = this.errorWriter.toString();
+        this.errorWriter.flush();
+        StringBuffer sb = this.errorWriter.getBuffer();
         sb.delete(0, sb.length());
         return S;
     }

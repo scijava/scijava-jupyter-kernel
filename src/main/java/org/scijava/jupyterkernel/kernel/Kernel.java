@@ -216,7 +216,8 @@ public class Kernel extends Thread {
             stdinMsg.msg.header.msg_type = "input_request";
             stdinMsg.msg.parent_header = (T_header) message.msg.header;
             stdinMsg.msg.content = stdin;
-            console.setStdinReader(new ConsoleInputReader(stdinMsg));
+            //console.setStdinReader(new ConsoleInputReader(stdinMsg));
+            console.setScriptInfo("print('kkkkkkkkkkkk')");
         }
     }
 
