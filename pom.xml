@@ -122,7 +122,7 @@
             <version>0.4.1-SNAPSHOT</version>
             <scope>test</scope>
         </dependency>
-        
+
     </dependencies>
 
 </project>

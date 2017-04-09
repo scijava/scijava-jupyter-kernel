@@ -16,6 +16,7 @@ import com.twosigma.jupyter.Kernel;
 import java.io.IOException;
 
 import static com.twosigma.beaker.jupyter.Utils.uuid;
+import java.util.logging.Level;
 import org.scijava.Context;
 import org.scijava.jupyter.DefaultKernelConfigurationFile;
 import org.scijava.jupyter.comm.DefaultCommOpenHandler;
@@ -40,8 +41,6 @@ public class DefaultKernel extends Kernel {
         super(id, evaluator, config);
         this.context = context;
         this.context.inject(this);
-
-        this.setLogLevel(config.getLogLevel());
 
         log.info("Default Kernel started.");
         log.info("Language used : " + config.getLanguageName());
@@ -78,12 +77,13 @@ public class DefaultKernel extends Kernel {
     }
 
     public static void main(final String[] args) throws InterruptedException, IOException {
+
         KernelRunner.run(() -> {
             Context context = new Context();
             String id = uuid();
-            Evaluator evaluator = new DefaultEvaluator(id, id);
-            DefaultKernelConfigurationFile kernelConfigurationFile = new DefaultKernelConfigurationFile(context, args);
-            return new DefaultKernel(context, id, evaluator, kernelConfigurationFile);
+            DefaultKernelConfigurationFile config = new DefaultKernelConfigurationFile(context, args);
+            Evaluator evaluator = new DefaultEvaluator(context, id, id, config.getLanguageName());
+            return new DefaultKernel(context, id, evaluator, config);
         });
     }
 }

@@ -18,7 +18,6 @@ import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.DefaultParser;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
-import org.apache.commons.cli.PosixParser;
 
 import org.scijava.Context;
 import org.scijava.log.LogService;
@@ -77,16 +76,16 @@ public class DefaultKernelConfigurationFile implements ConfigurationFile {
                 
                 File configFile = new File(connectionFilePath);
                 if (!configFile.exists()) {
-                    System.out.println("Kernel configuration not found.");
+                    log.error("Kernel configuration not found.");
                     System.exit(1);
                 }
 
                 return configFile;
             } catch (ParseException ex) {
-                System.out.println("Error parsing kernel options : " + ex.toString());
+                log.error("Error parsing kernel options : " + ex.toString());
             }
         } else {
-            System.out.println("No parameters passed to the Kernel.");
+            log.error("No parameters passed to the Kernel.");
             System.exit(1);
         }
 
