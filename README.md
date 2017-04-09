@@ -1,65 +1,30 @@
 # scijava-jupyter-kernel
 
-`scijava-jupyter-kernel` is a JSR223 Jupyter kernel implementation in Java. It uses [SciJava Scripting Languages](https://github.com/scijava?utf8=%E2%9C%93&q=scripting&type=&language=) to execute the source code.
+`scijava-jupyter-kernel` aims to be a Jupyter kernel that integrate well with ImageJ. See https://imagej.net/Jupyter for more details.
 
-Languages currently available are :
+Under the hood `scijava-jupyter-kernel` uses the [Beaker base kernel](https://github.com/twosigma/beakerx/tree/master/kernel/base).
+
+Languages supported are :
 
 - Jython
 - Groovy
 - Clojure
-- Beanshell (not tested)
-- Java (not tested)
-- Javascript (not tested)
-- JRuby (not tested)
+- Beanshell
+- Java
+- Javascript
+- JRuby
 
-## Install
+See here for more details : https://imagej.net/Scripting#Supported_languages
 
-Add the scijava-jupyter-kernel artifact somewhere in your classpath :
+## Installation
 
-```xml
-<dependency>
-    <groupId>org.scijava</groupId>
-    <artifactId>scijava-jupyter-kernel</artifactId>
-</dependency>
-```
+When mature enough, `scijava-jupyter-kernel` will be shipped within ImageJ/Fiji and an easy way will be provided to install the kernel specification file to your Python distribution.
 
-Be sure to also add its dependencies in your classpath :
+In the meantime, if you want to test or contribute to the kernel, you can do the following :
 
-```xml
-<dependency>
-    <groupId>org.scijava</groupId>
-    <artifactId>scijava-common</artifactId>
-</dependency>
-
-<dependency>
-    <groupId>commons-cli</groupId>
-    <artifactId>commons-cli</artifactId>
-</dependency>
-
-<dependency>
-    <groupId>org.zeromq</groupId>
-    <artifactId>jeromq</artifactId>
-</dependency>
-
-<dependency>
-    <groupId>org.json</groupId>
-    <artifactId>json</artifactId>
-</dependency>
-```
-
-Then execute the `install-kernel.py` script to install the Jupyter kernel :
-
-```bash
-wget -qO- https://raw.githubusercontent.com/hadim/scijava-jupyter-kernel/master/install-kernel.py | python - --java-path=YOUR_JAVA_PATH --classpath=YOUR_CLASSPATH
-```
-
-By default `install-kernel.py` will install the Jython Jupyter kernel. You can install another kernel with `--language` :
-
-```bash
-wget -qO- https://raw.githubusercontent.com/hadim/scijava-jupyter-kernel/master/install-kernel.py | python - --java-path=YOUR_JAVA_PATH  --classpath=YOUR_CLASSPATH --language groovy
-```
-
-A typical [kernelspec file](https://jupyter-client.readthedocs.io/en/latest/kernels.html#kernel-specs) looks like this :
+- Clone this repo and compile it.
+- A `scijava-jupyter-kernel-*-SNAPSHOT.jar` package should be created into the `target` folder.
+- Create a Jupyter kernel specification file :
 
 ```json
 {
@@ -67,32 +32,20 @@ A typical [kernelspec file](https://jupyter-client.readthedocs.io/en/latest/kern
     "/your/system/jdk1.8.0_66/jre/bin/java",
     "-classpath",
     "/path/to/kernel/scijava-jupyter-kernel-0.1.0-SNAPSHOT.jar:/your/java/jars/files/*",
-    "org.scijava.jupyterkernel.kernel.Session",
-    "-k",
-    "python",
-    "-f",
-    "{connection_file}"
+    "org.scijava.jupyter.kernel.DefaultKernel",
+    "-language", "jython",
+    "-verbose", "debug",
+    "-configFile", "{connection_file}"
 ],
-"display_name": "Jython",
+"display_name": "Scijava Kernel - Jython",
 "language": "python"
 }
 ```
 
-## Development
+- Replace the appropriate fields in the above JSON file.
+- Install the kernel using the `jupyter kernelspec install` command.
 
-During development it's convenient to use the `scijava-jupyter-kernel` artifact created by Maven in `target/`.
-
-To use it you can just add the `--dev` :
-
-```bash
-python install-kernel.py --java-path=YOUR_JAVA_PATH --classpath=YOUR_CLASSPATH --dev
-```
-
-You may also want to only lancuh a jupyter console instead of the Notebook or Lab :
-
-```bash
-jupyter console --kernel=jython-dev
-```
+Now you can try the kernel using `jupyter notebook` or `jupyter lab` but also with this super useful command to do quick test : `jupyter console --kernel="Scijava Kernel - Jython"`.
 
 ## License
 
@@ -101,5 +54,3 @@ Under Apache 2.0 license. See [LICENSE](LICENSE).
 ## Authors
 
 - Hadrien Mary <hadrien.mary@gmail.com>
-
-`scijava-jupyter-kernel` is a friendly fork of https://github.com/fiber-space/jupyter-kernel-jsr223.
