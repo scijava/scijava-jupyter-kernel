@@ -3,15 +3,18 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.scijava.jupyterkernel.json.messages;
+package org.scijava.jupyter;
 
-import org.scijava.jupyterkernel.util.JSONField;
+import com.twosigma.beaker.DefaultJVMVariables;
 
 /**
  *
- * @author kay schluehr
+ * @author Hadrien Mary
  */
+public class DefaultVariables extends DefaultJVMVariables {
 
-public class T_kernel_info_request extends T_JSON {
-    
+    public DefaultVariables() {
+
+    }
+
 }
