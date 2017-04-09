@@ -26,7 +26,6 @@ import com.twosigma.jupyter.Kernel;
 import java.io.IOException;
 
 import static com.twosigma.beaker.jupyter.Utils.uuid;
-import java.util.logging.Level;
 import org.scijava.Context;
 import org.scijava.jupyter.DefaultKernelConfigurationFile;
 import org.scijava.jupyter.comm.DefaultCommOpenHandler;
