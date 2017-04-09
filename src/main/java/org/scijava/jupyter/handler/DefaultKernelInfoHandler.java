@@ -51,7 +51,7 @@ public class DefaultKernelInfoHandler extends KernelHandler<Message> {
         map.put("beakerx", true);
         
         List<String> helpLinks = new ArrayList<>();
-        helpLinks.add("http://imagej.net/Jupyter");
+        helpLinks.add("https://imagej.net/Jupyter");
         helpLinks.add("https://github.com/hadim/scijava-jupyter-kernel");
         map.put("help_links", (Serializable) helpLinks);
 
