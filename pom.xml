@@ -125,7 +125,14 @@
         <dependency>
             <groupId>org.scijava</groupId>
             <artifactId>scripting-jython</artifactId>
+            <version>0.4.1-SNAPSHOT</version>
             <scope>test</scope>
+        </dependency>
+        
+        <dependency>
+            <groupId>org.twosigma</groupId>
+            <artifactId>beaker-kernel-base</artifactId>
+            <version>1.7.1-SNAPSHOT</version>
         </dependency>
 
     </dependencies>
