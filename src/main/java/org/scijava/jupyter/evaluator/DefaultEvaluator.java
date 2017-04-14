@@ -18,6 +18,7 @@ package org.scijava.jupyter.evaluator;
 import com.twosigma.beaker.autocomplete.AutocompleteResult;
 import com.twosigma.beaker.evaluator.Evaluator;
 import com.twosigma.beaker.jvm.object.SimpleEvaluationObject;
+import com.twosigma.jupyter.KernelParameters;
 
 import java.io.IOException;
 import java.io.StringReader;
@@ -74,10 +75,8 @@ public class DefaultEvaluator implements Evaluator {
     }
 
     @Override
-    public void setShellOptions(String string, String string1) throws IOException {
-        log.info("Set shell options : ");
-        log.info("\t- " + string);
-        log.info("\t- " + string1);
+    public void setShellOptions(KernelParameters kp) throws IOException {
+        log.info("Set shell options : " + kp);
     }
 
     @Override

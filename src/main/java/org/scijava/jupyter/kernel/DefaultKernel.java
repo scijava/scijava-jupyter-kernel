@@ -26,6 +26,7 @@ import com.twosigma.jupyter.Kernel;
 import java.io.IOException;
 
 import static com.twosigma.beaker.jupyter.Utils.uuid;
+import com.twosigma.jupyter.KernelSocketsFactoryImpl;
 import org.scijava.Context;
 import org.scijava.jupyter.DefaultKernelConfigurationFile;
 import org.scijava.jupyter.comm.DefaultCommOpenHandler;
@@ -46,8 +47,9 @@ public class DefaultKernel extends Kernel {
     @Parameter
     private transient LogService log;
 
-    public DefaultKernel(final Context context, final String id, final Evaluator evaluator, DefaultKernelConfigurationFile config) {
-        super(id, evaluator, config);
+    public DefaultKernel(final Context context, final String id, final Evaluator evaluator, 
+            DefaultKernelConfigurationFile config, KernelSocketsFactoryImpl kernelSocketsFactory) {
+        super(id, evaluator, kernelSocketsFactory);
         this.context = context;
         this.context.inject(this);
 
@@ -88,11 +90,15 @@ public class DefaultKernel extends Kernel {
     public static void main(final String[] args) throws InterruptedException, IOException {
 
         KernelRunner.run(() -> {
+            
             Context context = new Context();
             String id = uuid();
+            
             DefaultKernelConfigurationFile config = new DefaultKernelConfigurationFile(context, args);
+            KernelSocketsFactoryImpl kernelSocketsFactory = new KernelSocketsFactoryImpl(config);
             Evaluator evaluator = new DefaultEvaluator(context, id, id, config.getLanguageName());
-            return new DefaultKernel(context, id, evaluator, config);
+            
+            return new DefaultKernel(context, id, evaluator, config, kernelSocketsFactory);
         });
     }
 }

@@ -22,6 +22,8 @@ import com.twosigma.jupyter.message.MessageSerializer;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
@@ -55,12 +57,16 @@ public class DefaultKernelConfigurationFile implements ConfigurationFile {
     }
 
     @Override
-    public Config getConfig() throws IOException {
+    public Config getConfig() {
         if (configuration == null) {
             log.info("Parsing the connection file.");
             log.info("Path to kernel config file : " + this.configFile.getAbsolutePath());
 
-            configuration = MessageSerializer.parse(new String(Files.readAllBytes(this.configFile.toPath())), Config.class);
+            try {
+                configuration = MessageSerializer.parse(new String(Files.readAllBytes(this.configFile.toPath())), Config.class);
+            } catch (IOException ex) {
+                log.error(ex);
+            }
 
             log.info("Creating signing hmac with : " + configuration.getKey());
         }
