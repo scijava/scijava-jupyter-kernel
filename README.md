@@ -20,7 +20,9 @@ See here for more details : https://imagej.net/Scripting#Supported_languages
 
 When mature enough, `scijava-jupyter-kernel` will be shipped within ImageJ/Fiji and an easy way will be provided to install the kernel specification file to your Python distribution.
 
-In the meantime, if you want to test or contribute to the kernel, you can do the following :
+## Development
+
+If you want to test or contribute to the kernel, you can do the following :
 
 - Clone this repo and compile it.
 - A `scijava-jupyter-kernel-*-SNAPSHOT.jar` package should be created into the `target` folder.
@@ -46,6 +48,14 @@ In the meantime, if you want to test or contribute to the kernel, you can do the
 - Install the kernel using the `jupyter kernelspec install` command.
 
 Now you can try the kernel using `jupyter notebook` or `jupyter lab` but also with this super useful command to do quick test : `jupyter console --kernel="Scijava Kernel - Jython"`.
+
+**Note** : For now Beakerx artifact is not available so you have to compile it yourself and install it in your local Maven repository. Use the following commands :
+
+```bash
+git clone https://github.com/twosigma/beakerx.git
+cd beakerx/kernel/base/
+gradle publishToMavenLocal
+```
 
 ## License
 
