@@ -59,8 +59,8 @@ public class DefaultKernelConfigurationFile implements ConfigurationFile {
     @Override
     public Config getConfig() {
         if (configuration == null) {
-            log.info("Parsing the connection file.");
-            log.info("Path to kernel config file : " + this.configFile.getAbsolutePath());
+            //log.info("Parsing the connection file.");
+            //log.info("Path to kernel config file : " + this.configFile.getAbsolutePath());
 
             try {
                 configuration = MessageSerializer.parse(new String(Files.readAllBytes(this.configFile.toPath())), Config.class);
@@ -68,7 +68,7 @@ public class DefaultKernelConfigurationFile implements ConfigurationFile {
                 log.error(ex);
             }
 
-            log.info("Creating signing hmac with : " + configuration.getKey());
+            //log.info("Creating signing hmac with : " + configuration.getKey());
         }
         return configuration;
     }

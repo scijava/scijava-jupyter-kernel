@@ -47,14 +47,18 @@ public class DefaultKernel extends Kernel {
     @Parameter
     private transient LogService log;
 
-    public DefaultKernel(final Context context, final String id, final Evaluator evaluator, 
+    public DefaultKernel(final Context context, final String id, final Evaluator evaluator,
             DefaultKernelConfigurationFile config, KernelSocketsFactoryImpl kernelSocketsFactory) {
+
         super(id, evaluator, kernelSocketsFactory);
         this.context = context;
         this.context.inject(this);
 
         log.info("Default Kernel started.");
         log.info("Language used : " + config.getLanguageName());
+
+        this.setLogLevel(config.getLogLevel());
+        log.info("Log level used is : " + config.getLogLevel());
     }
 
     @Override
@@ -90,14 +94,14 @@ public class DefaultKernel extends Kernel {
     public static void main(final String[] args) throws InterruptedException, IOException {
 
         KernelRunner.run(() -> {
-            
+
             Context context = new Context();
             String id = uuid();
-            
+
             DefaultKernelConfigurationFile config = new DefaultKernelConfigurationFile(context, args);
             KernelSocketsFactoryImpl kernelSocketsFactory = new KernelSocketsFactoryImpl(config);
             Evaluator evaluator = new DefaultEvaluator(context, id, id, config.getLanguageName());
-            
+
             return new DefaultKernel(context, id, evaluator, config, kernelSocketsFactory);
         });
     }

@@ -22,6 +22,10 @@ import com.twosigma.jupyter.KernelParameters;
 
 import java.io.IOException;
 import java.io.StringReader;
+import java.util.ArrayList;
+import java.util.List;
+import javax.script.ScriptEngine;
+import javax.script.ScriptException;
 
 import org.scijava.Context;
 import org.scijava.log.LogService;
@@ -30,6 +34,7 @@ import org.scijava.script.ScriptInfo;
 import org.scijava.script.ScriptLanguage;
 import org.scijava.script.ScriptModule;
 import org.scijava.script.ScriptService;
+import org.scijava.thread.ThreadService;
 
 /**
  *
@@ -42,7 +47,10 @@ public class DefaultEvaluator implements Evaluator {
 
     @Parameter
     private transient ScriptService scriptService;
-    
+
+    @Parameter
+    private ThreadService threadService;
+
     @Parameter
     Context context;
 
@@ -50,6 +58,8 @@ public class DefaultEvaluator implements Evaluator {
     private ScriptLanguage scriptLanguage;
     private ScriptModule module;
     private ScriptInfo info;
+
+    private Worker worker = null;
 
     protected String shellId;
     protected String sessionId;
@@ -65,10 +75,10 @@ public class DefaultEvaluator implements Evaluator {
     }
 
     private void initModule() {
-        
+
         // Init ScriptInfo
         this.info = new ScriptInfo(this.context, "dummy.py", new StringReader(""));
-        
+
         // Init ScriptModule
         this.module = new ScriptModule(this.info);
         this.module.setLanguage(scriptLanguage);
@@ -76,40 +86,41 @@ public class DefaultEvaluator implements Evaluator {
 
     @Override
     public void setShellOptions(KernelParameters kp) throws IOException {
-        log.info("Set shell options : " + kp);
+        log.debug("Set shell options : " + kp);
     }
 
     @Override
-    public AutocompleteResult autocomplete(String string, int i) {
-        log.info("Autocomplete is not (yet) available.");
-        return null;
+    public AutocompleteResult autocomplete(String code, int i) {
+        log.debug("Autocomplete is not (yet) available.");
+        
+        List<String> matches = new ArrayList<>();
+        int startIndex = 0;
+        AutocompleteResult ac = new AutocompleteResult(matches, startIndex);
+        return ac;
     }
 
     @Override
     public void killAllThreads() {
-        log.info("Kill all threads.");
+        log.debug("Kill All Threads");
         // Ugly !
         System.exit(0);
     }
 
     @Override
-    public void evaluate(SimpleEvaluationObject seo, String string) {
-        log.info("Evaluate code\n\n");
-
-        //seo.started();
-        //seo.error("test error");
-        //seo.update("test update");
-        seo.finished("test fini!!!!");
+    public void evaluate(SimpleEvaluationObject seo, String code) {
+        this.worker.setup(seo, code);
+        this.threadService.run(this.worker);
     }
 
     @Override
     public void startWorker() {
-        log.info("Start the worker");
+        log.debug("Start worker");
+        this.worker = new Worker(this.context, this.module);
     }
 
     @Override
     public void exit() {
-        log.info("Exiting DefaultEvaluator");
+        log.debug("Exiting DefaultEvaluator");
     }
 
     private void setLanguage(String languageName) {
@@ -122,11 +133,56 @@ public class DefaultEvaluator implements Evaluator {
         this.languageUsed = languageName;
         this.scriptLanguage = scriptService.getLanguageByName(languageName);
 
-        log.info("Script Language found for '" + this.languageUsed + "'");
+        log.debug("Script Language found for '" + this.languageUsed + "'");
     }
 
     public String getLanguage() {
         return this.languageUsed;
+    }
+
+    public class Worker implements Runnable {
+
+        @Parameter
+        private LogService log;
+
+        ScriptModule module;
+        ScriptEngine engine;
+
+        SimpleEvaluationObject seo = null;
+        String code = null;
+
+        Worker(Context context, ScriptModule module) {
+            context.inject(this);
+            this.module = module;
+            this.engine = this.module.getEngine();
+        }
+
+        public void setup(SimpleEvaluationObject seo, String code) {
+            this.seo = seo;
+            this.code = code;
+        }
+
+        @Override
+        public void run() {
+
+            this.seo.setOutputHandler();
+            
+            try {                
+                Object result = this.engine.eval(this.code);
+
+                if (result != null) {
+                    this.seo.finished(result);
+                } else {
+                    this.seo.finished("");
+                }
+
+            } catch (ScriptException ex) {
+                this.seo.error(ex);
+                this.seo.finished("");
+            }
+
+            this.seo.clrOutputHandler();
+        }
     }
 
 }

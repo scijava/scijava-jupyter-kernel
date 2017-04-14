@@ -26,6 +26,9 @@ public class TestScriptEngine {
         ScriptEngine engine = scriptLanguage.getScriptEngine();
 
         engine.eval("print('Hello')");
+        Object result = (Object) engine.eval("9+3");
+        
+        System.out.println(result);
 
         context.dispose();
     }
