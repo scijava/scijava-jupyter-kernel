@@ -90,10 +90,12 @@ public class DefaultEvaluator implements Evaluator {
     }
 
     @Override
-    public AutocompleteResult autocomplete(String code, int i) {
-        log.debug("Autocomplete is not (yet) available.");
-        
+    public AutocompleteResult autocomplete(String code, int i) {        
         List<String> matches = new ArrayList<>();
+        matches.add("Autocompletion does not work yet.");
+        matches.add("Test Autocompletion 1");
+        matches.add("Test Autocompletion 2");
+        matches.add("Test Autocompletion 3");
         int startIndex = 0;
         AutocompleteResult ac = new AutocompleteResult(matches, startIndex);
         return ac;
@@ -103,7 +105,7 @@ public class DefaultEvaluator implements Evaluator {
     public void killAllThreads() {
         log.debug("Kill All Threads");
         // Ugly !
-        //System.exit(0);
+        System.exit(0);
     }
 
     @Override
