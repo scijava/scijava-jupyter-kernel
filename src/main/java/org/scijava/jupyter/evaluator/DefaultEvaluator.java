@@ -21,7 +21,10 @@ import com.twosigma.beaker.jvm.object.SimpleEvaluationObject;
 import com.twosigma.jupyter.KernelParameters;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.io.StringReader;
+import java.io.StringWriter;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.script.ScriptEngine;
@@ -90,7 +93,7 @@ public class DefaultEvaluator implements Evaluator {
     }
 
     @Override
-    public AutocompleteResult autocomplete(String code, int i) {        
+    public AutocompleteResult autocomplete(String code, int i) {
         List<String> matches = new ArrayList<>();
         matches.add("Autocompletion does not work yet.");
         matches.add("Test Autocompletion 1");
@@ -169,7 +172,8 @@ public class DefaultEvaluator implements Evaluator {
 
             this.seo.setOutputHandler();
 
-            try {                
+            try {
+
                 Object result = this.engine.eval(this.code);
 
                 if (result != null) {
@@ -178,12 +182,20 @@ public class DefaultEvaluator implements Evaluator {
                     this.seo.finished("");
                 }
 
-            } catch (ScriptException ex) {
-                log.debug("Error : " + ex);
-                this.seo.error(ex);
-                this.seo.finished("");
-            }
+            } catch (Throwable e) {
+                log.debug("Error during execution : " + e);
 
+                //unwrap ITE
+                if (e instanceof InvocationTargetException) {
+                    e = ((InvocationTargetException) e).getTargetException();
+                }
+
+                if (e instanceof InterruptedException || e instanceof InvocationTargetException || e instanceof ThreadDeath) {
+                    this.seo.error("... cancelled !");
+                } else {
+                    this.seo.error(e.getMessage());
+                }
+            }
             this.seo.clrOutputHandler();
         }
     }
