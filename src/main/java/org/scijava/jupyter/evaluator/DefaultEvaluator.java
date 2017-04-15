@@ -103,7 +103,7 @@ public class DefaultEvaluator implements Evaluator {
     public void killAllThreads() {
         log.debug("Kill All Threads");
         // Ugly !
-        System.exit(0);
+        //System.exit(0);
     }
 
     @Override
@@ -166,7 +166,7 @@ public class DefaultEvaluator implements Evaluator {
         public void run() {
 
             this.seo.setOutputHandler();
-            
+
             try {                
                 Object result = this.engine.eval(this.code);
 
@@ -177,6 +177,7 @@ public class DefaultEvaluator implements Evaluator {
                 }
 
             } catch (ScriptException ex) {
+                log.debug("Error : " + ex);
                 this.seo.error(ex);
                 this.seo.finished("");
             }
