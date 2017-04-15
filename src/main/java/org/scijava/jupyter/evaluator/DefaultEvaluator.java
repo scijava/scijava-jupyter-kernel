@@ -185,13 +185,12 @@ public class DefaultEvaluator implements Evaluator {
             } catch (Throwable e) {
                 log.debug("Error during execution : " + e);
 
-                //unwrap ITE
                 if (e instanceof InvocationTargetException) {
                     e = ((InvocationTargetException) e).getTargetException();
                 }
 
                 if (e instanceof InterruptedException || e instanceof InvocationTargetException || e instanceof ThreadDeath) {
-                    this.seo.error("... cancelled !");
+                    this.seo.error("Excecution canceled.");
                 } else {
                     this.seo.error(e.getMessage());
                 }
