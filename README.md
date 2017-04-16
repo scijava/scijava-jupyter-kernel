@@ -17,6 +17,8 @@ Languages supported are :
 
 See here for more details : https://imagej.net/Scripting#Supported_languages
 
+![Scijava Jupyter Kernel Installation](teaser.gif)
+
 ## Installation
 
 - Clone, compile and install Beakerx base kernel :
