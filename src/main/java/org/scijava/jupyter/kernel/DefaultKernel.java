@@ -93,7 +93,7 @@ public class DefaultKernel extends Kernel {
 
     public static void main(final String[] args) throws InterruptedException, IOException {
 
-        // TODO : Would it be possible to convert this to a Scijava command with automatic parameters ?
+        // TODO : Transform this as a Scijava command (kernel.json would need to be modified).
         KernelRunner.run(() -> {
 
             Context context = new Context();
