@@ -1,4 +1,5 @@
 # scijava-jupyter-kernel
+[![Build Status](https://travis-ci.org/hadim/scijava-jupyter-kernel.svg?branch=master)](https://travis-ci.org/hadim/scijava-jupyter-kernel)
 
 `scijava-jupyter-kernel` aims to be a Jupyter kernel that integrate well with ImageJ. See https://imagej.net/Jupyter for more details.
 
