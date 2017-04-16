@@ -21,17 +21,22 @@ import com.twosigma.beaker.jvm.object.SimpleEvaluationObject;
 import com.twosigma.jupyter.KernelParameters;
 
 import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.Reader;
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.io.Writer;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
+import javax.script.ScriptContext;
 import javax.script.ScriptEngine;
-import javax.script.ScriptException;
 
 import org.scijava.Context;
+import org.scijava.convert.ConvertService;
 import org.scijava.log.LogService;
+import org.scijava.module.ModuleException;
+import org.scijava.module.ModuleItem;
+import org.scijava.module.ModuleService;
 import org.scijava.plugin.Parameter;
 import org.scijava.script.ScriptInfo;
 import org.scijava.script.ScriptLanguage;
@@ -59,8 +64,7 @@ public class DefaultEvaluator implements Evaluator {
 
     private String languageUsed;
     private ScriptLanguage scriptLanguage;
-    private ScriptModule module;
-    private ScriptInfo info;
+    private ScriptEngine scriptEngine;
 
     private Worker worker = null;
 
@@ -74,17 +78,6 @@ public class DefaultEvaluator implements Evaluator {
         this.sessionId = sessionId;
 
         this.setLanguage(languageName);
-        this.initModule();
-    }
-
-    private void initModule() {
-
-        // Init ScriptInfo
-        this.info = new ScriptInfo(this.context, "dummy.py", new StringReader(""));
-
-        // Init ScriptModule
-        this.module = new ScriptModule(this.info);
-        this.module.setLanguage(scriptLanguage);
     }
 
     @Override
@@ -120,7 +113,7 @@ public class DefaultEvaluator implements Evaluator {
     @Override
     public void startWorker() {
         log.debug("Start worker");
-        this.worker = new Worker(this.context, this.module);
+        this.worker = new Worker(this.context, this.scriptEngine, this.scriptLanguage);
     }
 
     @Override
@@ -137,6 +130,7 @@ public class DefaultEvaluator implements Evaluator {
 
         this.languageUsed = languageName;
         this.scriptLanguage = scriptService.getLanguageByName(languageName);
+        this.scriptEngine = this.scriptLanguage.getScriptEngine();
 
         log.debug("Script Language found for '" + this.languageUsed + "'");
     }
@@ -150,16 +144,25 @@ public class DefaultEvaluator implements Evaluator {
         @Parameter
         private LogService log;
 
-        ScriptModule module;
+        @Parameter
+        private ModuleService moduleService;
+
+        @Parameter
+        private Context context;
+
+        @Parameter
+        private ConvertService conversionService;
+
         ScriptEngine engine;
+        ScriptLanguage scriptLanguage;
 
         SimpleEvaluationObject seo = null;
         String code = null;
 
-        Worker(Context context, ScriptModule module) {
+        Worker(Context context, ScriptEngine engine, ScriptLanguage scriptLanguage) {
             context.inject(this);
-            this.module = module;
-            this.engine = this.module.getEngine();
+            this.engine = engine;
+            this.scriptLanguage = scriptLanguage;
         }
 
         public void setup(SimpleEvaluationObject seo, String code) {
@@ -170,33 +173,85 @@ public class DefaultEvaluator implements Evaluator {
         @Override
         public void run() {
 
+            final Writer output = new StringWriter();
+            final Writer error = new StringWriter();
+            final Reader input = new StringReader(this.code);
+
+            ScriptInfo info = new ScriptInfo(context, "dummy.py", input);
+            final String path = info.getPath();
+
             this.seo.setOutputHandler();
 
             try {
 
-                Object result = this.engine.eval(this.code);
+                ScriptModule module = info.createModule();
+                context.inject(module);
 
-                if (result != null) {
-                    this.seo.finished(result);
-                } else {
-                    this.seo.finished("");
+                module.setLanguage(scriptLanguage);
+                this.engine.put(ScriptEngine.FILENAME, path);
+                this.engine.put(ScriptModule.class.getName(), module);
+
+                final ScriptContext scriptContext = engine.getContext();
+
+                // Populate input annotation values
+                for (final ModuleItem<?> item : info.inputs()) {
+                    final String name = item.getName();
+                    this.engine.put(name, module.getInput(name));
+                }
+                
+                this.engine.put("test_context", context);
+
+                // Execute the code
+                Object returnValue = null;
+                try {
+                    final Reader reader = info.getReader();
+                    returnValue = engine.eval(reader);
+                    this.seo.finished(returnValue);
+
+                } catch (Throwable e) {
+
+                    if (e instanceof InvocationTargetException) {
+                        e = ((InvocationTargetException) e).getTargetException();
+                    }
+
+                    if (e instanceof InterruptedException || e instanceof InvocationTargetException || e instanceof ThreadDeath) {
+                        this.seo.error("Excecution canceled.");
+                    } else {
+                        this.seo.error(e.getMessage());
+                    }
                 }
 
-            } catch (Throwable e) {
-                log.debug("Error during execution : " + e);
-
-                if (e instanceof InvocationTargetException) {
-                    e = ((InvocationTargetException) e).getTargetException();
+                // Populate output annotation values
+                for (final ModuleItem<?> item : info.outputs()) {
+                    final String name = item.getName();
+                    final Object value;
+                    if ("result".equals(name) && info.isReturnValueAppended()) {
+                        // NB: This is the special implicit return value output!
+                        value = returnValue;
+                    } else {
+                        value = this.engine.get(name);
+                    }
+                    //final Object decoded = this.engine.decode(value);
+                    //final Object typed = conversionService.convert(decoded, item.getType());
+                    //module.setOutput(name, typed);
                 }
 
-                if (e instanceof InterruptedException || e instanceof InvocationTargetException || e instanceof ThreadDeath) {
-                    this.seo.error("Excecution canceled.");
-                } else {
-                    this.seo.error(e.getMessage());
+                // flush output and error streams
+                if (output != null) {
+                    try {
+                        output.flush();
+                    } catch (final IOException e) {
+                        log.error(e);
+                    }
                 }
+
+            } catch (ModuleException ex) {
+                log.error(ex);
             }
-            this.seo.clrOutputHandler();
-        }
-    }
 
+            this.seo.clrOutputHandler();
+
+        }
+
+    }
 }
