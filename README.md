@@ -19,7 +19,7 @@ See here for more details : https://imagej.net/Scripting#Supported_languages
 
 ## Installation
 
-When mature enough, `scijava-jupyter-kernel` will be shipped within ImageJ/Fiji and an easy way will be provided to install the kernel specification file to your Python distribution.
+When mature enough, `scijava-jupyter-kernel` will be shipped within ImageJ/Fiji and an easy way will be provided to install the kernel to your Python distribution.
 
 ## Development
 
