@@ -32,8 +32,32 @@ public class RunScijavaKernel implements Command {
     @Parameter
     private LogService log;
 
+    @Parameter(required = true, label = "Script Language")
+    private String scriptLanguage = "jython";
+
+    @Parameter(required = true, label = "Log Level",
+            choices = {"debug", "error", "info", "none"})
+    private String logLevel = "info";
+
     @Override
     public void run() {
-        log.info("Run Scijava Kernel : not available yet.");
+
+        log.info("Not implemented yet because we need the 'connection_file'.");
+
+//        try {
+//            
+//            List<String> parameters = new ArrayList<>();
+//            parameters.add("-language");
+//            parameters.add(this.scriptLanguage);
+//            parameters.add("-verbose");
+//            parameters.add(this.logLevel);
+//            parameters.add("-configFile");
+//            parameters.add("");
+//            
+//            DefaultKernel.main(parameters.toArray(new String[parameters.size()]));
+//            
+//        } catch (InterruptedException | IOException ex) {
+//            log.error(ex);
+//        }
     }
 }

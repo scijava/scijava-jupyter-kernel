@@ -54,7 +54,7 @@ public class DefaultKernel extends Kernel {
         this.context = context;
         this.context.inject(this);
 
-        log.info("Default Kernel started.");
+        log.info("Scijava Kernel started.");
         log.info("Language used : " + config.getLanguageName());
 
         this.setLogLevel(config.getLogLevel());
@@ -93,7 +93,7 @@ public class DefaultKernel extends Kernel {
 
     public static void main(final String[] args) throws InterruptedException, IOException {
 
-        // TODO : Transform this as a Scijava command (kernel.json would need to be modified).
+        // TODO : Should this be a Scijava command ?
         KernelRunner.run(() -> {
 
             Context context = new Context();

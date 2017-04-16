@@ -22,8 +22,6 @@ import com.twosigma.jupyter.message.MessageSerializer;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
@@ -59,16 +57,11 @@ public class DefaultKernelConfigurationFile implements ConfigurationFile {
     @Override
     public Config getConfig() {
         if (configuration == null) {
-            //log.info("Parsing the connection file.");
-            //log.info("Path to kernel config file : " + this.configFile.getAbsolutePath());
-
             try {
                 configuration = MessageSerializer.parse(new String(Files.readAllBytes(this.configFile.toPath())), Config.class);
             } catch (IOException ex) {
                 log.error(ex);
             }
-
-            //log.info("Creating signing hmac with : " + configuration.getKey());
         }
         return configuration;
     }
@@ -90,13 +83,14 @@ public class DefaultKernelConfigurationFile implements ConfigurationFile {
                 this.languageName = cmd.getOptionValue("language");
                 this.logLevel = cmd.getOptionValue("verbose");
                 
-                File configFile = new File(connectionFilePath);
-                if (!configFile.exists()) {
+                File localConfigFile = new File(connectionFilePath);
+                if (!localConfigFile.exists()) {
                     log.error("Kernel configuration not found.");
                     System.exit(1);
                 }
 
-                return configFile;
+                return localConfigFile;
+                
             } catch (ParseException ex) {
                 log.error("Error parsing kernel options : " + ex.toString());
             }
