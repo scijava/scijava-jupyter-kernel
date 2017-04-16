@@ -22,8 +22,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Comparator;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.scijava.log.LogService;
 
 /**

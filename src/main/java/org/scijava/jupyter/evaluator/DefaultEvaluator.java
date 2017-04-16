@@ -130,6 +130,10 @@ public class DefaultEvaluator implements Evaluator {
         log.debug("Script Language found for '" + this.languageUsed + "'");
     }
 
+    public ScriptLanguage getScriptLanguage() {
+        return this.scriptLanguage;
+    }
+
     public String getLanguage() {
         return this.languageUsed;
     }
@@ -186,7 +190,7 @@ public class DefaultEvaluator implements Evaluator {
                     final String name = item.getName();
                     this.engine.put(name, module.getInput(name));
                 }
-                
+
                 // Execute the code
                 Object returnValue = null;
                 try {

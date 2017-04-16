@@ -26,6 +26,7 @@ import com.twosigma.jupyter.handler.KernelHandler;
 import com.twosigma.jupyter.message.Header;
 import com.twosigma.jupyter.message.Message;
 import java.util.List;
+import org.scijava.script.ScriptLanguage;
 
 /**
  *
@@ -33,8 +34,11 @@ import java.util.List;
  */
 public class DefaultKernelInfoHandler extends KernelHandler<Message> {
 
-    public DefaultKernelInfoHandler(KernelFunctionality kernel) {
+    private final ScriptLanguage scriptLanguage;
+
+    public DefaultKernelInfoHandler(KernelFunctionality kernel, ScriptLanguage scriptLanguage) {
         super(kernel);
+        this.scriptLanguage = scriptLanguage;
     }
 
     @Override
@@ -44,22 +48,25 @@ public class DefaultKernelInfoHandler extends KernelHandler<Message> {
 
         HashMap<String, Serializable> map = new HashMap<>(6);
         map.put("protocol_version", "5.0");
-        map.put("implementation", "groovy");
-        map.put("implementation_version", "1.0.0");
+        map.put("implementation", this.scriptLanguage.getEngineName());
+        map.put("implementation_version", this.scriptLanguage.getEngineVersion());
 
         HashMap<String, Serializable> map1 = new HashMap<>(7);
-        map1.put("name", "Jython");
-        map1.put("version", "2.7");
-        map1.put("mimetype", "");
-        map1.put("file_extension", ".py");
-        map1.put("pygments_lexer", "python");
-        map1.put("codemirror_mode", "python");
+        map1.put("name", this.scriptLanguage.getLanguageName());
+        map1.put("version", this.scriptLanguage.getLanguageVersion());
+        map1.put("mimetype", this.scriptLanguage.getMimeTypes().toString());
+        map1.put("file_extension", this.scriptLanguage.getExtensions().toString());
+        map1.put("pygments_lexer", this.scriptLanguage.getLanguageName());
+        map1.put("codemirror_mode", this.scriptLanguage.getLanguageName());
         map1.put("nbconverter_exporter", "");
-        
+
         map.put("language_info", map1);
-        map.put("banner", "SciJava Jupyter Kernel v0.1.0");
+        String banner = "SciJava Jupyter Kernel v" +  getClass().getPackage().getSpecificationVersion() + " | ";
+        banner += "Language : " + this.scriptLanguage.getLanguageName();
+        banner += " " + this.scriptLanguage.getLanguageVersion() + "\n";
+        map.put("banner", banner);
         map.put("beakerx", true);
-        
+
         List<String> helpLinks = new ArrayList<>();
         helpLinks.add("https://imagej.net/Jupyter");
         helpLinks.add("https://github.com/hadim/scijava-jupyter-kernel");

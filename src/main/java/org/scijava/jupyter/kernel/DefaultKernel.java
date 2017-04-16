@@ -15,7 +15,6 @@
  */
 package org.scijava.jupyter.kernel;
 
-import com.twosigma.beaker.evaluator.Evaluator;
 
 import com.twosigma.beaker.jupyter.handler.CommOpenHandler;
 import com.twosigma.jupyter.KernelRunner;
@@ -34,6 +33,7 @@ import org.scijava.jupyter.evaluator.DefaultEvaluator;
 import org.scijava.jupyter.handler.DefaultKernelInfoHandler;
 import org.scijava.log.LogService;
 import org.scijava.plugin.Parameter;
+import org.scijava.script.ScriptLanguage;
 
 /**
  *
@@ -47,18 +47,26 @@ public class DefaultKernel extends Kernel {
     @Parameter
     private transient LogService log;
 
-    public DefaultKernel(final Context context, final String id, final Evaluator evaluator,
+    // Ugly but needed (should be fixed upstream soon)
+    private static ScriptLanguage scriptLanguage;
+
+    private final DefaultKernelConfigurationFile config;
+    private final DefaultEvaluator evaluator;
+
+    public DefaultKernel(final Context context, final String id, final DefaultEvaluator evaluator,
             DefaultKernelConfigurationFile config, KernelSocketsFactoryImpl kernelSocketsFactory) {
 
         super(id, evaluator, kernelSocketsFactory);
         this.context = context;
         this.context.inject(this);
+        this.config = config;
+        this.evaluator = evaluator;
 
         log.info("Scijava Kernel started.");
-        log.info("Language used : " + config.getLanguageName());
+        log.info("Language used : " + this.config.getLanguageName());
 
         this.setLogLevel(config.getLogLevel());
-        log.info("Log level used is : " + config.getLogLevel());
+        log.info("Log level used is : " + this.config.getLogLevel());
     }
 
     @Override
@@ -68,7 +76,7 @@ public class DefaultKernel extends Kernel {
 
     @Override
     public KernelHandler<Message> getKernelInfoHandler(Kernel kernel) {
-        return new DefaultKernelInfoHandler(kernel);
+        return new DefaultKernelInfoHandler(kernel, DefaultKernel.scriptLanguage);
     }
 
     private void setLogLevel(String logLevel) {
@@ -101,7 +109,9 @@ public class DefaultKernel extends Kernel {
 
             DefaultKernelConfigurationFile config = new DefaultKernelConfigurationFile(context, args);
             KernelSocketsFactoryImpl kernelSocketsFactory = new KernelSocketsFactoryImpl(config);
-            Evaluator evaluator = new DefaultEvaluator(context, id, id, config.getLanguageName());
+            DefaultEvaluator evaluator = new DefaultEvaluator(context, id, id, config.getLanguageName());
+
+            DefaultKernel.scriptLanguage = evaluator.getScriptLanguage();
 
             return new DefaultKernel(context, id, evaluator, config, kernelSocketsFactory);
         });
