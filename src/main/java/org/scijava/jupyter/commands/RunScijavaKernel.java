@@ -26,7 +26,7 @@ import org.scijava.plugin.Plugin;
     ,
 	@Menu(label = "Jupyter Kernel")
     ,
-	@Menu(label = "Run Scijava Kernel")})
+	@Menu(label = "Run Scijava Kernel (not available yet)")})
 public class RunScijavaKernel implements Command {
 
     @Parameter

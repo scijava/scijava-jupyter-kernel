@@ -19,44 +19,32 @@ See here for more details : https://imagej.net/Scripting#Supported_languages
 
 ## Installation
 
-When mature enough, `scijava-jupyter-kernel` will be shipped within ImageJ/Fiji and an easy way will be provided to install the kernel to your Python distribution.
-
-## Development
-
-If you want to test or contribute to the kernel, you can do the following :
-
-- Clone this repo and compile it.
-- A `scijava-jupyter-kernel-*-SNAPSHOT.jar` package should be created into the `target` folder.
-- Create a Jupyter kernel specification file :
-
-```json
-{
-"argv": [
-    "/your/system/jdk1.8.0_66/jre/bin/java",
-    "-classpath",
-    "/path/to/kernel/scijava-jupyter-kernel-0.1.0-SNAPSHOT.jar:/your/java/jars/files/*",
-    "org.scijava.jupyter.kernel.DefaultKernel",
-    "-language", "jython",
-    "-verbose", "debug",
-    "-configFile", "{connection_file}"
-],
-"display_name": "Scijava Kernel - Jython",
-"language": "python"
-}
-```
-
-- Replace the appropriate fields in the above JSON file.
-- Install the kernel using the `jupyter kernelspec install` command.
-
-Now you can try the kernel using `jupyter notebook` or `jupyter lab` but also with this super useful command to do quick test : `jupyter console --kernel="Scijava Kernel - Jython"`.
-
-**Note** : For now Beakerx artifact is not available so you have to compile it yourself and install it in your local Maven repository. Use the following commands :
+- Clone, compile and install Beakerx base kernel :
 
 ```bash
 git clone https://github.com/twosigma/beakerx.git
 cd beakerx/kernel/base/
 gradle publishToMavenLocal
 ```
+
+- Clone and compile `scijava-jupyter-kernel` :
+
+```bash
+git clone https://github.com/hadim/scijava-jupyter-kernel.git
+cd scijava-jupyter-kernel
+mvn -Dimagej.app.directory="PATH-TO-YOUR-IMAGEJ-REPO" install
+```
+
+## Usage
+
+- Start Fiji and launch `Analyze > Jupyter Kernel > Install Scijava Kernel`.
+- Set the path to your Python binary.
+- Choose a language (for example `jython` or `groovy`).
+- Choose a log level.
+
+To try the kernel, launch `jupyter notebook` or `jupyter lab`. Your kernel should appear in the kernel list.
+
+**Note** : To quickly test a kernel, use `jupyter console --kernel=scijava-jython`.
 
 ## License
 

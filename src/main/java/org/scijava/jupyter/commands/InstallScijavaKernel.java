@@ -15,25 +15,23 @@
  */
 package org.scijava.jupyter.commands;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStreamReader;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Arrays;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
+import java.util.Map;
+import org.scijava.ItemIO;
 import org.scijava.command.Command;
+import org.scijava.jupyter.utils.JupyterUtil;
+import org.scijava.jupyter.utils.ProcessUtil;
+import org.scijava.jupyter.utils.SystemUtil;
 import org.scijava.log.LogService;
 import org.scijava.plugin.Menu;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 import org.scijava.script.ScriptService;
-import org.scijava.util.ArrayUtils;
 
 @Plugin(type = Command.class, menu = {
     @Menu(label = "Analyze")
@@ -59,6 +57,9 @@ public class InstallScijavaKernel implements Command {
             choices = {"debug", "error", "info", "none"})
     private String logLevel = "info";
 
+    @Parameter(type = ItemIO.OUTPUT)
+    private String message;
+
     @Override
     public void run() {
 
@@ -66,47 +67,28 @@ public class InstallScijavaKernel implements Command {
             log.error(this.pythonBinaryPath + " does not exist.");
         }
 
-        Process proc = null;
-        BufferedReader stdInput = null;
-        String s = null;
-        String output = null;
+        String[] cmd = null;
+        String sourceCode = null;
+        Map<String, String> results = null;
 
         // Check binary is a valid Python executable
-        try {
-            proc = Runtime.getRuntime().exec(this.pythonBinaryPath + " --version");
-            stdInput = new BufferedReader(new InputStreamReader(proc.getInputStream()));
-            s = null;
-            output = "";
-            while ((s = stdInput.readLine()) != null) {
-                output += s;
-            }
-            if (!output.contains("Python")) {
-                log.error(this.pythonBinaryPath + " does not seem to be a valid Python executable.");
-                return;
-            }
-            proc.getOutputStream().flush();
-        } catch (IOException ex) {
-            log.error(ex);
+        cmd = new String[]{pythonBinaryPath.toString(), "--version"};
+        results = ProcessUtil.executeProcess(cmd, log);
+        if (!results.get("output").contains("Python")) {
+            log.error(this.pythonBinaryPath + " does not seem to be a valid Python executable.");
+            log.error("Output : " + results.get("output"));
+            log.error("Error : " + results.get("error"));
             return;
         }
         log.info("Python found.");
 
         // Check Jupyter is installed
-        try {
-            proc = Runtime.getRuntime().exec(this.pythonBinaryPath + " -c \"import jupyter\"");
-            stdInput = new BufferedReader(new InputStreamReader(proc.getInputStream()));
-            s = null;
-            output = "";
-            while ((s = stdInput.readLine()) != null) {
-                output += s;
-            }
-            if (output.contains("ModuleNotFoundError")) {
-                log.error("Jupyter does not seems to be installed.");
-                return;
-            }
-            proc.getOutputStream().flush();
-        } catch (IOException ex) {
-            log.error(ex);
+        sourceCode = "import jupyter";
+        results = ProcessUtil.executePythonCode(this.pythonBinaryPath, sourceCode, log);
+        if (results.get("error").contains("ModuleNotFoundError")) {
+            log.error("Jupyter does not seems to be installed.");
+            log.error("Output : " + results.get("output"));
+            log.error("Error : " + results.get("error"));
             return;
         }
         log.info("Jupyter found.");
@@ -118,95 +100,49 @@ public class InstallScijavaKernel implements Command {
         }
         log.info("Language '" + this.scriptLanguage + "' found.");
 
-        // Try to remove old similar kernel
-        try {
-            Runtime.getRuntime().exec(this.pythonBinaryPath + " -m jupyter kernelspec remove -f scijava-" + this.scriptLanguage);
-        } catch (IOException ex) {
-            log.error(ex);
-            return;
-        }
-
         // Create the new kernel
         Path kernelDir = Paths.get(System.getProperty("java.io.tmpdir"), "scijava-" + this.scriptLanguage);
-        kernelDir.toFile().delete();
+        SystemUtil.deleteFolderRecursively(kernelDir, log);
         kernelDir.toFile().mkdir();
-        Path kernelJSONPath = Paths.get(kernelDir.toString(), "kernel.json");
 
-        JSONObject root = new JSONObject();
-        root.put("language", this.scriptLanguage);
-        root.put("display_name", "Scijava - " + this.scriptLanguage);
-
-        JSONArray argv = new JSONArray();
-        argv.add(this.getJavaBinary());
-        argv.add("-classpath");
-        argv.add(this.getClassPaths());
-        argv.add("org.scijava.jupyter.kernel.DefaultKernel");
-        argv.add("-language");
-        argv.add(this.scriptLanguage);
-        argv.add("-verbose");
-        argv.add(this.logLevel);
-        argv.add("-configFile");
-        argv.add("{connection_file}");
-        root.put("argv", argv);
-
-        try (FileWriter file = new FileWriter(kernelJSONPath.toFile())) {
-            file.write(root.toJSONString());
-            log.info("kernel.json file : \n" + root.toJSONString());
-        } catch (IOException ex) {
-            log.error(ex);
-        }
-
-        log.info("Temporary kernel files created in " + kernelDir.toString());
-
-        // Install the new kernel
         try {
-            String[] cmd = new String[]{this.pythonBinaryPath.getAbsolutePath(), "-m", "jupyter", "kernelspec", "install", "--user", kernelDir.toString()};
-            proc = Runtime.getRuntime().exec(cmd);
-            proc.waitFor();
-
-            stdInput = new BufferedReader(new InputStreamReader(proc.getErrorStream()));
-            s = null;
-            output = "";
-            while ((s = stdInput.readLine()) != null) {
-                output += s;
-            }
-            if (output.toLowerCase().contains("error")) {
-                log.error("Error during kernel installation.");
-                return;
-            }
-
+            // Copy the logo
+            Files.copy(this.getClass().getResourceAsStream("/logo-64x64.png"), Paths.get(kernelDir.toString(), "logo-64x64.png"));
+            Files.copy(this.getClass().getResourceAsStream("/logo-32x32.png"), Paths.get(kernelDir.toString(), "logo-32x32.png"));
         } catch (IOException ex) {
             log.error(ex);
             return;
-        } catch (InterruptedException ex) {
-            Logger.getLogger(InstallScijavaKernel.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        // Generate the kernel.json file
+        String JSONString = JupyterUtil.createKernelJSON(this.scriptLanguage, this.logLevel);
+        Path kernelJSONPath = Paths.get(kernelDir.toString(), "kernel.json");
+        try (FileWriter file = new FileWriter(kernelJSONPath.toFile())) {
+            file.write(JSONString);
+            log.info("kernel.json file : \n" + JSONString);
+        } catch (IOException ex) {
+            log.error(ex);
+            return;
+        }
+        log.info("Kernel generated.");
+
+        // Install the new kernel
+        sourceCode = "from jupyter_client.kernelspec import KernelSpecManager\n";
+        sourceCode += "KernelSpecManager().install_kernel_spec(\"" + kernelDir.toAbsolutePath().toString() + "\", user=True, replace=True)\n";
+        results = ProcessUtil.executePythonCode(this.pythonBinaryPath, sourceCode, log);
+        if (results.get("output").toLowerCase().contains("error") || results.get("error").toLowerCase().contains("error")) {
+            log.error("New kernel installation failed.");
+            log.error("Output : " + results.get("output"));
+            log.error("Error : " + results.get("error"));
+            return;
         }
         log.info("Kernel installed.");
 
         // Clean temp dir
         log.info("Clean temporary files.");
-        kernelJSONPath.toFile().delete();
-        kernelDir.toFile().delete();
-    }
+        SystemUtil.deleteFolderRecursively(kernelDir, log);
 
-    public String getJavaBinary() {
-        String jvm_location;
-        if (System.getProperty("os.name").startsWith("Win")) {
-            jvm_location = System.getProperties().getProperty("java.home") + File.separator + "bin" + File.separator + "java.exe";
-        } else {
-            jvm_location = System.getProperties().getProperty("java.home") + File.separator + "bin" + File.separator + "java";
-        }
-        return jvm_location;
-    }
-
-    public String getClassPaths() {
-        String classPaths = "";
-
-        classPaths += Paths.get(System.getProperty("imagej.dir"), "jars", "*") + ":";
-        classPaths += Paths.get(System.getProperty("imagej.dir"), "jars", "bio-formats", "*") + ":";
-        classPaths += Paths.get(System.getProperty("imagej.dir"), "plugins", "*") + ":";
-
-        return classPaths;
+        this.message = "The kernel '" + "scijava-" + this.scriptLanguage + "' has been correctly installed.";
     }
 
 }
