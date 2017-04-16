@@ -23,12 +23,9 @@ import com.twosigma.jupyter.KernelParameters;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
-import java.io.StringWriter;
-import java.io.Writer;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
-import javax.script.ScriptContext;
 import javax.script.ScriptEngine;
 
 import org.scijava.Context;
@@ -36,7 +33,6 @@ import org.scijava.convert.ConvertService;
 import org.scijava.log.LogService;
 import org.scijava.module.ModuleException;
 import org.scijava.module.ModuleItem;
-import org.scijava.module.ModuleService;
 import org.scijava.plugin.Parameter;
 import org.scijava.script.ScriptInfo;
 import org.scijava.script.ScriptLanguage;
@@ -89,9 +85,6 @@ public class DefaultEvaluator implements Evaluator {
     public AutocompleteResult autocomplete(String code, int i) {
         List<String> matches = new ArrayList<>();
         matches.add("Autocompletion does not work yet.");
-        matches.add("Test Autocompletion 1");
-        matches.add("Test Autocompletion 2");
-        matches.add("Test Autocompletion 3");
         int startIndex = 0;
         AutocompleteResult ac = new AutocompleteResult(matches, startIndex);
         return ac;
@@ -100,7 +93,7 @@ public class DefaultEvaluator implements Evaluator {
     @Override
     public void killAllThreads() {
         log.debug("Kill All Threads");
-        // Ugly !
+        // Ugly and not working :-(
         System.exit(0);
     }
 
@@ -119,6 +112,8 @@ public class DefaultEvaluator implements Evaluator {
     @Override
     public void exit() {
         log.debug("Exiting DefaultEvaluator");
+        // Ugly and not working :-(
+        System.exit(0);
     }
 
     private void setLanguage(String languageName) {
@@ -143,9 +138,6 @@ public class DefaultEvaluator implements Evaluator {
 
         @Parameter
         private LogService log;
-
-        @Parameter
-        private ModuleService moduleService;
 
         @Parameter
         private Context context;
@@ -173,8 +165,6 @@ public class DefaultEvaluator implements Evaluator {
         @Override
         public void run() {
 
-            final Writer output = new StringWriter();
-            final Writer error = new StringWriter();
             final Reader input = new StringReader(this.code);
 
             ScriptInfo info = new ScriptInfo(context, "dummy.py", input);
@@ -191,21 +181,16 @@ public class DefaultEvaluator implements Evaluator {
                 this.engine.put(ScriptEngine.FILENAME, path);
                 this.engine.put(ScriptModule.class.getName(), module);
 
-                final ScriptContext scriptContext = engine.getContext();
-
                 // Populate input annotation values
                 for (final ModuleItem<?> item : info.inputs()) {
                     final String name = item.getName();
                     this.engine.put(name, module.getInput(name));
                 }
                 
-                this.engine.put("test_context", context);
-
                 // Execute the code
                 Object returnValue = null;
                 try {
-                    final Reader reader = info.getReader();
-                    returnValue = engine.eval(reader);
+                    returnValue = this.engine.eval(info.getReader());
                     this.seo.finished(returnValue);
 
                 } catch (Throwable e) {
@@ -234,15 +219,6 @@ public class DefaultEvaluator implements Evaluator {
                     //final Object decoded = this.engine.decode(value);
                     //final Object typed = conversionService.convert(decoded, item.getType());
                     //module.setOutput(name, typed);
-                }
-
-                // flush output and error streams
-                if (output != null) {
-                    try {
-                        output.flush();
-                    } catch (final IOException e) {
-                        log.error(e);
-                    }
                 }
 
             } catch (ModuleException ex) {
