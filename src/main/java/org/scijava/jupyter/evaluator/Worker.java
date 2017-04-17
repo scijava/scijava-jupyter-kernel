@@ -49,9 +49,6 @@ public class Worker implements Runnable {
     private Context context;
     
     @Parameter
-    private ModuleService moduleService;
-    
-    @Parameter
     private PluginService pluginService;
     
     @Parameter
