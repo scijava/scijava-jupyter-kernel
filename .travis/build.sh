@@ -30,6 +30,6 @@ cd $TRAVIS_BUILD_DIR/
 mvn install -Pimagej --settings ".travis/settings.xml"
 
 # Deploy the package
-$IJ_LAUNCHER --update edit-update-site $UPDATE_SITE $URL "webdav:$USER:$WIKI_UPLOAD_PASS" .
-$IJ_LAUNCHER --update upload --update-site $UPDATE_SITE --force-shadow jars/beaker-kernel-base.jar
-$IJ_LAUNCHER --update upload --update-site $UPDATE_SITE --force-shadow jars/scijava-jupyter-kernel.jar
+# $IJ_LAUNCHER --update edit-update-site $UPDATE_SITE $URL "webdav:$USER:$WIKI_UPLOAD_PASS" .
+# $IJ_LAUNCHER --update upload --update-site $UPDATE_SITE --force-shadow jars/beaker-kernel-base.jar
+# $IJ_LAUNCHER --update upload --update-site $UPDATE_SITE --force-shadow jars/scijava-jupyter-kernel.jar
