@@ -1,0 +1,18 @@
+<settings>
+  <profiles>
+        <profile>
+            <id>imagej</id>
+            <activation>
+                <file>
+                    <exists>${env.IJ_PATH}</exists>
+                </file>
+            </activation>
+            <properties>
+                <imagej.app.directory>${env.IJ_PATH}</imagej.app.directory>
+                <delete.other.versions>true</delete.other.versions>
+                <enforcer.skip>true</enforcer.skip>
+            </properties>
+
+        </profile>
+    </profiles>
+</settings>
