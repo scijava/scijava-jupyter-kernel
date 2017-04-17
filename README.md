@@ -50,7 +50,7 @@ To try the kernel, launch `jupyter notebook` or `jupyter lab`. Your kernel shoul
 
 ## Python
 
-We strongly suggest the use of the [Anaconda Python distribution](https://www.continuum.io/downloads) + the use of the [`conda-forge' channel](https://conda-forge.github.io/). That way, your Python and all your libs will be kept synced and updated.
+We strongly suggest the use of the [Anaconda Python distribution](https://www.continuum.io/downloads) + the use of the [conda-forge channel](https://conda-forge.github.io/). That way, your Python and all your libs will be kept synced and updated.
 
 ## License
 
