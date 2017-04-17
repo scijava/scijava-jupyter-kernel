@@ -21,22 +21,14 @@ import com.twosigma.beaker.jvm.object.SimpleEvaluationObject;
 import com.twosigma.jupyter.KernelParameters;
 
 import java.io.IOException;
-import java.io.Reader;
-import java.io.StringReader;
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.script.ScriptEngine;
 
 import org.scijava.Context;
-import org.scijava.convert.ConvertService;
 import org.scijava.log.LogService;
-import org.scijava.module.ModuleException;
-import org.scijava.module.ModuleItem;
 import org.scijava.plugin.Parameter;
-import org.scijava.script.ScriptInfo;
 import org.scijava.script.ScriptLanguage;
-import org.scijava.script.ScriptModule;
 import org.scijava.script.ScriptService;
 import org.scijava.thread.ThreadService;
 
@@ -136,102 +128,5 @@ public class DefaultEvaluator implements Evaluator {
 
     public String getLanguage() {
         return this.languageUsed;
-    }
-
-    public class Worker implements Runnable {
-
-        @Parameter
-        private LogService log;
-
-        @Parameter
-        private Context context;
-
-        @Parameter
-        private ConvertService conversionService;
-
-        ScriptEngine engine;
-        ScriptLanguage scriptLanguage;
-
-        SimpleEvaluationObject seo = null;
-        String code = null;
-
-        Worker(Context context, ScriptEngine engine, ScriptLanguage scriptLanguage) {
-            context.inject(this);
-            this.engine = engine;
-            this.scriptLanguage = scriptLanguage;
-        }
-
-        public void setup(SimpleEvaluationObject seo, String code) {
-            this.seo = seo;
-            this.code = code;
-        }
-
-        @Override
-        public void run() {
-
-            final Reader input = new StringReader(this.code);
-
-            ScriptInfo info = new ScriptInfo(context, "dummy.py", input);
-            final String path = info.getPath();
-
-            this.seo.setOutputHandler();
-
-            try {
-
-                ScriptModule module = info.createModule();
-                context.inject(module);
-
-                module.setLanguage(scriptLanguage);
-                this.engine.put(ScriptEngine.FILENAME, path);
-                this.engine.put(ScriptModule.class.getName(), module);
-
-                // Populate input annotation values
-                for (final ModuleItem<?> item : info.inputs()) {
-                    final String name = item.getName();
-                    this.engine.put(name, module.getInput(name));
-                }
-
-                // Execute the code
-                Object returnValue = null;
-                try {
-                    returnValue = this.engine.eval(info.getReader());
-                    this.seo.finished(returnValue);
-
-                } catch (Throwable e) {
-
-                    if (e instanceof InvocationTargetException) {
-                        e = ((InvocationTargetException) e).getTargetException();
-                    }
-
-                    if (e instanceof InterruptedException || e instanceof InvocationTargetException || e instanceof ThreadDeath) {
-                        this.seo.error("Excecution canceled.");
-                    } else {
-                        this.seo.error(e.getMessage());
-                    }
-                }
-
-                // Populate output annotation values
-                for (final ModuleItem<?> item : info.outputs()) {
-                    final String name = item.getName();
-                    final Object value;
-                    if ("result".equals(name) && info.isReturnValueAppended()) {
-                        // NB: This is the special implicit return value output!
-                        value = returnValue;
-                    } else {
-                        value = this.engine.get(name);
-                    }
-                    //final Object decoded = this.engine.decode(value);
-                    //final Object typed = conversionService.convert(decoded, item.getType());
-                    //module.setOutput(name, typed);
-                }
-
-            } catch (ModuleException ex) {
-                log.error(ex);
-            }
-
-            this.seo.clrOutputHandler();
-
-        }
-
     }
 }
