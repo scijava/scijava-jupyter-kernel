@@ -17,17 +17,17 @@ package org.scijava.jupyter.comm;
 
 import com.twosigma.jupyter.KernelFunctionality;
 import com.twosigma.beaker.jupyter.comm.KernelControlGetDefaultShellHandler;
-import org.scijava.jupyter.DefaultVariables;
+import org.scijava.jupyter.ScijavaVariables;
 
 /**
  *
  * @author Hadrien Mary
  */
-public class DefaultCommKernelControlSetShellHandler extends KernelControlGetDefaultShellHandler {
+public class ScijavaCommKernelControlSetShellHandler extends KernelControlGetDefaultShellHandler {
 
-    protected DefaultVariables var = new DefaultVariables();
+    protected ScijavaVariables var = new ScijavaVariables();
 
-    public DefaultCommKernelControlSetShellHandler(KernelFunctionality kernel) {
+    public ScijavaCommKernelControlSetShellHandler(KernelFunctionality kernel) {
         super(kernel);
     }
 

@@ -33,7 +33,7 @@ public class JupyterUtil {
         argv.add(SystemUtil.getJavaBinary());
         argv.add("-classpath");
         argv.add(SystemUtil.getClassPaths());
-        argv.add("org.scijava.jupyter.kernel.DefaultKernel");
+        argv.add("org.scijava.jupyter.kernel.ScijavaKernel");
         argv.add("-language");
         argv.add(scriptLanguage);
         argv.add("-verbose");

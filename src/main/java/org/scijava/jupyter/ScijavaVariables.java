@@ -21,9 +21,9 @@ import com.twosigma.beaker.DefaultJVMVariables;
  *
  * @author Hadrien Mary
  */
-public class DefaultVariables extends DefaultJVMVariables {
+public class ScijavaVariables extends DefaultJVMVariables {
 
-    public DefaultVariables() {
+    public ScijavaVariables() {
 
     }
 

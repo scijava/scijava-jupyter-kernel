@@ -37,7 +37,7 @@ import org.scijava.plugin.Parameter;
  *
  * @author Hadrien Mary
  */
-public class DefaultKernelConfigurationFile implements ConfigurationFile {
+public class ScijavaKernelConfigurationFile implements ConfigurationFile {
 
     @Parameter
     private transient LogService log;
@@ -49,7 +49,7 @@ public class DefaultKernelConfigurationFile implements ConfigurationFile {
     private String languageName;
     private String logLevel;
 
-    public DefaultKernelConfigurationFile(final Context context, final String[] args) {
+    public ScijavaKernelConfigurationFile(final Context context, final String[] args) {
         context.inject(this);
         this.configFile = getConfig(args);
     }

@@ -32,11 +32,11 @@ import org.scijava.script.ScriptLanguage;
  *
  * @author Hadrien Mary
  */
-public class DefaultKernelInfoHandler extends KernelHandler<Message> {
+public class ScijavaKernelInfoHandler extends KernelHandler<Message> {
 
     private final ScriptLanguage scriptLanguage;
 
-    public DefaultKernelInfoHandler(KernelFunctionality kernel, ScriptLanguage scriptLanguage) {
+    public ScijavaKernelInfoHandler(KernelFunctionality kernel, ScriptLanguage scriptLanguage) {
         super(kernel);
         this.scriptLanguage = scriptLanguage;
     }

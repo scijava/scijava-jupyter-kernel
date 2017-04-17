@@ -36,7 +36,7 @@ import org.scijava.thread.ThreadService;
  *
  * @author Hadrien Mary
  */
-public class DefaultEvaluator implements Evaluator {
+public class ScijavaEvaluator implements Evaluator {
 
     @Parameter
     private LogService log;
@@ -59,7 +59,7 @@ public class DefaultEvaluator implements Evaluator {
     protected String shellId;
     protected String sessionId;
 
-    public DefaultEvaluator(Context context, String shellId, String sessionId, String languageName) {
+    public ScijavaEvaluator(Context context, String shellId, String sessionId, String languageName) {
         context.inject(this);
 
         this.shellId = shellId;

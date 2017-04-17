@@ -27,10 +27,10 @@ import java.io.IOException;
 import static com.twosigma.beaker.jupyter.Utils.uuid;
 import com.twosigma.jupyter.KernelSocketsFactoryImpl;
 import org.scijava.Context;
-import org.scijava.jupyter.DefaultKernelConfigurationFile;
-import org.scijava.jupyter.comm.DefaultCommOpenHandler;
-import org.scijava.jupyter.evaluator.DefaultEvaluator;
-import org.scijava.jupyter.handler.DefaultKernelInfoHandler;
+import org.scijava.jupyter.ScijavaKernelConfigurationFile;
+import org.scijava.jupyter.comm.ScijavaCommOpenHandler;
+import org.scijava.jupyter.evaluator.ScijavaEvaluator;
+import org.scijava.jupyter.handler.ScijavaKernelInfoHandler;
 import org.scijava.log.LogService;
 import org.scijava.plugin.Parameter;
 import org.scijava.script.ScriptLanguage;
@@ -39,7 +39,7 @@ import org.scijava.script.ScriptLanguage;
  *
  * @author Hadrien Mary
  */
-public class DefaultKernel extends Kernel {
+public class ScijavaKernel extends Kernel {
 
     // Scijava context
     Context context;
@@ -50,11 +50,11 @@ public class DefaultKernel extends Kernel {
     // Ugly but needed (should be fixed upstream soon)
     private static ScriptLanguage scriptLanguage;
 
-    private final DefaultKernelConfigurationFile config;
-    private final DefaultEvaluator evaluator;
+    private final ScijavaKernelConfigurationFile config;
+    private final ScijavaEvaluator evaluator;
 
-    public DefaultKernel(final Context context, final String id, final DefaultEvaluator evaluator,
-            DefaultKernelConfigurationFile config, KernelSocketsFactoryImpl kernelSocketsFactory) {
+    public ScijavaKernel(final Context context, final String id, final ScijavaEvaluator evaluator,
+            ScijavaKernelConfigurationFile config, KernelSocketsFactoryImpl kernelSocketsFactory) {
 
         super(id, evaluator, kernelSocketsFactory);
         this.context = context;
@@ -71,12 +71,12 @@ public class DefaultKernel extends Kernel {
 
     @Override
     public CommOpenHandler getCommOpenHandler(Kernel kernel) {
-        return new DefaultCommOpenHandler(kernel);
+        return new ScijavaCommOpenHandler(kernel);
     }
 
     @Override
     public KernelHandler<Message> getKernelInfoHandler(Kernel kernel) {
-        return new DefaultKernelInfoHandler(kernel, DefaultKernel.scriptLanguage);
+        return new ScijavaKernelInfoHandler(kernel, ScijavaKernel.scriptLanguage);
     }
 
     private void setLogLevel(String logLevel) {
@@ -107,13 +107,13 @@ public class DefaultKernel extends Kernel {
             Context context = new Context();
             String id = uuid();
 
-            DefaultKernelConfigurationFile config = new DefaultKernelConfigurationFile(context, args);
+            ScijavaKernelConfigurationFile config = new ScijavaKernelConfigurationFile(context, args);
             KernelSocketsFactoryImpl kernelSocketsFactory = new KernelSocketsFactoryImpl(config);
-            DefaultEvaluator evaluator = new DefaultEvaluator(context, id, id, config.getLanguageName());
+            ScijavaEvaluator evaluator = new ScijavaEvaluator(context, id, id, config.getLanguageName());
 
-            DefaultKernel.scriptLanguage = evaluator.getScriptLanguage();
+            ScijavaKernel.scriptLanguage = evaluator.getScriptLanguage();
 
-            return new DefaultKernel(context, id, evaluator, config, kernelSocketsFactory);
+            return new ScijavaKernel(context, id, evaluator, config, kernelSocketsFactory);
         });
     }
 }

@@ -28,16 +28,16 @@ import com.twosigma.beaker.jupyter.handler.CommOpenHandler;
  *
  * @author Hadrien Mary
  */
-public class DefaultCommOpenHandler extends CommOpenHandler {
+public class ScijavaCommOpenHandler extends CommOpenHandler {
 
     private final Handler<?>[] KERNEL_CONTROL_CHANNEL_HANDLERS = {
         new KernelControlSetShellHandler(kernel),
-        new DefaultCommKernelControlSetShellHandler(kernel),
+        new ScijavaCommKernelControlSetShellHandler(kernel),
         new KernelControlInterrupt(kernel),
         new KernelControlCommandListHandler(kernel)
     };
 
-    public DefaultCommOpenHandler(KernelFunctionality kernel) {
+    public ScijavaCommOpenHandler(KernelFunctionality kernel) {
         super(kernel);
     }
 
