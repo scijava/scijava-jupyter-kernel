@@ -101,7 +101,6 @@ public class Worker implements Runnable {
                 returnValue = engine.eval(info.getReader());
                 returnValue = this.scriptLanguage.decode(returnValue);
                 this.seo.finished(returnValue);
-
             } catch (Throwable e) {
 
                 if (e instanceof InvocationTargetException) {
