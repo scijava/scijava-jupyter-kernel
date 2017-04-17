@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.scijava.jupyter.evaluator;
+package org.scijava.jupyter.kernel.evaluator;
 
 import com.twosigma.beaker.jvm.object.SimpleEvaluationObject;
 import java.io.Reader;
@@ -27,7 +27,6 @@ import org.scijava.event.EventService;
 import org.scijava.log.LogService;
 import org.scijava.module.ModuleException;
 import org.scijava.module.ModuleItem;
-import org.scijava.module.ModuleService;
 import org.scijava.module.event.ModulePostprocessEvent;
 import org.scijava.module.event.ModulePreprocessEvent;
 import org.scijava.module.process.ModulePostprocessor;
@@ -100,7 +99,6 @@ public class Worker implements Runnable {
             Object returnValue = null;
             try {
                 returnValue = engine.eval(info.getReader());
-                log.info(returnValue);
                 this.seo.finished(returnValue);
                 
             } catch (Throwable e) {

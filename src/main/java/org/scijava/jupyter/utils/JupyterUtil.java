@@ -32,13 +32,13 @@ public class JupyterUtil {
         JSONArray argv = new JSONArray();
         argv.add(SystemUtil.getJavaBinary());
         argv.add("-classpath");
-        argv.add(SystemUtil.getClassPaths());
+        argv.add(SystemUtil.getImageJClassPaths());
         argv.add("org.scijava.jupyter.kernel.ScijavaKernel");
         argv.add("-language");
         argv.add(scriptLanguage);
         argv.add("-verbose");
         argv.add(logLevel);
-        argv.add("-configFile");
+        argv.add("-connectionFile");
         argv.add("{connection_file}");
         root.put("argv", argv);
 

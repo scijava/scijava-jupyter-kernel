@@ -1,5 +1,5 @@
-/* 
- * Copyright 2017 Hadrien Mary.
+/*
+ * Copyright 2017 SciJava.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,18 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.scijava.jupyter;
+package org.scijava.jupyterkernel;
 
-import com.twosigma.beaker.DefaultJVMVariables;
+import org.scijava.Context;
+import org.scijava.jupyter.service.JupyterService;
 
 /**
  *
  * @author Hadrien Mary
  */
-public class ScijavaVariables extends DefaultJVMVariables {
+public class TestRunKernel {
 
-    public ScijavaVariables() {
+    public static void main(final String[] args) {
 
+        // Warning : if run from your IDE the classpath won't be set to your Fiji installation
+        Context context = new Context();
+        JupyterService jupyter = context.service(JupyterService.class);
+        jupyter.runKernel(args);
+        context.dispose();
     }
 
 }

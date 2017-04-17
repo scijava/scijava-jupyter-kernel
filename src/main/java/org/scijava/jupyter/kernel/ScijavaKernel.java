@@ -15,22 +15,18 @@
  */
 package org.scijava.jupyter.kernel;
 
-
 import com.twosigma.beaker.jupyter.handler.CommOpenHandler;
-import com.twosigma.jupyter.KernelRunner;
 import com.twosigma.jupyter.handler.KernelHandler;
 import com.twosigma.jupyter.message.Message;
 import com.twosigma.jupyter.Kernel;
 
-import java.io.IOException;
-
-import static com.twosigma.beaker.jupyter.Utils.uuid;
 import com.twosigma.jupyter.KernelSocketsFactoryImpl;
 import org.scijava.Context;
-import org.scijava.jupyter.ScijavaKernelConfigurationFile;
-import org.scijava.jupyter.comm.ScijavaCommOpenHandler;
-import org.scijava.jupyter.evaluator.ScijavaEvaluator;
-import org.scijava.jupyter.handler.ScijavaKernelInfoHandler;
+import org.scijava.jupyter.kernel.configuration.ScijavaKernelConfigurationFile;
+import org.scijava.jupyter.kernel.comm.ScijavaCommOpenHandler;
+import org.scijava.jupyter.kernel.evaluator.ScijavaEvaluator;
+import org.scijava.jupyter.kernel.handler.ScijavaKernelInfoHandler;
+import org.scijava.jupyter.service.JupyterService;
 import org.scijava.log.LogService;
 import org.scijava.plugin.Parameter;
 import org.scijava.script.ScriptLanguage;
@@ -48,7 +44,7 @@ public class ScijavaKernel extends Kernel {
     private transient LogService log;
 
     // Ugly but needed (should be fixed upstream soon)
-    private static ScriptLanguage scriptLanguage;
+    public static ScriptLanguage scriptLanguage;
 
     private final ScijavaKernelConfigurationFile config;
     private final ScijavaEvaluator evaluator;
@@ -67,6 +63,8 @@ public class ScijavaKernel extends Kernel {
 
         this.setLogLevel(config.getLogLevel());
         log.info("Log level used is : " + this.config.getLogLevel());
+
+        log.info("Scijava Kernel is started and ready to use.");
     }
 
     @Override
@@ -99,21 +97,10 @@ public class ScijavaKernel extends Kernel {
         }
     }
 
-    public static void main(final String[] args) throws InterruptedException, IOException {
-
-        // TODO : Should this be a Scijava command ?
-        KernelRunner.run(() -> {
-
-            Context context = new Context();
-            String id = uuid();
-
-            ScijavaKernelConfigurationFile config = new ScijavaKernelConfigurationFile(context, args);
-            KernelSocketsFactoryImpl kernelSocketsFactory = new KernelSocketsFactoryImpl(config);
-            ScijavaEvaluator evaluator = new ScijavaEvaluator(context, id, id, config.getLanguageName());
-
-            ScijavaKernel.scriptLanguage = evaluator.getScriptLanguage();
-
-            return new ScijavaKernel(context, id, evaluator, config, kernelSocketsFactory);
-        });
+    public static void main(String... args) {
+        Context context = new Context();
+        JupyterService jupyter = context.service(JupyterService.class);
+        jupyter.runKernel(args);
+        context.dispose();
     }
 }

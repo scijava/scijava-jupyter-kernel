@@ -40,7 +40,7 @@ public class SystemUtil {
         return jvm_location;
     }
 
-    public static String getClassPaths() {
+    public static String getImageJClassPaths() {
         String classPaths = "";
 
         classPaths += Paths.get(System.getProperty("imagej.dir"), "jars", "*") + ":";

@@ -13,11 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.scijava.jupyter.comm;
+package org.scijava.jupyter.kernel.comm;
 
 import com.twosigma.jupyter.KernelFunctionality;
 import com.twosigma.beaker.jupyter.comm.KernelControlGetDefaultShellHandler;
-import org.scijava.jupyter.ScijavaVariables;
+import org.scijava.jupyter.kernel.configuration.ScijavaVariables;
 
 /**
  *
