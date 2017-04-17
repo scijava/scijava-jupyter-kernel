@@ -40,50 +40,50 @@ import org.scijava.script.ScriptLanguage;
 import org.scijava.script.ScriptModule;
 
 public class Worker implements Runnable {
-    
+
     @Parameter
     private LogService log;
-    
+
     @Parameter
     private Context context;
-    
+
     @Parameter
     private PluginService pluginService;
-    
+
     @Parameter
     private EventService eventService;
-    
+
     @Parameter
     private ConvertService convertService;
-    
+
     ScriptLanguage scriptLanguage;
     ScriptEngine engine;
-    
+
     SimpleEvaluationObject seo = null;
     String code = null;
-    
+
     Worker(Context context, ScriptEngine engine, ScriptLanguage scriptLanguage) {
         context.inject(this);
         this.engine = engine;
         this.scriptLanguage = scriptLanguage;
     }
-    
+
     public void setup(SimpleEvaluationObject seo, String code) {
         this.seo = seo;
         this.code = code;
     }
-    
+
     @Override
     public void run() {
-        
+
         final Reader input = new StringReader(this.code);
-        
+
         ScriptInfo info = new ScriptInfo(context, "dummy.py", input);
-        
+
         this.seo.setOutputHandler();
-        
+
         try {
-            
+
             ScriptModule module = info.createModule();
             context.inject(module);
             module.setLanguage(this.scriptLanguage);
@@ -99,14 +99,15 @@ public class Worker implements Runnable {
             Object returnValue = null;
             try {
                 returnValue = engine.eval(info.getReader());
+                returnValue = this.scriptLanguage.decode(returnValue);
                 this.seo.finished(returnValue);
-                
+
             } catch (Throwable e) {
-                
+
                 if (e instanceof InvocationTargetException) {
                     e = ((InvocationTargetException) e).getTargetException();
                 }
-                
+
                 if (e instanceof InterruptedException || e instanceof InvocationTargetException || e instanceof ThreadDeath) {
                     this.seo.error("Excecution canceled.");
                 } else {
@@ -129,18 +130,18 @@ public class Worker implements Runnable {
                 module.setOutput(name, typed);
             }
             this.postProcess(module);
-            
+
         } catch (ModuleException ex) {
             log.error(ex);
         }
-        
+
         this.seo.clrOutputHandler();
-        
+
     }
-    
+
     public ModulePreprocessor preProcess(ScriptModule module) {
         List<? extends PreprocessorPlugin> pre = pluginService.createInstancesOfType(PreprocessorPlugin.class);
-        
+
         for (final ModulePreprocessor p : pre) {
             p.process(module);
             if (eventService != null) {
@@ -152,10 +153,10 @@ public class Worker implements Runnable {
         }
         return null;
     }
-    
+
     public void postProcess(ScriptModule module) {
         List<? extends PostprocessorPlugin> post = pluginService.createInstancesOfType(PostprocessorPlugin.class);
-        
+
         for (final ModulePostprocessor p : post) {
             p.process(module);
             if (eventService != null) {
@@ -163,5 +164,5 @@ public class Worker implements Runnable {
             }
         }
     }
-    
+
 }
