@@ -8,7 +8,6 @@ package org.scijava.jupyterkernel;
 import org.scijava.Context;
 import org.scijava.jupyter.service.JupyterService;
 import org.scijava.script.ScriptService;
-import org.scijava.ui.swing.script.LanguageSupportService;
 
 /**
  *

@@ -66,13 +66,29 @@ public class DefaultJupyterService extends AbstractService implements JupyterSer
     public void installKernel(String scriptLanguage, String logLevel, Path pythonBinaryPath) {
         installKernel(scriptLanguage, logLevel, pythonBinaryPath.toFile());
     }
-
+    
     @Override
     public void installKernel(String scriptLanguage, String logLevel, File pythonBinaryPath) {
+        installKernel(scriptLanguage, logLevel, pythonBinaryPath, false);
+    }
+    
+    @Override
+    public void installKernel(String scriptLanguage, String logLevel, String pythonBinaryPath, boolean installAllKernels) {
+        installKernel(scriptLanguage, logLevel, Paths.get(pythonBinaryPath), installAllKernels);
+    }
+
+    @Override
+    public void installKernel(String scriptLanguage, String logLevel, Path pythonBinaryPath, boolean installAllKernels) {
+        installKernel(scriptLanguage, logLevel, pythonBinaryPath.toFile(), installAllKernels);
+    }
+
+    @Override
+    public void installKernel(String scriptLanguage, String logLevel, File pythonBinaryPath, boolean installAllKernels) {
         Map<String, Object> parameters = new HashMap<>();
         parameters.put("scriptLanguage", scriptLanguage);
         parameters.put("logLevel", logLevel);
         parameters.put("pythonBinaryPath", pythonBinaryPath);
+         parameters.put("installAllKernels", installAllKernels);
         command.run(InstallScijavaKernel.class, true, parameters);
     }
 

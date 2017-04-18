@@ -50,18 +50,34 @@ public class InstallScijavaKernel implements Command {
     @Parameter(required = true, label = "Python binary")
     private File pythonBinaryPath;
 
-    @Parameter(required = true, label = "Script Language")
-    private String scriptLanguage;
+    @Parameter(required = true, label = "Script Language",
+            choices = {"Groovy", "Python", "BeanShell", "Clojure", "Java", "JavaScript", "R", "Ruby", "Scala"})
+    private String scriptLanguage = "Python";
 
     @Parameter(required = true, label = "Log Level",
             choices = {"debug", "error", "info", "none"})
     private String logLevel = "info";
+
+    @Parameter(required = false, label = "Install all the available kernels")
+    private boolean installAllKernels = false;
 
     @Parameter(type = ItemIO.OUTPUT)
     private String message;
 
     @Override
     public void run() {
+
+        if (this.installAllKernels) {
+            scriptService.getLanguages().forEach((language) -> {
+                this.installLanguage(language.toString());
+            });
+        } else {
+            this.installLanguage(this.scriptLanguage);
+        }
+
+    }
+
+    protected void installLanguage(String language) {
 
         if (!this.pythonBinaryPath.isFile()) {
             log.error(this.pythonBinaryPath + " does not exist.");
@@ -80,7 +96,7 @@ public class InstallScijavaKernel implements Command {
             log.error("Error : " + results.get("error"));
             return;
         }
-        log.info("Python found.");
+        log.debug("Python found.");
 
         // Check Jupyter is installed
         sourceCode = "import jupyter";
@@ -91,17 +107,17 @@ public class InstallScijavaKernel implements Command {
             log.error("Error : " + results.get("error"));
             return;
         }
-        log.info("Jupyter found.");
+        log.debug("Jupyter found.");
 
         // Check the language is available
-        if (scriptService.getLanguageByName(this.scriptLanguage) == null) {
-            log.error("Script Language for '" + this.scriptLanguage + "' not found.");
+        if (scriptService.getLanguageByName(language) == null) {
+            log.error("Script Language for '" + language + "' not found.");
             return;
         }
-        log.info("Language '" + this.scriptLanguage + "' found.");
+        log.debug("Language '" + language + "' found.");
 
         // Create the new kernel
-        Path kernelDir = Paths.get(System.getProperty("java.io.tmpdir"), "scijava-" + this.scriptLanguage);
+        Path kernelDir = Paths.get(System.getProperty("java.io.tmpdir"), "scijava-" + language.toLowerCase());
         SystemUtil.deleteFolderRecursively(kernelDir, log);
         kernelDir.toFile().mkdir();
 
@@ -115,16 +131,16 @@ public class InstallScijavaKernel implements Command {
         }
 
         // Generate the kernel.json file
-        String JSONString = JupyterUtil.createKernelJSON(this.scriptLanguage, this.logLevel);
+        String JSONString = JupyterUtil.createKernelJSON(language, this.logLevel);
         Path kernelJSONPath = Paths.get(kernelDir.toString(), "kernel.json");
         try (FileWriter file = new FileWriter(kernelJSONPath.toFile())) {
             file.write(JSONString);
-            log.info("kernel.json file : \n" + JSONString);
+            log.debug("kernel.json file : \n" + JSONString);
         } catch (IOException ex) {
             log.error(ex);
             return;
         }
-        log.info("Kernel generated.");
+        log.debug("Kernel generated.");
 
         // Install the new kernel
         sourceCode = "from jupyter_client.kernelspec import KernelSpecManager\n";
@@ -136,13 +152,13 @@ public class InstallScijavaKernel implements Command {
             log.error("Error : " + results.get("error"));
             return;
         }
-        log.info("Kernel installed.");
+        log.debug("Kernel installed.");
 
         // Clean temp dir
-        log.info("Clean temporary files.");
+        log.debug("Clean temporary files.");
         SystemUtil.deleteFolderRecursively(kernelDir, log);
 
-        this.message = "The kernel '" + "scijava-" + this.scriptLanguage + "' has been correctly installed.";
+        this.message = "The kernel '" + "scijava-" + language.toLowerCase() + "' has been correctly installed.";
     }
 
 }
