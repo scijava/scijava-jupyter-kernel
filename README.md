@@ -7,13 +7,15 @@ Under the hood `scijava-jupyter-kernel` uses the [Beaker base kernel](https://gi
 
 Languages supported are :
 
-- Jython
 - Groovy
+- Python
+- BeanShell
 - Clojure
-- Beanshell
 - Java
-- Javascript
-- JRuby
+- JavaScript
+- R
+- Ruby
+- Scala
 
 See here for more details : https://imagej.net/Scripting#Supported_languages
 

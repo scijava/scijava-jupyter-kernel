@@ -7,6 +7,8 @@ package org.scijava.jupyterkernel;
 
 import org.scijava.Context;
 import org.scijava.jupyter.service.JupyterService;
+import org.scijava.script.ScriptService;
+import org.scijava.ui.swing.script.LanguageSupportService;
 
 /**
  *
@@ -20,8 +22,11 @@ public class TestInstallKernel {
 
         Context context = new Context();
         JupyterService jupyter = context.service(JupyterService.class);
+        ScriptService scriptService = context.service(ScriptService.class);
         
-        jupyter.installKernel("groovy", "info", pythonBinaryPath);
+        //jupyter.installKernel("groovy", "info", pythonBinaryPath);
+        
+        System.out.println(scriptService.getLanguages());
         
         context.dispose();
 
