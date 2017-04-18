@@ -43,12 +43,12 @@ mvn -Dimagej.app.directory="PATH-TO-YOUR-IMAGEJ-REPO" install
 
 - Start Fiji and launch `Analyze > Jupyter Kernel > Install Scijava Kernel`.
 - Set the path to your Python binary.
-- Choose a language (for example `jython` or `groovy`).
+- Choose a language (for example `jython` or `groovy`) or you can choose to install all the available languages.
 - Choose a log level.
 
 To try the kernel, launch `jupyter notebook` or `jupyter lab`. Your kernel should appear in the kernel list.
 
-**Note** : To quickly test a kernel, use `jupyter console --kernel=scijava-jython`.
+**Note** : To quickly test a kernel, use `jupyter console --kernel=scijava-python`.
 
 ## Python
 
