@@ -1,8 +1,9 @@
 language: java
 jdk: oraclejdk8
-branches:
-  only: master
-install: true
-script: ".travis/build.sh"
-#after_success: ".travis/notify.sh Travis-Success"
-#after_failure: ".travis/notify.sh Travis-Failure"
+
+cache:
+  directories:
+    - '$HOME/.m2/repository'
+
+install: ".travis/build.sh"
+script: ".travis/test.sh"

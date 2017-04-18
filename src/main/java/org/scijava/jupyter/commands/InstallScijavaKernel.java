@@ -51,7 +51,7 @@ public class InstallScijavaKernel implements Command {
     private File pythonBinaryPath;
 
     @Parameter(required = true, label = "Script Language")
-    private String scriptLanguage = "jython";
+    private String scriptLanguage;
 
     @Parameter(required = true, label = "Log Level",
             choices = {"debug", "error", "info", "none"})
