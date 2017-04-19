@@ -85,7 +85,7 @@ public class DefaultJupyterService extends AbstractService implements JupyterSer
 
     @Override
     public void installKernel(String scriptLanguage, String logLevel, String pythonBinaryPath, boolean installAllKernels) {
-        installKernel(scriptLanguage, logLevel, Paths.get(pythonBinaryPath), installAllKernels);
+        installKernel(scriptLanguage, logLevel, new File(pythonBinaryPath), installAllKernels);
     }
 
     @Override
