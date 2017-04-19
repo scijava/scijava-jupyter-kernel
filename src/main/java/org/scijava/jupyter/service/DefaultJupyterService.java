@@ -65,7 +65,8 @@ public class DefaultJupyterService extends AbstractService implements JupyterSer
         installKernel((String) parameters.get("scriptLanguage"),
                 (String) parameters.get("logLevel"),
                 (String) parameters.get("pythonBinaryPath"),
-                (boolean) parameters.get("installAllKernels"));
+                (boolean) parameters.get("installAllKernels"),
+                (String) parameters.get("classpath"));
     }
 
     @Override
@@ -80,26 +81,32 @@ public class DefaultJupyterService extends AbstractService implements JupyterSer
 
     @Override
     public void installKernel(String scriptLanguage, String logLevel, File pythonBinaryPath) {
-        installKernel(scriptLanguage, logLevel, pythonBinaryPath, false);
+        installKernel(scriptLanguage, logLevel, pythonBinaryPath, false, null);
+    }
+
+    @Override
+    public void installKernel(String scriptLanguage, String logLevel, String pythonBinaryPath, boolean installAllKernels, String classpath) {
+        installKernel(scriptLanguage, logLevel, new File(pythonBinaryPath), installAllKernels, classpath);
     }
 
     @Override
     public void installKernel(String scriptLanguage, String logLevel, String pythonBinaryPath, boolean installAllKernels) {
-        installKernel(scriptLanguage, logLevel, new File(pythonBinaryPath), installAllKernels);
+        installKernel(scriptLanguage, logLevel, new File(pythonBinaryPath), installAllKernels, null);
     }
 
     @Override
     public void installKernel(String scriptLanguage, String logLevel, Path pythonBinaryPath, boolean installAllKernels) {
-        installKernel(scriptLanguage, logLevel, pythonBinaryPath.toFile(), installAllKernels);
+        installKernel(scriptLanguage, logLevel, pythonBinaryPath.toFile(), installAllKernels, null);
     }
 
     @Override
-    public void installKernel(String scriptLanguage, String logLevel, File pythonBinaryPath, boolean installAllKernels) {
+    public void installKernel(String scriptLanguage, String logLevel, File pythonBinaryPath, boolean installAllKernels, String classpath) {
         Map<String, Object> parameters = new HashMap<>();
         parameters.put("scriptLanguage", scriptLanguage);
         parameters.put("logLevel", logLevel);
         parameters.put("pythonBinaryPath", pythonBinaryPath);
         parameters.put("installAllKernels", installAllKernels);
+        parameters.put("classpath", classpath);
         command.run(InstallScijavaKernel.class, true, parameters);
     }
 
@@ -189,6 +196,7 @@ public class DefaultJupyterService extends AbstractService implements JupyterSer
                 options.addOption("language", true, "Language Name");
                 options.addOption("verbose", true, "Verbose Mode");
                 options.addOption("installAllKernels", "Install all the kernels ?");
+                options.addOption("classpath", true, "Additional JAVA classpath ?");
 
                 CommandLineParser parser = new DefaultParser();
                 CommandLine cmd = parser.parse(options, args);
@@ -206,6 +214,12 @@ public class DefaultJupyterService extends AbstractService implements JupyterSer
                 }
 
                 parameters.put("logLevel", cmd.getOptionValue("verbose"));
+
+                if (cmd.getOptionValue("classpath") != null) {
+                    parameters.put("classpath", cmd.getOptionValue("classpath"));
+                } else {
+                    parameters.put("classpath", null);
+                }
 
                 return parameters;
 

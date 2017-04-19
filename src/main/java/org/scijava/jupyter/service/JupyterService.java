@@ -27,18 +27,20 @@ public interface JupyterService extends SciJavaService {
 
     /* Install kernel */
     void installKernel(String... args);
-            
+
     void installKernel(String scriptLanguage, String logLevel, String pythonBinaryPath);
 
     void installKernel(String scriptLanguage, String logLevel, Path pythonBinaryPath);
 
     void installKernel(String scriptLanguage, String logLevel, File pythonBinaryPath);
 
+    void installKernel(String scriptLanguage, String logLevel, String pythonBinaryPath, boolean installAllKernels, String classpath);
+
     void installKernel(String scriptLanguage, String logLevel, String pythonBinaryPath, boolean installAllKernels);
 
     void installKernel(String scriptLanguage, String logLevel, Path pythonBinaryPath, boolean installAllKernels);
 
-    void installKernel(String scriptLanguage, String logLevel, File pythonBinaryPath, boolean installAllKernels);
+    void installKernel(String scriptLanguage, String logLevel, File pythonBinaryPath, boolean installAllKernels, String classpath);
 
     /* Run kernel */
     void runKernel(String... args);

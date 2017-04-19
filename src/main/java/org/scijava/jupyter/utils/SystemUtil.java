@@ -43,9 +43,11 @@ public class SystemUtil {
     public static String getImageJClassPaths() {
         String classPaths = "";
 
-        classPaths += Paths.get(System.getProperty("imagej.dir"), "jars", "*") + ":";
-        classPaths += Paths.get(System.getProperty("imagej.dir"), "jars", "bio-formats", "*") + ":";
-        classPaths += Paths.get(System.getProperty("imagej.dir"), "plugins", "*") + ":";
+        if (System.getProperty("imagej.dir") != null) {
+            classPaths += Paths.get(System.getProperty("imagej.dir"), "jars", "*") + ":";
+            classPaths += Paths.get(System.getProperty("imagej.dir"), "jars", "bio-formats", "*") + ":";
+            classPaths += Paths.get(System.getProperty("imagej.dir"), "plugins", "*") + ":";
+        }
 
         return classPaths;
     }

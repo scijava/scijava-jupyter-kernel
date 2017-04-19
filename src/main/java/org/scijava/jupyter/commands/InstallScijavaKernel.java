@@ -64,6 +64,9 @@ public class InstallScijavaKernel implements Command {
     @Parameter(required = false, label = "Install all the available kernels")
     private boolean installAllKernels = false;
 
+    @Parameter(required = false, label = "Additional JAVA classpath")
+    private String classpath = "";
+
     @Parameter(type = ItemIO.OUTPUT)
     private String message;
 
@@ -138,7 +141,7 @@ public class InstallScijavaKernel implements Command {
         }
 
         // Generate the kernel.json file
-        String JSONString = JupyterUtil.createKernelJSON(language, this.logLevel);
+        String JSONString = JupyterUtil.createKernelJSON(language, this.classpath, this.logLevel);
         Path kernelJSONPath = Paths.get(kernelDir.toString(), "kernel.json");
         try (FileWriter file = new FileWriter(kernelJSONPath.toFile())) {
             file.write(JSONString);
