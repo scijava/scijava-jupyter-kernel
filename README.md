@@ -1,11 +1,11 @@
 # scijava-jupyter-kernel
 [![Build Status](https://travis-ci.org/hadim/scijava-jupyter-kernel.svg?branch=master)](https://travis-ci.org/hadim/scijava-jupyter-kernel)
 
-`scijava-jupyter-kernel` aims to be a Jupyter kernel that integrate well with ImageJ. See https://imagej.net/Jupyter for more details.
+`scijava-jupyter-kernel` aims to be a Jupyter kernel that integrate well with ImageJ. See https://imagej.net/Scijava_Jupyter_Kernel for more details.
 
 Under the hood `scijava-jupyter-kernel` uses the [Beaker base kernel](https://github.com/twosigma/beakerx/tree/master/kernel/base).
 
-Languages supported are :
+[Languages supported](https://imagej.net/Scripting#Supported_languages) are :
 
 - Groovy
 - Python
@@ -19,23 +19,21 @@ Languages supported are :
 
 See here for more details : https://imagej.net/Scripting#Supported_languages
 
-![Scijava Jupyter Kernel Installation](teaser.gif)
-
 ## Installation - Standalone
 
-**Note : Only for Linux and OSX for now.**
+**Warning : do NOT WORK yet**
 
 - Install [Anaconda](https://www.continuum.io/downloads)
-- Do the following : 
-
-**Warning : This is NOT WORKING yet.**
+- Install `scijava-jupyter-kernel` :
 
 ```bash
 conda config --add channels conda-forge
 conda install scijava-jupyter-kernel
 ```
 
-## Installation - ImageJ/Fiji
+## Installation - With Fiji integration
+
+**Note : Installation will be much more easier once integrated to Fiji.**
 
 - Clone, compile and install Beakerx base kernel :
 
@@ -53,16 +51,20 @@ cd scijava-jupyter-kernel
 mvn -Dimagej.app.directory="PATH-TO-YOUR-IMAGEJ-REPO" install
 ```
 
-- Start ImageJ/Fiji and launch `Analyze > Jupyter Kernel > Install Scijava Kernel`.
+- Start Fiji and launch `Analyze > Jupyter Kernel > Install Scijava Kernel`.
 - Set the path to your Python binary.
 - Choose a language (for example `jython` or `groovy`) or you can choose to install all the available languages.
 - Choose a log level.
 
-To try the kernel, launch `jupyter notebook` or `jupyter lab`. Your kernel should appear in the kernel list.
+## Usage
 
-**Note** : To quickly test a kernel, use `jupyter console --kernel=scijava-python`.
+To enjoy your new kernel(s), execute `jupyter notebook` or `jupyter lab`. Your kernel should appear in the kernel list.
 
-## Python
+## Screenshot
+
+![Scijava Jupyter Kernel Installation](teaser.gif)
+
+## About Python
 
 We strongly suggest the use of the [Anaconda Python distribution](https://www.continuum.io/downloads) + the use of the [conda-forge channel](https://conda-forge.github.io/). That way, your Python and all your libs will be kept synced and updated.
 
