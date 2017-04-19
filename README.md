@@ -28,6 +28,8 @@ See here for more details : https://imagej.net/Scripting#Supported_languages
 - Install Anaconda[Anaconda](https://www.continuum.io/downloads)
 - Do the following : 
 
+**Warning : This is NOT WORKING yet.**
+
 ```bash
 conda config --add channels conda-forge
 conda install scijava-jupyter-kernel
