@@ -25,7 +25,7 @@ See here for more details : https://imagej.net/Scripting#Supported_languages
 
 **Note : Only for Linux and OSX for now.**
 
-- Install Anaconda[Anaconda](https://www.continuum.io/downloads)
+- Install [Anaconda](https://www.continuum.io/downloads)
 - Do the following : 
 
 **Warning : This is NOT WORKING yet.**
