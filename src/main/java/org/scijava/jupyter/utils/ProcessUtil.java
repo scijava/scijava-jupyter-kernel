@@ -37,8 +37,8 @@ public class ProcessUtil {
         Map<String, String> results = null;
 
         try {
-            Path tempFile = Files.createTempFile("scijava-script", ".py");
-            Files.write(tempFile, sourceCode.getBytes());
+            File tempFile = File.createTempFile("scijava-script", ".py");
+            Files.write(tempFile.toPath(), sourceCode.getBytes());
 
             String[] cmd = new String[]{pythonBinaryPath.toString(), tempFile.toString()};
 
