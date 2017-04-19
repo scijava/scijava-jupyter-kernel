@@ -21,7 +21,19 @@ See here for more details : https://imagej.net/Scripting#Supported_languages
 
 ![Scijava Jupyter Kernel Installation](teaser.gif)
 
-## Installation
+## Installation - Standalone
+
+**Note : Only for Linux and OSX for now.**
+
+- Install Anaconda[Anaconda](https://www.continuum.io/downloads)
+- Do the following : 
+
+```bash
+conda config --add channels conda-forge
+conda install scijava-jupyter-kernel
+```
+
+## Installation - ImageJ/Fiji
 
 - Clone, compile and install Beakerx base kernel :
 
@@ -39,9 +51,7 @@ cd scijava-jupyter-kernel
 mvn -Dimagej.app.directory="PATH-TO-YOUR-IMAGEJ-REPO" install
 ```
 
-## Usage
-
-- Start Fiji and launch `Analyze > Jupyter Kernel > Install Scijava Kernel`.
+- Start ImageJ/Fiji and launch `Analyze > Jupyter Kernel > Install Scijava Kernel`.
 - Set the path to your Python binary.
 - Choose a language (for example `jython` or `groovy`) or you can choose to install all the available languages.
 - Choose a log level.
