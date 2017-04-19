@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.scijava.jupyterkernel;
+package org.scijava.jupyterkernel.sandbox;
 
 import org.scijava.Context;
 import org.scijava.jupyter.service.JupyterService;

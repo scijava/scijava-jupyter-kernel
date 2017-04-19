@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.scijava.jupyterkernel;
+package org.scijava.jupyterkernel.sandbox;
 
 import org.scijava.Context;
 import org.scijava.jupyter.service.JupyterService;
