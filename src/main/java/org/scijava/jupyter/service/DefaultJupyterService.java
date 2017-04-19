@@ -58,6 +58,17 @@ public class DefaultJupyterService extends AbstractService implements JupyterSer
 
     /* Install kernel */
     @Override
+    public void installKernel(String... args) {
+        Map<String, Object> parameters = parseArgumentsInstall(args);
+        // TODO : Ensure parameters contains the appropriate keys.
+
+        installKernel((String) parameters.get("scriptLanguage"),
+                (String) parameters.get("logLevel"),
+                (String) parameters.get("pythonBinaryPath"),
+                (boolean) parameters.get("installAllKernels"));
+    }
+
+    @Override
     public void installKernel(String scriptLanguage, String logLevel, String pythonBinaryPath) {
         installKernel(scriptLanguage, logLevel, Paths.get(pythonBinaryPath));
     }
@@ -66,12 +77,12 @@ public class DefaultJupyterService extends AbstractService implements JupyterSer
     public void installKernel(String scriptLanguage, String logLevel, Path pythonBinaryPath) {
         installKernel(scriptLanguage, logLevel, pythonBinaryPath.toFile());
     }
-    
+
     @Override
     public void installKernel(String scriptLanguage, String logLevel, File pythonBinaryPath) {
         installKernel(scriptLanguage, logLevel, pythonBinaryPath, false);
     }
-    
+
     @Override
     public void installKernel(String scriptLanguage, String logLevel, String pythonBinaryPath, boolean installAllKernels) {
         installKernel(scriptLanguage, logLevel, Paths.get(pythonBinaryPath), installAllKernels);
@@ -88,19 +99,19 @@ public class DefaultJupyterService extends AbstractService implements JupyterSer
         parameters.put("scriptLanguage", scriptLanguage);
         parameters.put("logLevel", logLevel);
         parameters.put("pythonBinaryPath", pythonBinaryPath);
-         parameters.put("installAllKernels", installAllKernels);
+        parameters.put("installAllKernels", installAllKernels);
         command.run(InstallScijavaKernel.class, true, parameters);
     }
 
     /* Run kernel */
     @Override
     public void runKernel(String... args) {
-        Map<String, String> parameters = parseArguments(args);
+        Map<String, Object> parameters = parseArgumentsRun(args);
         // TODO : Ensure parameters contains the appropriate keys.
 
-        runKernel(parameters.get("scriptLanguage"),
-                parameters.get("logLevel"),
-                parameters.get("connectionFile"));
+        runKernel((String) parameters.get("scriptLanguage"),
+                (String) parameters.get("logLevel"),
+                (String) parameters.get("connectionFile"));
     }
 
     @Override
@@ -140,7 +151,7 @@ public class DefaultJupyterService extends AbstractService implements JupyterSer
     }
 
     /* Helpers private method */
-    private Map<String, String> parseArguments(final String... args) {
+    private Map<String, Object> parseArgumentsRun(final String... args) {
         if (args.length > 0) {
             try {
 
@@ -152,7 +163,7 @@ public class DefaultJupyterService extends AbstractService implements JupyterSer
                 CommandLineParser parser = new DefaultParser();
                 CommandLine cmd = parser.parse(options, args);
 
-                Map<String, String> parameters = new HashMap<>();
+                Map<String, Object> parameters = new HashMap<>();
 
                 parameters.put("connectionFile", cmd.getOptionValue("connectionFile"));
                 parameters.put("scriptLanguage", cmd.getOptionValue("language"));
@@ -168,4 +179,43 @@ public class DefaultJupyterService extends AbstractService implements JupyterSer
         }
         return null;
     }
+
+    private Map<String, Object> parseArgumentsInstall(final String... args) {
+        if (args.length > 0) {
+            try {
+
+                Options options = new Options();
+                options.addOption("pythonBinaryPath", true, "Python Binary Path");
+                options.addOption("language", true, "Language Name");
+                options.addOption("verbose", true, "Verbose Mode");
+                options.addOption("installAllKernels", "Install all the kernels ?");
+
+                CommandLineParser parser = new DefaultParser();
+                CommandLine cmd = parser.parse(options, args);
+
+                Map<String, Object> parameters = new HashMap<>();
+
+                parameters.put("pythonBinaryPath", cmd.getOptionValue("pythonBinaryPath"));
+
+                if (!cmd.hasOption("installAllKernels")) {
+                    parameters.put("scriptLanguage", cmd.getOptionValue("language"));
+                    parameters.put("installAllKernels", false);
+                } else {
+                    parameters.put("installAllKernels", true);
+                    parameters.put("scriptLanguage", "");
+                }
+
+                parameters.put("logLevel", cmd.getOptionValue("verbose"));
+
+                return parameters;
+
+            } catch (ParseException ex) {
+                log.error("Error parsing arguments : " + ex.toString());
+            }
+        } else {
+            log.error("No parameters passed to the Scijava kernel.");
+        }
+        return null;
+    }
+
 }

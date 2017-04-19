@@ -99,8 +99,10 @@ public class ScijavaKernel extends Kernel {
 
     public static void main(String... args) {
         Context context = new Context();
+        
         JupyterService jupyter = context.service(JupyterService.class);
         jupyter.runKernel(args);
+        
         context.dispose();
     }
 }

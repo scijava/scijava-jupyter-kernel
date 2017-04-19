@@ -22,8 +22,10 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Map;
+import org.scijava.Context;
 import org.scijava.ItemIO;
 import org.scijava.command.Command;
+import org.scijava.jupyter.service.JupyterService;
 import org.scijava.jupyter.utils.JupyterUtil;
 import org.scijava.jupyter.utils.ProcessUtil;
 import org.scijava.jupyter.utils.SystemUtil;
@@ -31,6 +33,7 @@ import org.scijava.log.LogService;
 import org.scijava.plugin.Menu;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
+import org.scijava.script.ScriptLanguage;
 import org.scijava.script.ScriptService;
 
 @Plugin(type = Command.class, menu = {
@@ -68,8 +71,10 @@ public class InstallScijavaKernel implements Command {
     public void run() {
 
         if (this.installAllKernels) {
-            scriptService.getLanguages().forEach((language) -> {
-                this.installLanguage(language.toString());
+            scriptService.getLanguages().forEach((ScriptLanguage language) -> {
+                if (!"ij1 macro".equals(language.toString().toLowerCase())) {
+                    this.installLanguage(language.toString());
+                }
             });
         } else {
             this.installLanguage(this.scriptLanguage);
@@ -82,6 +87,8 @@ public class InstallScijavaKernel implements Command {
         if (!this.pythonBinaryPath.isFile()) {
             log.error(this.pythonBinaryPath + " does not exist.");
         }
+
+        log.info("Installing '" + "scijava-" + language.toLowerCase() + "' kernel.");
 
         String[] cmd = null;
         String sourceCode = null;
@@ -159,6 +166,18 @@ public class InstallScijavaKernel implements Command {
         SystemUtil.deleteFolderRecursively(kernelDir, log);
 
         this.message = "The kernel '" + "scijava-" + language.toLowerCase() + "' has been correctly installed.";
+    }
+
+    public static void main(String... args) {
+        Context context = new Context();
+
+        LogService log = context.service(LogService.class);
+        log.setLevel(LogService.INFO);
+
+        JupyterService jupyter = context.service(JupyterService.class);
+        jupyter.installKernel(args);
+
+        context.dispose();
     }
 
 }

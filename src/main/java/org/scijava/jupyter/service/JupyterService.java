@@ -26,6 +26,8 @@ import org.scijava.service.SciJavaService;
 public interface JupyterService extends SciJavaService {
 
     /* Install kernel */
+    void installKernel(String... args);
+            
     void installKernel(String scriptLanguage, String logLevel, String pythonBinaryPath);
 
     void installKernel(String scriptLanguage, String logLevel, Path pythonBinaryPath);
