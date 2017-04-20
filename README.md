@@ -22,12 +22,15 @@ See here for more details : https://imagej.net/Scripting#Supported_languages
 ## Installation - Standalone
 
 - Install [Anaconda](https://www.continuum.io/downloads)
-- Install `scijava-jupyter-kernel` :
+- Install `scijava-jupyter-kernel` with :
 
 ```bash
 conda config --add channels conda-forge
 conda install scijava-jupyter-kernel
 ```
+
+- Check the kernels have been installed with : `jupyter kernelspec list`.
+- Launch `jupyter notebook` or `jupyter lab` and select the kernel you want in the kernel list.
 
 ## Installation - With Fiji integration
 
