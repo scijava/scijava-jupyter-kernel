@@ -21,8 +21,6 @@ See here for more details : https://imagej.net/Scripting#Supported_languages
 
 ## Installation - Standalone
 
-**Warning : do NOT WORK yet**
-
 - Install [Anaconda](https://www.continuum.io/downloads)
 - Install `scijava-jupyter-kernel` :
 
