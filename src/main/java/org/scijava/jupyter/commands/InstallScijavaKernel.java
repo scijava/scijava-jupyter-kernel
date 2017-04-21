@@ -141,7 +141,13 @@ public class InstallScijavaKernel implements Command {
         }
 
         // Generate the kernel.json file
-        String JSONString = JupyterUtil.createKernelJSON(language, this.classpath, this.logLevel, this.javaBinaryPath.toString());
+        String JSONString;
+        if (this.javaBinaryPath == null) {
+            JSONString = JupyterUtil.createKernelJSON(language, this.classpath, this.logLevel, "");
+        } else {
+            JSONString = JupyterUtil.createKernelJSON(language, this.classpath, this.logLevel, this.javaBinaryPath.toString());
+        }
+
         Path kernelJSONPath = Paths.get(kernelDir.toString(), "kernel.json");
         try (FileWriter file = new FileWriter(kernelJSONPath.toFile())) {
             file.write(JSONString);
