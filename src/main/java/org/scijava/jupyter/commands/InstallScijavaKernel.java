@@ -160,7 +160,7 @@ public class InstallScijavaKernel implements Command {
 
         // Install the new kernel
         sourceCode = "from jupyter_client.kernelspec import KernelSpecManager\n";
-        sourceCode += "KernelSpecManager().install_kernel_spec(\"" + kernelDir.toAbsolutePath().toString() + "\", user=True, replace=True)\n";
+        sourceCode += "KernelSpecManager().install_kernel_spec(\"" + kernelDir.toAbsolutePath().toString().replace("\\", "\\\\") + "\", user=True, replace=True)\n";
         results = ProcessUtil.executePythonCode(this.pythonBinaryPath, sourceCode, log);
         if (results.get("output").toLowerCase().contains("error") || results.get("error").toLowerCase().contains("error")) {
             log.error("New kernel installation failed.");
