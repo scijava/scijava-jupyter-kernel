@@ -25,12 +25,22 @@ import org.json.simple.JSONObject;
 public class JupyterUtil {
 
     public static String createKernelJSON(String scriptLanguage, String classpath, String logLevel) {
+        return createKernelJSON(scriptLanguage, classpath, logLevel, null);
+    }
+
+    public static String createKernelJSON(String scriptLanguage, String classpath, String logLevel, String javaBinaryPath) {
         JSONObject root = new JSONObject();
         root.put("language", scriptLanguage);
         root.put("display_name", "Scijava - " + Character.toUpperCase(scriptLanguage.charAt(0)) + scriptLanguage.substring(1));
 
         JSONArray argv = new JSONArray();
-        argv.add(SystemUtil.getJavaBinary());
+
+        if (javaBinaryPath == null) {
+            argv.add(SystemUtil.getJavaBinary());
+        } else {
+            argv.add(javaBinaryPath);
+        }
+
         argv.add("-classpath");
 
         String finalClasspath = "";
@@ -39,7 +49,7 @@ public class JupyterUtil {
             finalClasspath += ":" + classpath;
         }
         argv.add(finalClasspath);
-        
+
         argv.add("org.scijava.jupyter.kernel.ScijavaKernel");
         argv.add("-language");
         argv.add(scriptLanguage);

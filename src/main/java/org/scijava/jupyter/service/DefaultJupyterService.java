@@ -66,7 +66,8 @@ public class DefaultJupyterService extends AbstractService implements JupyterSer
                 (String) parameters.get("logLevel"),
                 (String) parameters.get("pythonBinaryPath"),
                 (boolean) parameters.get("installAllKernels"),
-                (String) parameters.get("classpath"));
+                (String) parameters.get("classpath"),
+                (String) parameters.get("javaBinaryPath"));
     }
 
     @Override
@@ -81,32 +82,33 @@ public class DefaultJupyterService extends AbstractService implements JupyterSer
 
     @Override
     public void installKernel(String scriptLanguage, String logLevel, File pythonBinaryPath) {
-        installKernel(scriptLanguage, logLevel, pythonBinaryPath, false, null);
+        installKernel(scriptLanguage, logLevel, pythonBinaryPath, false, null, null);
     }
 
     @Override
-    public void installKernel(String scriptLanguage, String logLevel, String pythonBinaryPath, boolean installAllKernels, String classpath) {
-        installKernel(scriptLanguage, logLevel, new File(pythonBinaryPath), installAllKernels, classpath);
+    public void installKernel(String scriptLanguage, String logLevel, String pythonBinaryPath, boolean installAllKernels, String classpath, String javaBinaryPath) {
+        installKernel(scriptLanguage, logLevel, new File(pythonBinaryPath), installAllKernels, classpath, javaBinaryPath);
     }
 
     @Override
     public void installKernel(String scriptLanguage, String logLevel, String pythonBinaryPath, boolean installAllKernels) {
-        installKernel(scriptLanguage, logLevel, new File(pythonBinaryPath), installAllKernels, null);
+        installKernel(scriptLanguage, logLevel, new File(pythonBinaryPath), installAllKernels, null, null);
     }
 
     @Override
     public void installKernel(String scriptLanguage, String logLevel, Path pythonBinaryPath, boolean installAllKernels) {
-        installKernel(scriptLanguage, logLevel, pythonBinaryPath.toFile(), installAllKernels, null);
+        installKernel(scriptLanguage, logLevel, pythonBinaryPath.toFile(), installAllKernels, null, null);
     }
 
     @Override
-    public void installKernel(String scriptLanguage, String logLevel, File pythonBinaryPath, boolean installAllKernels, String classpath) {
+    public void installKernel(String scriptLanguage, String logLevel, File pythonBinaryPath, boolean installAllKernels, String classpath, String javaBinaryPath) {
         Map<String, Object> parameters = new HashMap<>();
         parameters.put("scriptLanguage", scriptLanguage);
         parameters.put("logLevel", logLevel);
         parameters.put("pythonBinaryPath", pythonBinaryPath);
         parameters.put("installAllKernels", installAllKernels);
         parameters.put("classpath", classpath);
+        parameters.put("javaBinaryPath", new File(javaBinaryPath));
         command.run(InstallScijavaKernel.class, true, parameters);
     }
 
@@ -197,6 +199,7 @@ public class DefaultJupyterService extends AbstractService implements JupyterSer
                 options.addOption("verbose", true, "Verbose Mode");
                 options.addOption("installAllKernels", "Install all the kernels ?");
                 options.addOption("classpath", true, "Additional JAVA classpath ?");
+                options.addOption("javaBinaryPath", true, "Java Binary Path");
 
                 CommandLineParser parser = new DefaultParser();
                 CommandLine cmd = parser.parse(options, args);
@@ -219,6 +222,12 @@ public class DefaultJupyterService extends AbstractService implements JupyterSer
                     parameters.put("classpath", cmd.getOptionValue("classpath"));
                 } else {
                     parameters.put("classpath", null);
+                }
+
+                if (cmd.getOptionValue("javaBinaryPath") != null) {
+                    parameters.put("javaBinaryPath", cmd.getOptionValue("javaBinaryPath"));
+                } else {
+                    parameters.put("javaBinaryPath", null);
                 }
 
                 return parameters;

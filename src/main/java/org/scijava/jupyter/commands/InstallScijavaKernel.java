@@ -67,8 +67,8 @@ public class InstallScijavaKernel implements Command {
     @Parameter(required = false, label = "Additional JAVA classpath")
     private String classpath = "";
 
-    @Parameter(type = ItemIO.OUTPUT)
-    private String message;
+    @Parameter(required = false, label = "Java Binary Path")
+    private File javaBinaryPath = null;
 
     @Override
     public void run() {
@@ -141,7 +141,7 @@ public class InstallScijavaKernel implements Command {
         }
 
         // Generate the kernel.json file
-        String JSONString = JupyterUtil.createKernelJSON(language, this.classpath, this.logLevel);
+        String JSONString = JupyterUtil.createKernelJSON(language, this.classpath, this.logLevel, this.javaBinaryPath.toString());
         Path kernelJSONPath = Paths.get(kernelDir.toString(), "kernel.json");
         try (FileWriter file = new FileWriter(kernelJSONPath.toFile())) {
             file.write(JSONString);
@@ -168,7 +168,7 @@ public class InstallScijavaKernel implements Command {
         log.debug("Clean temporary files.");
         SystemUtil.deleteFolderRecursively(kernelDir, log);
 
-        this.message = "The kernel '" + "scijava-" + language.toLowerCase() + "' has been correctly installed.";
+        log.info("The kernel '" + "scijava-" + language.toLowerCase() + "' has been correctly installed.");
     }
 
     public static void main(String... args) {
