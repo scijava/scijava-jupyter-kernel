@@ -100,7 +100,7 @@ public class InstallScijavaKernel implements Command {
         // Check binary is a valid Python executable
         cmd = new String[]{pythonBinaryPath.toString(), "--version"};
         results = ProcessUtil.executeProcess(cmd, log);
-        if (!results.get("output").contains("Python")) {
+        if (!results.get("output").contains("Python") && !results.get("error").contains("Python")) {
             log.error(this.pythonBinaryPath + " does not seem to be a valid Python executable.");
             log.error("Output : " + results.get("output"));
             log.error("Error : " + results.get("error"));
