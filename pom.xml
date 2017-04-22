@@ -124,6 +124,7 @@
             <groupId>com.github.jupyter</groupId>
             <artifactId>jvm-repr</artifactId>
             <version>master-SNAPSHOT</version>
+            <type>jar</type>
         </dependency>
         
         <!-- Supported languages -->
@@ -172,7 +173,6 @@
             <artifactId>scripting-scala</artifactId>
         </dependency>
 
-
         <!-- Test dependencies -->
         <dependency>
             <groupId>junit</groupId>
@@ -183,6 +183,17 @@
             <groupId>net.imagej</groupId>
             <artifactId>imagej</artifactId>
             <scope>test</scope>
+        </dependency>
+        
+        <!-- Temporary deps while stabilizing image-notebook code -->
+        <dependency>
+            <groupId>net.imglib2</groupId>
+            <artifactId>imglib2</artifactId>
+        </dependency>
+        
+        <dependency>
+            <groupId>net.imagej</groupId>
+            <artifactId>imagej-ops</artifactId>
         </dependency>
         
     </dependencies>
