@@ -5,11 +5,13 @@
 [![Anaconda-Server Badge](https://anaconda.org/conda-forge/scijava-jupyter-kernel/badges/version.svg)](https://anaconda.org/conda-forge/scijava-jupyter-kernel)
 [![Anaconda-Server Badge](https://anaconda.org/conda-forge/scijava-jupyter-kernel/badges/downloads.svg)](https://anaconda.org/conda-forge/scijava-jupyter-kernel)
 
-`scijava-jupyter-kernel` aims to be a Jupyter kernel that integrate well with ImageJ. See https://imagej.net/Scijava_Jupyter_Kernel for more details.
+---
 
-Under the hood `scijava-jupyter-kernel` uses the [Beaker base kernel](https://github.com/twosigma/beakerx/tree/master/kernel/base).
+`scijava-jupyter-kernel` aims to be a [Jupyter](http://jupyter.org/) kernel that integrate well with [ImageJ](http://imagej.net). See [here](https://imagej.net/Scijava_Jupyter_Kernel) for more details.
 
-[Languages supported](https://imagej.net/Scripting#Supported_languages) are :
+*Under the hood `scijava-jupyter-kernel` uses the [Beaker base kernel](https://github.com/twosigma/beakerx/tree/master/kernel/base).*
+
+Scripting languages supported are :
 
 - Groovy
 - Python
@@ -34,7 +36,7 @@ conda install scijava-jupyter-kernel
 ```
 
 - Check the kernels have been installed with : `jupyter kernelspec list`.
-- Launch `jupyter notebook` or `jupyter lab` and select the kernel you want in the kernel list.
+- Launch `jupyter notebook` or `jupyter lab` and **select the kernel you want in the kernel list**.
 
 ## Installation - With Fiji integration
 
@@ -61,9 +63,8 @@ mvn -Dimagej.app.directory="PATH-TO-YOUR-IMAGEJ-REPO" install
 - Choose a language (for example `jython` or `groovy`) or you can choose to install all the available languages.
 - Choose a log level.
 
-## Usage
-
-To enjoy your new kernel(s), execute `jupyter notebook` or `jupyter lab`. Your kernel should appear in the kernel list.
+- Check the kernels have been installed with : `jupyter kernelspec list`.
+- Launch `jupyter notebook` or `jupyter lab` and **select the kernel you want in the kernel list**.
 
 ## Screenshot
 
