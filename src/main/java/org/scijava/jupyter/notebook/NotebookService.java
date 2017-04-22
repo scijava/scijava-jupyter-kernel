@@ -27,36 +27,17 @@
  * POSSIBILITY OF SUCH DAMAGE.
  * #L%
  */
+package org.scijava.jupyter.notebook;
 
-package net.imagej.notebook;
-
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
+import org.scijava.service.SciJavaService;
 
 /**
- * A table data structure which displays nicely in a notebook.
- * 
+ * Interface for services which provide handy methods for working with scientific notebook software.
+ *
  * @author Curtis Rueden
  */
-public class NotebookTable extends ArrayList<LinkedHashMap<String, Object>> {
+public interface NotebookService extends SciJavaService {
 
-	/**
-	 * Adds a row to the table.
-	 * 
-	 * @param data List of cell names and values. The expected order is in pairs:
-	 *          a column name followed by its value, for each desired cell to
-	 *          populate.
-	 */
-	public void addRow(final Object... data) {
-		if (data.length % 2 != 0) {
-			throw new IllegalArgumentException("Expected (name, value) pairs");
-		}
-		final LinkedHashMap<String, Object> row = new LinkedHashMap<>();
-		for (int i = 0; i < data.length; i += 2) {
-			final String column = data[i].toString();
-			final Object value = data[i + 1];
-			row.put(column, value);
-		}
-		add(row);
-	}
+    public Object displayMimetype(String mimetype, String content);
+    public Object displayAuto(Object object);
 }

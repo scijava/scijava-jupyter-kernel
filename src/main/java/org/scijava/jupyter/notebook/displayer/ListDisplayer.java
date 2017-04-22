@@ -13,15 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package net.imagej.notebook.displayer;
+package org.scijava.jupyter.notebook.displayer;
 
 import java.util.HashMap;
 import java.util.Map;
 import jupyter.Displayer;
 
-public class ImageDisplayer extends Displayer {
+public class ListDisplayer extends Displayer {
 
-    private static final ImageDisplayer INSTANCE = new ImageDisplayer();
+    private static final ListDisplayer INSTANCE = new ListDisplayer();
 
     public static Displayer<Object> get() {
         return INSTANCE;
@@ -31,8 +31,7 @@ public class ImageDisplayer extends Displayer {
     public Map<String, String> display(Object obj) {
         Map<String, String> result = new HashMap<>();
 
-        // Convert to PNG binary data
-        result.put("image/png", "base64:" + obj.toString());
+        result.put("text/plain", obj.toString());
 
         return result;
     }

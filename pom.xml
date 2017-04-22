@@ -179,21 +179,11 @@
             <artifactId>junit</artifactId>
             <scope>test</scope>
         </dependency>
+        
         <dependency>
             <groupId>net.imagej</groupId>
             <artifactId>imagej</artifactId>
             <scope>test</scope>
-        </dependency>
-        
-        <!-- Temporary deps while stabilizing image-notebook code -->
-        <dependency>
-            <groupId>net.imglib2</groupId>
-            <artifactId>imglib2</artifactId>
-        </dependency>
-        
-        <dependency>
-            <groupId>net.imagej</groupId>
-            <artifactId>imagej-ops</artifactId>
         </dependency>
         
     </dependencies>

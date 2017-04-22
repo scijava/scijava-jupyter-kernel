@@ -99,7 +99,7 @@ public class Worker implements Runnable {
             Object returnValue = null;
             try {
                 returnValue = engine.eval(info.getReader());
-                //returnValue = this.scriptLanguage.decode(returnValue);
+                returnValue = this.scriptLanguage.decode(returnValue);
                 this.seo.finished(returnValue);
             } catch (Throwable e) {
 

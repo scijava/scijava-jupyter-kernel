@@ -13,15 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package net.imagej.notebook.displayer;
+package org.scijava.jupyter.notebook.displayer;
 
 import java.util.HashMap;
 import java.util.Map;
 import jupyter.Displayer;
 
-public class ListDisplayer extends Displayer {
+public class StringDisplayer extends Displayer {
 
-    private static final ListDisplayer INSTANCE = new ListDisplayer();
+    private static final StringDisplayer INSTANCE = new StringDisplayer();
 
     public static Displayer<Object> get() {
         return INSTANCE;
