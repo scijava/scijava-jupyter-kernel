@@ -35,6 +35,13 @@ import java.util.List;
 import java.util.Map;
 import jupyter.Displayer;
 import jupyter.Displayers;
+import net.imagej.Dataset;
+import net.imagej.axis.Axes;
+import net.imagej.notebook.DefaultImageJNotebookService;
+import net.imagej.notebook.ImageJNotebookService;
+import net.imglib2.RandomAccessibleInterval;
+import net.imglib2.img.Img;
+import net.imglib2.type.numeric.RealType;
 import org.scijava.jupyter.notebook.displayer.ListDisplayer;
 import org.scijava.jupyter.notebook.displayer.StringDisplayer;
 import org.scijava.log.LogService;
@@ -55,6 +62,9 @@ public class DefaultNotebookService extends AbstractService implements
 
     @Parameter
     private LogService log;
+
+    @Parameter
+    private DefaultImageJNotebookService ijnb;
 
     public DefaultNotebookService() {
         Displayers.register(String.class, (Displayer) StringDisplayer.get());
@@ -100,6 +110,40 @@ public class DefaultNotebookService extends AbstractService implements
         String content = richResult.get(mimetype);
 
         return displayMimetype(mimetype, content);
+    }
+
+    public <T extends RealType<T>> Object displayImage(
+            final RandomAccessibleInterval<T> source, //
+            final int xAxis, final int yAxis, final int cAxis, //
+            final ImageJNotebookService.ValueScaling scaling, final long... pos) {
+
+        return ijnb.display(source, xAxis, yAxis, cAxis, scaling, pos);
+    }
+
+    public Object displayImage(final Dataset source) {
+        return ijnb.display((Img) source, //
+                source.dimensionIndex(Axes.X), //
+                source.dimensionIndex(Axes.Y), //
+                source.dimensionIndex(Axes.CHANNEL), ImageJNotebookService.ValueScaling.AUTO);
+    }
+
+    /**
+     * Converts the given image to a form renderable by scientific notebooks.
+     *
+     * @param <T>
+     * @param source The image to render.
+     * @return an object that the notebook knows how to draw onscreen.
+     */
+    public <T extends RealType<T>> Object displayImage(
+            final RandomAccessibleInterval<T> source) {
+        // NB: Assume <=3 samples in the 3rd dimension means channels. Of course,
+        // we have no metadata with a vanilla RAI, but this is a best guess;
+        // 3rd dimensions with >3 samples are probably something like Z or time.
+        final int cAxis
+                = //
+                source.numDimensions() > 2 && source.dimension(2) <= 3 ? 2 : -1;
+
+        return ijnb.display(source, 0, 1, cAxis, ImageJNotebookService.ValueScaling.AUTO);
     }
 
 }

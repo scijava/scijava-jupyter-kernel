@@ -27,29 +27,36 @@
  * POSSIBILITY OF SUCH DAMAGE.
  * #L%
  */
-package org.scijava.jupyter.notebook;
 
-import net.imagej.Dataset;
-import net.imagej.notebook.ImageJNotebookService;
-import net.imglib2.RandomAccessibleInterval;
-import net.imglib2.type.numeric.RealType;
-import org.scijava.service.SciJavaService;
+package net.imagej.notebook;
+
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
 
 /**
- * Interface for services which provide handy methods for working with scientific notebook software.
- *
+ * A table data structure which displays nicely in a notebook.
+ * 
  * @author Curtis Rueden
  */
-public interface NotebookService extends SciJavaService {
+public class NotebookTable extends ArrayList<LinkedHashMap<String, Object>> {
 
-    public Object displayMimetype(String mimetype, String content);
-
-    public Object displayAuto(Object object);
-
-    public <T extends RealType<T>> Object displayImage(final RandomAccessibleInterval<T> source);
-
-    public Object displayImage(final Dataset source);
-
-    public <T extends RealType<T>> Object displayImage(RandomAccessibleInterval<T> source,
-            int xAxis, int yAxis, int cAxis, ImageJNotebookService.ValueScaling scaling, long... pos);
+	/**
+	 * Adds a row to the table.
+	 * 
+	 * @param data List of cell names and values. The expected order is in pairs:
+	 *          a column name followed by its value, for each desired cell to
+	 *          populate.
+	 */
+	public void addRow(final Object... data) {
+		if (data.length % 2 != 0) {
+			throw new IllegalArgumentException("Expected (name, value) pairs");
+		}
+		final LinkedHashMap<String, Object> row = new LinkedHashMap<>();
+		for (int i = 0; i < data.length; i += 2) {
+			final String column = data[i].toString();
+			final Object value = data[i + 1];
+			row.put(column, value);
+		}
+		add(row);
+	}
 }
