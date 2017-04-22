@@ -1,6 +1,5 @@
 # scijava-jupyter-kernel
 [![Travis branch](https://img.shields.io/travis/hadim/scijava-jupyter-kernel/master.svg?style=flat-square)](https://travis-ci.org/hadim/scijava-jupyter-kernel)
-[![Last Version](https://img.shields.io/github/release/hadim/scijava-jupyter-kernel.svg?style=flat-square)](https://github.com/hadim/scijava-jupyter-kernel/releases)
 [![License](https://img.shields.io/github/license/hadim/scijava-jupyter-kernel.svg?style=flat-square)](https://github.com/hadim/scijava-jupyter-kernel/blob/master/LICENSE)
 [![Anaconda-Server Badge](https://anaconda.org/conda-forge/scijava-jupyter-kernel/badges/version.svg)](https://anaconda.org/conda-forge/scijava-jupyter-kernel)
 [![Anaconda-Server Badge](https://anaconda.org/conda-forge/scijava-jupyter-kernel/badges/downloads.svg)](https://anaconda.org/conda-forge/scijava-jupyter-kernel)
