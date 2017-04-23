@@ -39,7 +39,6 @@ public class TestGrape {
                 put("group", "org.springframework");
                 put("module", "spring-orm");
                 put("version", "3.2.5.RELEASE");
-                put("classLoader", context.getClass().getClassLoader());
             }
         };
 

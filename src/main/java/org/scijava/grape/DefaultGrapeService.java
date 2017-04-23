@@ -152,6 +152,11 @@ public class DefaultGrapeService extends AbstractService implements GrapeService
                 if (!dependency.containsKey(DISABLE_CHECKSUMS_SETTING)) {
                     dependency.put(DISABLE_CHECKSUMS_SETTING, disableChecksums);
                 }
+
+                if (!dependency.keySet().contains("classLoader")) {
+                    dependency.put("classLoader", this.context().getClass().getClassLoader());
+                }
+
                 instance.grab(dependency);
             }
         }
@@ -168,6 +173,11 @@ public class DefaultGrapeService extends AbstractService implements GrapeService
                 if (!args.containsKey(DISABLE_CHECKSUMS_SETTING)) {
                     args.put(DISABLE_CHECKSUMS_SETTING, disableChecksums);
                 }
+
+                if (!args.keySet().contains("classLoader")) {
+                    args.put("classLoader", this.context().getClass().getClassLoader());
+                }
+
                 instance.grab(args, dependencies);
             }
         }
