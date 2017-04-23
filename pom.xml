@@ -83,7 +83,7 @@
         <system>Jenkins</system>
         <url>http://jenkins.imagej.net/job/scijava-jupyter-kernel/</url>
     </ciManagement>
-
+    
     <repositories>
         <repository>
             <id>imagej.public</id>
@@ -125,6 +125,18 @@
             <artifactId>jvm-repr</artifactId>
             <version>master-SNAPSHOT</version>
             <type>jar</type>
+        </dependency>
+        
+        <dependency>
+            <groupId>org.apache.ivy</groupId>
+            <artifactId>ivy</artifactId>
+            <version>2.4.0</version>
+        </dependency>
+        
+        <dependency>
+            <groupId>org.codehaus.groovy</groupId>
+            <artifactId>groovy</artifactId>
+            <version>2.4.10</version>
         </dependency>
         
         <!-- Supported languages -->
@@ -185,7 +197,7 @@
             <artifactId>imagej</artifactId>
             <scope>test</scope>
         </dependency>
-        
+
     </dependencies>
 
 </project>

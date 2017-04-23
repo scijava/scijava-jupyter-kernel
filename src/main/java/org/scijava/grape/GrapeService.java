@@ -15,13 +15,14 @@
  */
 package org.scijava.grape;
 
+import groovy.grape.GrapeEngine;
 import java.net.URI;
 import java.util.List;
 import java.util.Map;
 import org.scijava.service.SciJavaService;
 
 /**
- * 
+ *
  * @author Hadrien Mary
  */
 public interface GrapeService extends SciJavaService {
@@ -32,6 +33,7 @@ public interface GrapeService extends SciJavaService {
 
     /**
      * Global flag to ignore checksums. By default it is set to false.
+     * @return 
      */
     boolean getDisableChecksums();
 
@@ -50,6 +52,7 @@ public interface GrapeService extends SciJavaService {
      * dependencies) if found.
      * <p>
      * By default it is set to true.
+     * @return 
      */
     boolean getEnableAutoDownload();
 

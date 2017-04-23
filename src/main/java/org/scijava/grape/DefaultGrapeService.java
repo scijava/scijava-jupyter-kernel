@@ -15,16 +15,20 @@
  */
 package org.scijava.grape;
 
+import groovy.grape.GrapeEngine;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.net.URI;
+import org.scijava.plugin.Plugin;
 import org.scijava.service.AbstractService;
+import org.scijava.service.Service;
 
 /**
- * Facade to GrapeEngine.
- * Kindly stolen from https://github.com/apache/groovy/blob/master/src/main/groovy/grape/Grape.java.
+ * Facade to GrapeEngine. Kindly stolen from
+ * https://github.com/apache/groovy/blob/master/src/main/groovy/grape/Grape.java.
  */
+@Plugin(type = Service.class)
 public class DefaultGrapeService extends AbstractService implements GrapeService {
 
     public static final String AUTO_DOWNLOAD_SETTING = "autoDownload";
@@ -35,11 +39,13 @@ public class DefaultGrapeService extends AbstractService implements GrapeService
     private boolean enableAutoDownload = Boolean.valueOf(System.getProperty("org.scijava.grape.autoDownload", "true"));
     private boolean disableChecksums = Boolean.valueOf(System.getProperty("org.scijava.grape.disableChecksums", "false"));
 
-    private GrapeEngine grapeEngine = getGrapeEngine();
+    private GrapeEngine grapeEngine = null;
 
     /**
      * This is a static access kill-switch. All of the static shortcut methods in this class will
      * not work if this property is set to false. By default it is set to true.
+     *
+     * @return
      */
     @Override
     public boolean getEnableGrapes() {
@@ -91,6 +97,8 @@ public class DefaultGrapeService extends AbstractService implements GrapeService
      * If it is set to true, then any jars not already downloaded will automatically be downloaded.
      * Also, any versions expressed as a range will be checked for new versions and downloaded (with
      * dependencies) if found. By default it is set to true.
+     *
+     * @param enableAutoDownload
      */
     @Override
     public void setEnableAutoDownload(boolean enableAutoDownload) {
@@ -107,6 +115,8 @@ public class DefaultGrapeService extends AbstractService implements GrapeService
 
     /**
      * Set global flag to ignore checksums. By default it is set to false.
+     *
+     * @param disableChecksums
      */
     @Override
     public void setDisableChecksums(boolean disableChecksums) {
@@ -116,7 +126,7 @@ public class DefaultGrapeService extends AbstractService implements GrapeService
     @Override
     public GrapeEngine getGrapeEngine() {
         if (this.grapeEngine == null) {
-            this.grapeEngine = new GrapeScijava(this.context());
+            this.grapeEngine = new GrapeScijava();
         }
         return grapeEngine;
     }

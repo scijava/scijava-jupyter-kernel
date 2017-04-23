@@ -15,71 +15,74 @@
  */
 package org.scijava.grape;
 
-import java.net.URI;
+import groovy.grape.GrapeIvy;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import org.scijava.Context;
-import org.scijava.log.LogService;
-import org.scijava.plugin.Parameter;
+import org.codehaus.groovy.reflection.ReflectionUtils;
 
 /**
+ * I had to extend GrapeIvy to use any CLassLoader (not only GroovyClassLoader).
  *
  * @author Hadrien Mary
  */
-class GrapeScijava implements GrapeEngine {
+public class GrapeScijava extends GrapeIvy {
 
-    @Parameter
-    LogService log;
+    Map<String, List<String>> exclusiveGrabArgs = new HashMap<String, List<String>>() {
+        {
+            put("group", Arrays.asList("groupId", "organisation", "organization", "org"));
+            put("groupId", Arrays.asList("group", "organisation", "organization", "org"));
+            put("organisation", Arrays.asList("group", "groupId", "organization", "org"));
+            put("organization", Arrays.asList("group", "groupId", "organisation", "org"));
+            put("org", Arrays.asList("group", "groupId", "organisation", "organization"));
+            put("module", Arrays.asList("artifactId", "artifact"));
+            put("artifactId", Arrays.asList("module", "artifact"));
+            put("artifact", Arrays.asList("module", "artifactId"));
+            put("version", Arrays.asList("revision", "rev"));
+            put("revision", Arrays.asList("version", "rev"));
+            put("rev", Arrays.asList("version", "revision"));
+            put("conf", Arrays.asList("scope", "configuration"));
+            put("scope", Arrays.asList("conf", "configuration"));
+            put("configuration", Arrays.asList("conf", "scope"));
 
-    public GrapeScijava(Context context) {
-        context.inject(this);
-    }
-
-    @Override
-    public Object grab(String endorsedModule) {
-        log.info("grab(String endorsedModule)");
-        return null;
-    }
-
-    @Override
-    public Object grab(Map args) {
-        log.info("grab(Map args)");
-        return null;
-    }
-
-    @Override
-    public Object grab(Map args, Map... dependencies) {
-        log.info("grab(Map args, Map... dependencies)");
-        return null;
-    }
+        }
+    };
 
     @Override
-    public Map<String, Map<String, List<String>>> enumerateGrapes() {
-        log.info("enumerateGrapes()");
-        return null;
+    public ClassLoader chooseClassLoader(Map args) {
+        ClassLoader loader = (ClassLoader) args.get("classLoader");
+
+        if (this.isValidTargetClassLoader(loader)) {
+            if (args.get("refObject") == null) {
+                if (!args.keySet().contains("calleeDepth")) {
+                    loader = ReflectionUtils.getCallingClass((int) args.get("calleeDepth")).getClassLoader();
+                } else {
+                    loader = ReflectionUtils.getCallingClass(1).getClassLoader();
+                }
+            }
+
+            while (loader != null && !this.isValidTargetClassLoader(loader)) {
+                loader = loader.getParent();
+            }
+            //if (!isValidTargetClassLoader(loader)) {
+            //    loader = Thread.currentThread().contextClassLoader
+            //}
+            //if (!isValidTargetClassLoader(loader)) {
+            //    loader = GrapeIvy.class.classLoader
+            //}
+            if (!isValidTargetClassLoader(loader)) {
+                throw new RuntimeException("No suitable ClassLoader found for grab");
+            }
+        }
+        return loader;
     }
 
-    @Override
-    public URI[] resolve(Map args, Map... dependencies) {
-        log.info("resolve(Map args, Map... dependencies)");
-        return null;
+    private boolean isValidTargetClassLoader(ClassLoader loader) {
+        return true;
     }
 
-    @Override
-    public URI[] resolve(Map args, List depsInfo, Map... dependencies) {
-        log.info("resolve(Map args, List depsInfo, Map... dependencies)");
-        return null;
+    private boolean isValidTargetClassLoaderClass(Class loaderClass) {
+        return true;
     }
-
-    @Override
-    public Map[] listDependencies(ClassLoader classLoader) {
-        log.info("listDependencies(ClassLoader classLoader)");
-        return null;
-    }
-
-    @Override
-    public void addResolver(Map<String, Object> args) {
-        log.info("addResolver(Map<String, Object> args)");
-    }
-
 }
