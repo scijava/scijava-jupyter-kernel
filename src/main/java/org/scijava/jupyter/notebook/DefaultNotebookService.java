@@ -112,6 +112,7 @@ public class DefaultNotebookService extends AbstractService implements
         return displayMimetype(mimetype, content);
     }
 
+    @Override
     public <T extends RealType<T>> Object displayImage(
             final RandomAccessibleInterval<T> source, //
             final int xAxis, final int yAxis, final int cAxis, //
@@ -120,6 +121,7 @@ public class DefaultNotebookService extends AbstractService implements
         return ijnb.display(source, xAxis, yAxis, cAxis, scaling, pos);
     }
 
+    @Override
     public Object displayImage(final Dataset source) {
         return ijnb.display((Img) source, //
                 source.dimensionIndex(Axes.X), //
@@ -134,6 +136,7 @@ public class DefaultNotebookService extends AbstractService implements
      * @param source The image to render.
      * @return an object that the notebook knows how to draw onscreen.
      */
+    @Override
     public <T extends RealType<T>> Object displayImage(
             final RandomAccessibleInterval<T> source) {
         // NB: Assume <=3 samples in the 3rd dimension means channels. Of course,
