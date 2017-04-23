@@ -5,15 +5,10 @@
  */
 package org.scijava.jupyterkernel.sandbox;
 
-import groovy.lang.GroovyClassLoader;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.script.ScriptEngine;
 import javax.script.ScriptException;
-import org.codehaus.groovy.tools.LoaderConfiguration;
-import org.codehaus.groovy.tools.RootLoader;
 import org.scijava.Context;
 import org.scijava.grape.GrapeService;
 import org.scijava.log.LogService;
@@ -30,23 +25,14 @@ public class TestGrape {
 
         Context context = new Context();
 
+        // Get services
         LogService log = context.getService(LogService.class);
         GrapeService grape = context.getService(GrapeService.class);
-
         ScriptService scriptService = context.getService(ScriptService.class);
+        
+        // Init scripting
         ScriptLanguage scriptLanguage = scriptService.getLanguageByName("groovy");
         ScriptEngine engine = scriptLanguage.getScriptEngine();
-
-        ClassLoader classLoader = new GroovyClassLoader();
-
-//        Map<String, Object> paramsResolver = new HashMap<String, Object>() {
-//            {
-//                put("name", "restlet");
-//                put("root", "http://maven.restlet.org");
-//                put("classLoader", new GroovyClassLoader());
-//            }
-//        };
-//        grape.resolve(paramsResolver);
 
         Map<String, Object> paramsGrab = new HashMap<String, Object>() {
             {
@@ -57,16 +43,11 @@ public class TestGrape {
             }
         };
 
+        // Grab the required dependency.
         grape.grab(paramsGrab);
-        try {
-            log.info(classLoader.loadClass("java.lang.String"));
-            log.info(classLoader.loadClass("org.springframework.jdbc.core.JdbcTemplate"));
-        } catch (ClassNotFoundException ex) {
-            log.info(ex);
-        }
 
+        // Now execute some groovy code and import the "newly injected" class.
         try {
-            engine.eval("import java.lang.String");
             engine.eval("import org.springframework.jdbc.core.JdbcTemplate; println JdbcTemplate");
         } catch (ScriptException ex) {
             log.info(ex);
