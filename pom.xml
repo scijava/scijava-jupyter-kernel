@@ -83,7 +83,7 @@
         <system>Jenkins</system>
         <url>http://jenkins.imagej.net/job/scijava-jupyter-kernel/</url>
     </ciManagement>
-
+    
     <repositories>
         <repository>
             <id>imagej.public</id>
@@ -102,29 +102,45 @@
             <artifactId>scijava-common</artifactId>
         </dependency>
 
+        <!-- Used to parse command line parameters -->
         <dependency>
             <groupId>commons-cli</groupId>
             <artifactId>commons-cli</artifactId>
             <version>1.4</version>
         </dependency>
         
+        <!-- Used to create the kernel.json file -->
         <dependency>
             <groupId>com.googlecode.json-simple</groupId>
             <artifactId>json-simple</artifactId>
             <version>1.1.1</version>
         </dependency>
 
+        <!-- The base kernel that we rely on -->
         <dependency>
             <groupId>com.twosigma</groupId>
             <artifactId>beaker-kernel-base</artifactId>
             <version>2.0-SNAPSHOT</version>
         </dependency>
         
+        <!-- A generic package for rich Jupyter notebook output -->
         <dependency>
             <groupId>com.github.jupyter</groupId>
             <artifactId>jvm-repr</artifactId>
             <version>master-SNAPSHOT</version>
-            <type>jar</type>
+        </dependency>
+        
+        <!-- Needed for GrapeService -->
+        <dependency>
+            <groupId>org.apache.ivy</groupId>
+            <artifactId>ivy</artifactId>
+            <version>2.4.0</version>
+        </dependency>
+        
+        <dependency>
+            <groupId>org.codehaus.groovy</groupId>
+            <artifactId>groovy</artifactId>
+            <version>2.4.10</version>
         </dependency>
         
         <!-- Supported languages -->
@@ -185,7 +201,7 @@
             <artifactId>imagej</artifactId>
             <scope>test</scope>
         </dependency>
-        
+
     </dependencies>
 
 </project>
