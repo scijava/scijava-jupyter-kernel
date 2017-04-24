@@ -15,7 +15,7 @@ conda update --yes conda
 conda update --yes --all
 conda info -a
 
-conda create --yes -n scijava python jupyter runipy
+conda create --yes -n scijava python jupyter 
 
 source activate scijava
 
@@ -26,14 +26,12 @@ export IJ_PATH="$HOME/Fiji.app"
 export IJ_LAUNCHER="$IJ_PATH/ImageJ-linux64"
 
 JAVA_COMMAND_CLASS="org.scijava.jupyter.commands.InstallScijavaKernel"
-
-LANGUAGE="jython"
-$IJ_LAUNCHER --ij2 --headless --run $JAVA_COMMAND_CLASS "logLevel=\"info\",scriptLanguage=\"$LANGUAGE\",pythonBinaryPath=\"$(which python)\""
-
-LANGUAGE="groovy"
-$IJ_LAUNCHER --ij2 --headless --run $JAVA_COMMAND_CLASS "logLevel=\"info\",scriptLanguage=\"$LANGUAGE\",pythonBinaryPath=\"$(which python)\""
-
-LANGUAGE="clojure"
-$IJ_LAUNCHER --ij2 --headless --run $JAVA_COMMAND_CLASS "logLevel=\"info\",scriptLanguage=\"$LANGUAGE\",pythonBinaryPath=\"$(which python)\""
+$IJ_LAUNCHER --ij2 --headless --run $JAVA_COMMAND_CLASS "logLevel=\"info\",pythonBinaryPath=\"$(which python)\",installAllKernels=true"
 
 jupyter kernelspec list
+
+
+# Now run some notebooks
+
+python "$TRAVIS_BUILD_DIR/scripts/runipy.py" "$TRAVIS_BUILD_DIR/notebooks/Python.ipynb" --kernel_name "scijava-python"
+python "$TRAVIS_BUILD_DIR/scripts/runipy.py" "$TRAVIS_BUILD_DIR/notebooks/Groovy.ipynb" --kernel_name "scijava-groovy"

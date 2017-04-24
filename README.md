@@ -30,12 +30,29 @@ See here for more details : https://imagej.net/Scripting#Supported_languages
 - Install `scijava-jupyter-kernel` with :
 
 ```bash
+# Add the conda-forge channel
 conda config --add channels conda-forge
+
+# Create an isolated environment
+conda create --name scijava openjdk
+
+# Activate the scijava environment
+source install scijava
+
+# Install the kernel
 conda install scijava-jupyter-kernel
+
+# Check the kernels have been installed
+jupyter kernelspec list
+
+# Launch your favorite Jupyter client
+jupyter notebook
+
+# or
+jupyter lab
 ```
 
-- Check the kernels have been installed with : `jupyter kernelspec list`.
-- Launch `jupyter notebook` or `jupyter lab` and **select the kernel you want in the kernel list**.
+*Note : the kernel does not install properly from the root Conda environment. PRs are welcome.*
 
 ## Installation - With Fiji integration
 

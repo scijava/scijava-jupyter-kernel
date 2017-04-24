@@ -83,7 +83,7 @@
         <system>Jenkins</system>
         <url>http://jenkins.imagej.net/job/scijava-jupyter-kernel/</url>
     </ciManagement>
-
+    
     <repositories>
         <repository>
             <id>imagej.public</id>
@@ -102,18 +102,21 @@
             <artifactId>scijava-common</artifactId>
         </dependency>
 
+        <!-- Used to parse command line parameters -->
         <dependency>
             <groupId>commons-cli</groupId>
             <artifactId>commons-cli</artifactId>
             <version>1.4</version>
         </dependency>
         
+        <!-- Used to create the kernel.json file -->
         <dependency>
             <groupId>com.googlecode.json-simple</groupId>
             <artifactId>json-simple</artifactId>
             <version>1.1.1</version>
         </dependency>
 
+        <!-- The base kernel that we rely on -->
         <dependency>
             <groupId>com.twosigma</groupId>
             <artifactId>beaker-kernel-base</artifactId>
@@ -125,7 +128,7 @@
             <artifactId>jai-imageio-core</artifactId>
             <version>1.3.1</version>
         </dependency>
-        
+
         <!-- Supported languages -->
         <dependency>
             <groupId>org.scijava</groupId>
@@ -182,12 +185,6 @@
         <dependency>
             <groupId>net.imagej</groupId>
             <artifactId>imagej</artifactId>
-            <scope>test</scope>
-        </dependency>
-        
-        <dependency>
-            <groupId>net.imagej</groupId>
-            <artifactId>imagej-common</artifactId>
         </dependency>
         
         <dependency>
@@ -195,6 +192,7 @@
             <artifactId>imagej-ops</artifactId>
 
         </dependency>
+
     </dependencies>
 
 </project>
