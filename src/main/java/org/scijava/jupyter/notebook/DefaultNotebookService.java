@@ -33,8 +33,6 @@ import com.twosigma.beaker.mimetype.MIMEContainer;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import jupyter.Displayer;
-import jupyter.Displayers;
 import net.imagej.Dataset;
 import net.imagej.axis.Axes;
 import net.imagej.notebook.DefaultImageJNotebookService;
@@ -42,8 +40,6 @@ import net.imagej.notebook.ImageJNotebookService;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.img.Img;
 import net.imglib2.type.numeric.RealType;
-import org.scijava.jupyter.notebook.displayer.ListDisplayer;
-import org.scijava.jupyter.notebook.displayer.StringDisplayer;
 import org.scijava.log.LogService;
 
 import org.scijava.plugin.Parameter;
@@ -66,9 +62,9 @@ public class DefaultNotebookService extends AbstractService implements
     @Parameter
     private DefaultImageJNotebookService ijnb;
 
-    public DefaultNotebookService() {
-        Displayers.register(String.class, (Displayer) StringDisplayer.get());
-        Displayers.register(List.class, (Displayer) ListDisplayer.get());
+    @Override
+    public Object display(Object object) {
+        return object;
     }
 
     /**
@@ -92,24 +88,6 @@ public class DefaultNotebookService extends AbstractService implements
             return new MIMEContainer(mimeTypeObj, content);
         }
 
-    }
-
-    /**
-     * Try to display the object according to its type.
-     *
-     * @param object
-     * @return
-     */
-    @Override
-    public Object displayAuto(Object object) {
-
-        Map<String, String> richResult = Displayers.display(object);
-
-        // Only take the first one since Beakerx can only send one for now.
-        String mimetype = (String) richResult.keySet().toArray()[0];
-        String content = richResult.get(mimetype);
-
-        return displayMimetype(mimetype, content);
     }
 
     @Override

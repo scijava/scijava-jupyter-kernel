@@ -42,9 +42,9 @@ import org.scijava.service.SciJavaService;
  */
 public interface NotebookService extends SciJavaService {
 
+    public Object display(Object object);
+    
     public Object displayMimetype(String mimetype, String content);
-
-    public Object displayAuto(Object object);
 
     public <T extends RealType<T>> Object displayImage(final RandomAccessibleInterval<T> source);
 
