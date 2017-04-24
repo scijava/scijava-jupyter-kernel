@@ -26,12 +26,7 @@ export IJ_PATH="$HOME/Fiji.app"
 export IJ_LAUNCHER="$IJ_PATH/ImageJ-linux64"
 
 JAVA_COMMAND_CLASS="org.scijava.jupyter.commands.InstallScijavaKernel"
-
-LANGUAGE="jython"
-$IJ_LAUNCHER --ij2 --headless --run $JAVA_COMMAND_CLASS "logLevel=\"info\",scriptLanguage=\"$LANGUAGE\",pythonBinaryPath=\"$(which python)\""
-
-LANGUAGE="groovy"
-$IJ_LAUNCHER --ij2 --headless --run $JAVA_COMMAND_CLASS "logLevel=\"info\",scriptLanguage=\"$LANGUAGE\",pythonBinaryPath=\"$(which python)\""
+$IJ_LAUNCHER --ij2 --headless --run $JAVA_COMMAND_CLASS "logLevel=\"info\",pythonBinaryPath=\"$(which python)\",installAllKernels"
 
 jupyter kernelspec list
 
