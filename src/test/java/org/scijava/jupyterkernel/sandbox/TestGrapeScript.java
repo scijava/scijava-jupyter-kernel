@@ -19,7 +19,7 @@ import org.scijava.script.ScriptService;
  *
  * @author Hadrien Mary
  */
-public class TestGrape {
+public class TestGrapeScript {
 
     public static void main(String[] args) throws ClassNotFoundException, InstantiationException, IllegalAccessException {
 
