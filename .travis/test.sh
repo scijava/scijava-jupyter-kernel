@@ -15,7 +15,7 @@ conda update --yes conda
 conda update --yes --all
 conda info -a
 
-conda create --yes -n scijava python jupyter runipy
+conda create --yes -n scijava python jupyter 
 
 source activate scijava
 
@@ -33,7 +33,10 @@ $IJ_LAUNCHER --ij2 --headless --run $JAVA_COMMAND_CLASS "logLevel=\"info\",scrip
 LANGUAGE="groovy"
 $IJ_LAUNCHER --ij2 --headless --run $JAVA_COMMAND_CLASS "logLevel=\"info\",scriptLanguage=\"$LANGUAGE\",pythonBinaryPath=\"$(which python)\""
 
-LANGUAGE="clojure"
-$IJ_LAUNCHER --ij2 --headless --run $JAVA_COMMAND_CLASS "logLevel=\"info\",scriptLanguage=\"$LANGUAGE\",pythonBinaryPath=\"$(which python)\""
-
 jupyter kernelspec list
+
+
+# Now run some notebooks
+
+python scripts/runipy.py notebooks/Python.ipynb --kernel_name scijava-python
+python scripts/runipy.py notebooks/Groovy.ipynb --kernel_name scijava-groovy

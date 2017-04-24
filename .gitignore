@@ -13,3 +13,4 @@ hs_err_pid*
 /target/
 nb-configuration.xml
 .ipynb_checkpoints
+*.log
