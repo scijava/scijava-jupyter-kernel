@@ -65,8 +65,12 @@ def execute_notebook(notebook_path, kernel_name=None):
                 status = reply['content']['status']
                 
                 if status == 'error':
-                    print('\n'.join(reply['content']['traceback']))
-                    error += 1
+                    print(reply)
+                    if 'traceback' in reply['content'].keys():
+                        print('\n'.join(reply['content']['traceback']))
+                        error += 1
+                    else:
+                        success += 1
                 else:
                     success += 1
 
