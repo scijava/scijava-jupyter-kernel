@@ -170,45 +170,4 @@ public interface ImageJNotebookService extends ImageJService {
 		final int[] gridLayout,
 		@SuppressWarnings("unchecked") final RandomAccessibleInterval<T>... images);
 
-	/**
-	 * Outputs a table of public methods for the given object.
-	 * 
-	 * @param o The object for which to generate a table of its methods.
-	 * @return a table of the object's public methods.
-	 */
-	default NotebookTable methods(final Object o) {
-		if (o == null) return null;
-		return methods(o.getClass());
-	}
-
-	/**
-	 * Outputs a table of public methods for the given object.
-	 * 
-	 * @param o The object for which to generate a table of its methods.
-	 * @param prefix The starting characters to use for limiting method names.
-	 * @return a table of the object's public methods.
-	 */
-	default NotebookTable methods(final Object o, final String prefix) {
-		if (o == null) return null;
-		return methods(o.getClass(), prefix);
-	}
-
-	/**
-	 * Outputs a table of public methods for the given class.
-	 * 
-	 * @param type The class for which to generate a table of its methods.
-	 * @return a table of the class's public methods.
-	 */
-	default NotebookTable methods(final Class<?> type) {
-		return methods(type, "");
-	}
-
-	/**
-	 * Outputs a table of public methods for the given class.
-	 * 
-	 * @param type The class for which to generate a table of its methods.
-	 * @param prefix The starting characters to use for limiting method names.
-	 * @return a table of the class's public methods.
-	 */
-	NotebookTable methods(Class<?> type, String prefix);
 }

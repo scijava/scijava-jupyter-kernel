@@ -29,27 +29,17 @@
  */
 package org.scijava.jupyter.notebook;
 
-import net.imagej.Dataset;
-import net.imagej.notebook.ImageJNotebookService;
-import net.imglib2.RandomAccessibleInterval;
-import net.imglib2.type.numeric.RealType;
 import org.scijava.service.SciJavaService;
 
 /**
- * Interface for services which provide handy methods for working with scientific notebook software.
+ * Interface for services which provide handy methods for working with
+ * scientific notebook software.
  *
  * @author Curtis Rueden
  */
 public interface NotebookService extends SciJavaService {
 
     public Object display(Object object);
-    
+
     public Object displayMimetype(String mimetype, String content);
-
-    public <T extends RealType<T>> Object displayImage(final RandomAccessibleInterval<T> source);
-
-    public Object displayImage(final Dataset source);
-
-    public <T extends RealType<T>> Object displayImage(RandomAccessibleInterval<T> source,
-            int xAxis, int yAxis, int cAxis, ImageJNotebookService.ValueScaling scaling, long... pos);
 }

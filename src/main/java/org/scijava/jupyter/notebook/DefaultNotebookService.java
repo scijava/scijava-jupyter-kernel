@@ -31,15 +31,12 @@ package org.scijava.jupyter.notebook;
 
 import com.twosigma.beaker.mimetype.MIMEContainer;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Map;
 import net.imagej.Dataset;
-import net.imagej.axis.Axes;
-import net.imagej.notebook.DefaultImageJNotebookService;
-import net.imagej.notebook.ImageJNotebookService;
-import net.imglib2.RandomAccessibleInterval;
-import net.imglib2.img.Img;
-import net.imglib2.type.numeric.RealType;
+import org.scijava.convert.ConvertService;
+import org.scijava.jupyter.notebook.converter.ouput.JSONNotebookOutput;
+import org.scijava.jupyter.notebook.converter.ouput.PNGImageNotebookOutput;
+import org.scijava.jupyter.notebook.converter.ouput.PlainNotebookOutput;
 import org.scijava.log.LogService;
 
 import org.scijava.plugin.Parameter;
@@ -60,11 +57,29 @@ public class DefaultNotebookService extends AbstractService implements
     private LogService log;
 
     @Parameter
-    private DefaultImageJNotebookService ijnb;
+    private ConvertService converService;
 
+    /**
+     * Use the most appropriate output type according to the input object.
+     *
+     * @param object
+     * @return
+     */
     @Override
     public Object display(Object object) {
-        return object;
+
+        if (object.getClass() == String.class) {
+            return converService.convert(object, PlainNotebookOutput.class);
+
+        } else if (object.getClass() == Map.class) {
+            return converService.convert(object, JSONNotebookOutput.class);
+
+        } else if (Dataset.class.isAssignableFrom(object.getClass())) {
+            return converService.convert(object, PNGImageNotebookOutput.class);
+
+        } else {
+            return object;
+        }
     }
 
     /**
@@ -82,51 +97,12 @@ public class DefaultNotebookService extends AbstractService implements
                 findFirst().orElse(null);
 
         if (mimeTypeObj == null) {
-            log.error("The mimetype '" + mimetype + "' is not supported");
-            return null;
+            log.warn("The mimetype '" + mimetype + "' is not supported");
+            return content;
         } else {
             return new MIMEContainer(mimeTypeObj, content);
         }
 
-    }
-
-    @Override
-    public <T extends RealType<T>> Object displayImage(
-            final RandomAccessibleInterval<T> source, //
-            final int xAxis, final int yAxis, final int cAxis, //
-            final ImageJNotebookService.ValueScaling scaling, final long... pos) {
-
-        String mimetype = "image/png";
-        String base64Image = (String) ijnb.display(source, xAxis, yAxis, cAxis, scaling, pos);
-
-        return this.displayMimetype(mimetype, base64Image);
-    }
-
-    @Override
-    public Object displayImage(final Dataset source) {
-
-        String mimetype = "image/png";
-        String base64Image = (String) ijnb.display((Img) source, //
-                source.dimensionIndex(Axes.X), //
-                source.dimensionIndex(Axes.Y), //
-                source.dimensionIndex(Axes.CHANNEL), ImageJNotebookService.ValueScaling.AUTO);
-
-        return this.displayMimetype(mimetype, base64Image);
-    }
-
-    @Override
-    public <T extends RealType<T>> Object displayImage(
-            final RandomAccessibleInterval<T> source) {
-        // NB: Assume <=3 samples in the 3rd dimension means channels. Of course,
-        // we have no metadata with a vanilla RAI, but this is a best guess;
-        // 3rd dimensions with >3 samples are probably something like Z or time.
-        final int cAxis = source.numDimensions() > 2 && source.dimension(2) <= 3 ? 2 : -1;
-
-        String mimetype = "image/png";
-        String base64Image = (String) ijnb.display(source, 0, 1, cAxis,
-                ImageJNotebookService.ValueScaling.AUTO);
-
-        return this.displayMimetype(mimetype, base64Image);
     }
 
 }
