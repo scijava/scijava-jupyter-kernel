@@ -54,8 +54,6 @@ public class ScijavaEvaluator implements Evaluator {
     private ScriptLanguage scriptLanguage;
     private ScriptEngine scriptEngine;
 
-    private Worker worker = null;
-
     protected String shellId;
     protected String sessionId;
 
@@ -90,15 +88,16 @@ public class ScijavaEvaluator implements Evaluator {
     }
 
     @Override
-    public void evaluate(SimpleEvaluationObject seo, String code) {
-        this.worker.setup(seo, code);
-        this.threadService.run(this.worker);
+    public void startWorker() {
+        // Nothing to do
     }
 
     @Override
-    public void startWorker() {
-        log.debug("Start worker");
-        this.worker = new Worker(this.context, this.scriptEngine, this.scriptLanguage);
+    public void evaluate(SimpleEvaluationObject seo, String code) {
+        Worker worker = new Worker(this.context, this.scriptEngine, this.scriptLanguage);
+        worker.setup(seo, code);
+        this.threadService.queue(worker);
+        //this.threadService.queue(logger);
     }
 
     @Override
@@ -129,4 +128,5 @@ public class ScijavaEvaluator implements Evaluator {
     public String getLanguage() {
         return this.languageUsed;
     }
+
 }
