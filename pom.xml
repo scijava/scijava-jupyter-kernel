@@ -123,6 +123,7 @@
             <version>2.0-SNAPSHOT</version>
         </dependency>
         
+        <!-- The package to convert images to PNG/JPEG -->
         <dependency>
             <groupId>com.github.jai-imageio</groupId>
             <artifactId>jai-imageio-core</artifactId>
@@ -190,7 +191,6 @@
         <dependency>
             <groupId>net.imagej</groupId>
             <artifactId>imagej-ops</artifactId>
-
         </dependency>
 
     </dependencies>
