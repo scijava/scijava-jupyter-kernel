@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.scijava.jupyter.notebook.converter.ouput;
+package org.scijava.notebook.converter.ouput;
 
 import com.twosigma.beaker.mimetype.MIMEContainer;
 
@@ -21,13 +21,13 @@ import com.twosigma.beaker.mimetype.MIMEContainer;
  *
  * @author hadim
  */
-public class HTMLNotebookOutput extends NotebookOutput {
+public class JPGImageNotebookOutput extends NotebookOutput {
 
     public static MIMEContainer.MIME getMimeType() {
-        return MIMEContainer.MIME.TEXT_HTML;
+        return MIMEContainer.MIME.IMAGE_JPEG;
     }
 
-    public HTMLNotebookOutput(MIME mimeTypeObj, String content) {
+    public JPGImageNotebookOutput(MIME mimeTypeObj, String content) {
         super(mimeTypeObj, content);
     }
 

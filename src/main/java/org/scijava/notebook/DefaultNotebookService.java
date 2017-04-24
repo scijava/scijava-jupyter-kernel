@@ -27,16 +27,16 @@
  * POSSIBILITY OF SUCH DAMAGE.
  * #L%
  */
-package org.scijava.jupyter.notebook;
+package org.scijava.notebook;
 
 import com.twosigma.beaker.mimetype.MIMEContainer;
 import java.util.Arrays;
 import java.util.Map;
 import net.imagej.Dataset;
 import org.scijava.convert.ConvertService;
-import org.scijava.jupyter.notebook.converter.ouput.JSONNotebookOutput;
-import org.scijava.jupyter.notebook.converter.ouput.PNGImageNotebookOutput;
-import org.scijava.jupyter.notebook.converter.ouput.PlainNotebookOutput;
+import org.scijava.notebook.converter.ouput.JSONNotebookOutput;
+import org.scijava.notebook.converter.ouput.PNGImageNotebookOutput;
+import org.scijava.notebook.converter.ouput.PlainNotebookOutput;
 import org.scijava.log.LogService;
 
 import org.scijava.plugin.Parameter;

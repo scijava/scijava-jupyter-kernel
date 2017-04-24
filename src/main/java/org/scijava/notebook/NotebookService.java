@@ -27,7 +27,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  * #L%
  */
-package org.scijava.jupyter.notebook;
+package org.scijava.notebook;
 
 import org.scijava.service.SciJavaService;
 

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.scijava.jupyter.notebook.converter;
+package org.scijava.notebook.converter;
 
 import net.imagej.Dataset;
 import net.imagej.axis.Axes;
@@ -22,7 +22,7 @@ import net.imagej.notebook.ImageJNotebookService;
 import net.imglib2.img.Img;
 import org.scijava.Priority;
 import org.scijava.convert.Converter;
-import org.scijava.jupyter.notebook.converter.ouput.PNGImageNotebookOutput;
+import org.scijava.notebook.converter.ouput.PNGImageNotebookOutput;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 

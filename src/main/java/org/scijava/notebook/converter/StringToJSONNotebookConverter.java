@@ -13,21 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.scijava.jupyter.notebook.converter;
+package org.scijava.notebook.converter;
 
-import java.util.Map;
 import org.scijava.Priority;
 import org.scijava.convert.Converter;
-import org.scijava.jupyter.notebook.converter.ouput.JSONNotebookOutput;
+import org.scijava.notebook.converter.ouput.JSONNotebookOutput;
 import org.scijava.plugin.Plugin;
 
 @Plugin(type = Converter.class, priority = Priority.LOW_PRIORITY)
-public class MapToJSONNotebookConverter<O extends Map>
+public class StringToJSONNotebookConverter<O extends String>
         extends NotebookOutputConverter<O, JSONNotebookOutput> {
 
     @Override
     public Class getInputType() {
-        return Map.class;
+        return String.class;
     }
 
     @Override
@@ -38,7 +37,7 @@ public class MapToJSONNotebookConverter<O extends Map>
     @Override
     public JSONNotebookOutput convert(Object object) {
         return new JSONNotebookOutput(JSONNotebookOutput.getMimeType(),
-                (String) object.toString());
+                (String) object);
     }
 
 }

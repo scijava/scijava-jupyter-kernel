@@ -13,10 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.scijava.jupyter.notebook.converter;
+package org.scijava.notebook.converter;
 
 import org.scijava.convert.AbstractConverter;
-import org.scijava.jupyter.notebook.converter.ouput.NotebookOutput;
+import org.scijava.notebook.converter.ouput.NotebookOutput;
 import org.scijava.log.LogService;
 import org.scijava.plugin.Parameter;
 
