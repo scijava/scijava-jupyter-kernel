@@ -38,5 +38,5 @@ jupyter kernelspec list
 
 # Now run some notebooks
 
-python scripts/runipy.py notebooks/Python.ipynb --kernel_name scijava-python
-python scripts/runipy.py notebooks/Groovy.ipynb --kernel_name scijava-groovy
+python "$TRAVIS_BUILD_DIR/scripts/runipy.py" "$TRAVIS_BUILD_DIR/notebooks/Python.ipynb" --kernel_name "scijava-python"
+python "$TRAVIS_BUILD_DIR/scripts/runipy.py" "$TRAVIS_BUILD_DIR/notebooks/Groovy.ipynb" --kernel_name "scijava-groovy"
