@@ -118,35 +118,37 @@ public class DefaultNotebookService extends AbstractService implements
             final int xAxis, final int yAxis, final int cAxis, //
             final ImageJNotebookService.ValueScaling scaling, final long... pos) {
 
-        return ijnb.display(source, xAxis, yAxis, cAxis, scaling, pos);
+        String mimetype = "image/png";
+        String base64Image = (String) ijnb.display(source, xAxis, yAxis, cAxis, scaling, pos);
+
+        return this.displayMimetype(mimetype, base64Image);
     }
 
     @Override
     public Object displayImage(final Dataset source) {
-        return ijnb.display((Img) source, //
+
+        String mimetype = "image/png";
+        String base64Image = (String) ijnb.display((Img) source, //
                 source.dimensionIndex(Axes.X), //
                 source.dimensionIndex(Axes.Y), //
                 source.dimensionIndex(Axes.CHANNEL), ImageJNotebookService.ValueScaling.AUTO);
+
+        return this.displayMimetype(mimetype, base64Image);
     }
 
-    /**
-     * Converts the given image to a form renderable by scientific notebooks.
-     *
-     * @param <T>
-     * @param source The image to render.
-     * @return an object that the notebook knows how to draw onscreen.
-     */
     @Override
     public <T extends RealType<T>> Object displayImage(
             final RandomAccessibleInterval<T> source) {
         // NB: Assume <=3 samples in the 3rd dimension means channels. Of course,
         // we have no metadata with a vanilla RAI, but this is a best guess;
         // 3rd dimensions with >3 samples are probably something like Z or time.
-        final int cAxis
-                = //
-                source.numDimensions() > 2 && source.dimension(2) <= 3 ? 2 : -1;
+        final int cAxis = source.numDimensions() > 2 && source.dimension(2) <= 3 ? 2 : -1;
 
-        return ijnb.display(source, 0, 1, cAxis, ImageJNotebookService.ValueScaling.AUTO);
+        String mimetype = "image/png";
+        String base64Image = (String) ijnb.display(source, 0, 1, cAxis,
+                ImageJNotebookService.ValueScaling.AUTO);
+
+        return this.displayMimetype(mimetype, base64Image);
     }
 
 }
