@@ -135,7 +135,7 @@ public class Worker implements Runnable {
         }
 
         this.seo.clrOutputHandler();
-
+        
     }
 
     public ModulePreprocessor preProcess(ScriptModule module) {
