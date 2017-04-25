@@ -10,7 +10,7 @@
 
 *Under the hood `scijava-jupyter-kernel` uses the [Beaker base kernel](https://github.com/twosigma/beakerx/tree/master/kernel/base).*
 
-Scripting languages supported are :
+[Scripting languages](https://imagej.net/Scripting#Supported_languages) supported are :
 
 - Groovy
 - Python
@@ -22,7 +22,7 @@ Scripting languages supported are :
 - Ruby
 - Scala
 
-See here for more details : https://imagej.net/Scripting#Supported_languages
+See also, the collection of [notebook examples](./notebooks/).
 
 ## Installation - Standalone
 
