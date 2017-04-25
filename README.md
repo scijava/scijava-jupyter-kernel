@@ -56,16 +56,6 @@ jupyter lab
 
 ## Installation - With Fiji integration
 
-**Note : Installation will be much more easier once integrated to Fiji.**
-
-- Clone, compile and install Beakerx base kernel :
-
-```bash
-git clone https://github.com/twosigma/beakerx.git
-cd beakerx/kernel/base/
-gradle publishToMavenLocal
-```
-
 - Clone and compile `scijava-jupyter-kernel` :
 
 ```bash

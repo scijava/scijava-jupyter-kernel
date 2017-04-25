@@ -2,14 +2,6 @@
 set -ex
 
 
-# Build and install Beakerx base kernel (no artifact available for now)
-
-cd $HOME/
-git clone --depth 1 https://github.com/twosigma/beakerx.git
-cd beakerx/kernel/base
-gradle publishToMavenLocal
-
-
 # Define some variables
 
 export USER="Scijava-jupyter-kernel"
