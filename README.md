@@ -41,7 +41,11 @@ source install scijava
 
 # Install the kernel
 conda install scijava-jupyter-kernel
+```
 
+- Usage :
+
+```bash
 # Check the kernels have been installed
 jupyter kernelspec list
 
