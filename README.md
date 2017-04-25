@@ -80,6 +80,12 @@ mvn -Dimagej.app.directory="PATH-TO-YOUR-IMAGEJ-REPO" install
 
 ![Scijava Jupyter Kernel Installation](teaser.gif)
 
+## Development
+
+- [Travis](https://travis-ci.org/hadim/scijava-jupyter-kernel) is used for CI.
+- [Notebook examples](./notebooks/) are tested for each commit with the [`runipy.py` script](./scripts/runipy.py).
+- [The Conda Forge recipe](https://github.com/conda-forge/scijava-jupyter-kernel-feedstock) is updated for each new release.
+
 ## License
 
 Under Apache 2.0 license. See [LICENSE](LICENSE).
