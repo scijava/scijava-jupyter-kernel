@@ -80,10 +80,6 @@ mvn -Dimagej.app.directory="PATH-TO-YOUR-IMAGEJ-REPO" install
 
 ![Scijava Jupyter Kernel Installation](teaser.gif)
 
-## About Python
-
-We strongly suggest the use of the [Anaconda Python distribution](https://www.continuum.io/downloads) + the use of the [conda-forge channel](https://conda-forge.github.io/). That way, your Python and all your libs will be kept synced and updated.
-
 ## License
 
 Under Apache 2.0 license. See [LICENSE](LICENSE).
