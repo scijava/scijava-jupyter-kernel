@@ -27,17 +27,25 @@
  * POSSIBILITY OF SUCH DAMAGE.
  * #L%
  */
-package org.scijava.jupyter.notebook;
+package org.scijava.notebook;
 
 import org.scijava.service.SciJavaService;
 
 /**
- * Interface for services which provide handy methods for working with scientific notebook software.
+ * Interface for services which provide handy methods for working with
+ * scientific notebook software.
  *
  * @author Curtis Rueden
  */
 public interface NotebookService extends SciJavaService {
 
+    public Object display(Object object);
+
     public Object displayMimetype(String mimetype, String content);
-    public Object displayAuto(Object object);
+    
+    public Object displayAsHTML(String content);
+    
+    public Object displayAsMarkdown(String content);
+    
+    public Object displayAsLatex(String content);
 }

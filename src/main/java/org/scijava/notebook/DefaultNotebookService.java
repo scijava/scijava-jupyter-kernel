@@ -27,17 +27,16 @@
  * POSSIBILITY OF SUCH DAMAGE.
  * #L%
  */
-package org.scijava.jupyter.notebook;
+package org.scijava.notebook;
 
 import com.twosigma.beaker.mimetype.MIMEContainer;
 import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import jupyter.Displayer;
-import jupyter.Displayers;
-import org.scijava.jupyter.notebook.displayer.ListDisplayer;
-import org.scijava.jupyter.notebook.displayer.StringDisplayer;
+import org.scijava.convert.ConvertService;
 import org.scijava.log.LogService;
+import org.scijava.notebook.converter.ouput.HTMLNotebookOutput;
+import org.scijava.notebook.converter.ouput.LatexNotebookOutput;
+import org.scijava.notebook.converter.ouput.MarkdownNotebookOutput;
+import org.scijava.notebook.converter.ouput.NotebookOutput;
 
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
@@ -56,9 +55,24 @@ public class DefaultNotebookService extends AbstractService implements
     @Parameter
     private LogService log;
 
-    public DefaultNotebookService() {
-        Displayers.register(String.class, (Displayer) StringDisplayer.get());
-        Displayers.register(List.class, (Displayer) ListDisplayer.get());
+    @Parameter
+    private ConvertService converService;
+
+    /**
+     * Use the most appropriate output type according to the input object.
+     *
+     * @param object
+     * @return
+     */
+    @Override
+    public Object display(Object object) {
+
+        if (converService.supports(object, NotebookOutput.class)) {
+            return converService.convert(object, NotebookOutput.class);
+        } else {
+            return object;
+        }
+
     }
 
     /**
@@ -76,30 +90,39 @@ public class DefaultNotebookService extends AbstractService implements
                 findFirst().orElse(null);
 
         if (mimeTypeObj == null) {
-            log.error("The mimetype '" + mimetype + "' is not supported");
-            return null;
+            log.warn("The mimetype '" + mimetype + "' is not supported");
+            return content;
         } else {
             return new MIMEContainer(mimeTypeObj, content);
         }
 
     }
 
-    /**
-     * Try to display the object according to its type.
-     *
-     * @param object
-     * @return
-     */
     @Override
-    public Object displayAuto(Object object) {
+    public Object displayAsHTML(String content) {
+        if (converService.supports(content, HTMLNotebookOutput.class)) {
+            return converService.convert(content, HTMLNotebookOutput.class);
+        } else {
+            return content;
+        }
+    }
 
-        Map<String, String> richResult = Displayers.display(object);
+    @Override
+    public Object displayAsMarkdown(String content) {
+        if (converService.supports(content, MarkdownNotebookOutput.class)) {
+            return converService.convert(content, MarkdownNotebookOutput.class);
+        } else {
+            return content;
+        }
+    }
 
-        // Only take the first one since Beakerx can only send one for now.
-        String mimetype = (String) richResult.keySet().toArray()[0];
-        String content = richResult.get(mimetype);
-
-        return displayMimetype(mimetype, content);
+    @Override
+    public Object displayAsLatex(String content) {
+        if (converService.supports(content, LatexNotebookOutput.class)) {
+            return converService.convert(content, LatexNotebookOutput.class);
+        } else {
+            return content;
+        }
     }
 
 }

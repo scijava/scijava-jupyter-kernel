@@ -13,27 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.scijava.jupyter.notebook.displayer;
+package org.scijava.notebook.converter.ouput;
 
-import java.util.HashMap;
-import java.util.Map;
-import jupyter.Displayer;
+import com.twosigma.beaker.mimetype.MIMEContainer;
 
-public class ListDisplayer extends Displayer {
+/**
+ *
+ * @author hadim
+ */
+public class PlainNotebookOutput extends NotebookOutput {
 
-    private static final ListDisplayer INSTANCE = new ListDisplayer();
-
-    public static Displayer<Object> get() {
-        return INSTANCE;
+    public static MIMEContainer.MIME getMimeType() {
+        return MIMEContainer.MIME.TEXT_PLAIN;
     }
 
-    @Override
-    public Map<String, String> display(Object obj) {
-        Map<String, String> result = new HashMap<>();
-
-        result.put("text/plain", obj.toString());
-
-        return result;
+    public PlainNotebookOutput(MIME mimeTypeObj, String content) {
+        super(mimeTypeObj, content);
     }
 
 }
