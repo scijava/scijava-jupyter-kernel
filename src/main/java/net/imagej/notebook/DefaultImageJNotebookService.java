@@ -80,11 +80,11 @@ public class DefaultImageJNotebookService extends AbstractService implements
     private OpService ops;
 
     @Override
-    public <T extends RealType<T>> Object display(
+    public <T extends RealType<T>> Object RAIToPNG(
             final RandomAccessibleInterval<T> source, //
             final int xAxis, final int yAxis, final int cAxis, //
             final ValueScaling scaling, final long... pos) {
-        
+
         final IntervalView<T> image = ops.transform().zeroMin(source);
 
         final int w = xAxis >= 0 ? (int) image.dimension(xAxis) : 1;
@@ -114,7 +114,7 @@ public class DefaultImageJNotebookService extends AbstractService implements
             final ColorTable8 lut = c == 1
                     ? //
                     ColorTables.GRAYS : ColorTables.getDefaultColorTable(i);
-            converters.add(new RealLUTConverter<T>(min, max, lut));
+            converters.add(new RealLUTConverter<>(min, max, lut));
         }
         final CompositeXYProjector<T> proj = new CompositeXYProjector<>(image,
                 target, converters, cAxis);
@@ -141,8 +141,8 @@ public class DefaultImageJNotebookService extends AbstractService implements
                     @SuppressWarnings("unchecked") final RandomAccessibleInterval<T>... images) {
         // Count the actual number of image dimensions.
         int numDims = 0;
-        for (int i = 0; i < images.length; i++) {
-            numDims = Math.max(numDims, images[i].numDimensions());
+        for (RandomAccessibleInterval<T> image : images) {
+            numDims = Math.max(numDims, image.numDimensions());
         }
 
         // Pad any missing grid dimensions.

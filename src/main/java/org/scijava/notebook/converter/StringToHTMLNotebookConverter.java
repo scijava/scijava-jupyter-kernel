@@ -17,12 +17,12 @@ package org.scijava.notebook.converter;
 
 import org.scijava.Priority;
 import org.scijava.convert.Converter;
-import org.scijava.notebook.converter.ouput.PlainNotebookOutput;
+import org.scijava.notebook.converter.ouput.HTMLNotebookOutput;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Converter.class, priority = Priority.FIRST_PRIORITY)
-public class StringToPlainNotebookConverter<O extends String>
-        extends NotebookOutputConverter<O, PlainNotebookOutput> {
+@Plugin(type = Converter.class, priority = Priority.LOW_PRIORITY)
+public class StringToHTMLNotebookConverter<O extends String>
+        extends NotebookOutputConverter<O, HTMLNotebookOutput> {
 
     @Override
     public Class getInputType() {
@@ -31,12 +31,12 @@ public class StringToPlainNotebookConverter<O extends String>
 
     @Override
     public Class getOutputType() {
-        return PlainNotebookOutput.class;
+        return HTMLNotebookOutput.class;
     }
 
     @Override
-    public PlainNotebookOutput convert(Object object) {
-        return new PlainNotebookOutput(PlainNotebookOutput.getMimeType(),
+    public HTMLNotebookOutput convert(Object object) {
+        return new HTMLNotebookOutput(HTMLNotebookOutput.getMimeType(),
                 (String) object);
     }
 

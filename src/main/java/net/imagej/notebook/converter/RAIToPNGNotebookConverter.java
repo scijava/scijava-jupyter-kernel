@@ -13,29 +13,29 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.scijava.notebook.converter;
+package net.imagej.notebook.converter;
 
-import net.imagej.Dataset;
-import net.imagej.axis.Axes;
-import net.imagej.notebook.DefaultImageJNotebookService;
 import net.imagej.notebook.ImageJNotebookService;
+import net.imagej.notebook.ImageJNotebookService.ValueScaling;
+import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.img.Img;
 import org.scijava.Priority;
 import org.scijava.convert.Converter;
+import org.scijava.notebook.converter.NotebookOutputConverter;
 import org.scijava.notebook.converter.ouput.PNGImageNotebookOutput;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 @Plugin(type = Converter.class, priority = Priority.LOW_PRIORITY)
-public class DatasetToPNGNotebookConverter<O extends Dataset>
+public class RAIToPNGNotebookConverter<O extends RandomAccessibleInterval>
         extends NotebookOutputConverter<O, PNGImageNotebookOutput> {
 
     @Parameter
-    private DefaultImageJNotebookService ijnb;
-    
+    private ImageJNotebookService ijnb;
+
     @Override
     public Class getInputType() {
-        return Dataset.class;
+        return RandomAccessibleInterval.class;
     }
 
     @Override
@@ -45,15 +45,16 @@ public class DatasetToPNGNotebookConverter<O extends Dataset>
 
     @Override
     public PNGImageNotebookOutput convert(Object object) {
-        
-        Dataset source = (Dataset) object;
-        
-        String base64Image = (String) ijnb.display((Img) source, //
-                source.dimensionIndex(Axes.X),
-                source.dimensionIndex(Axes.Y),
-                source.dimensionIndex(Axes.CHANNEL),
-                ImageJNotebookService.ValueScaling.AUTO);
-        
+
+        Img source = (Img) object;
+
+        // NB: Assume <=3 samples in the 3rd dimension means channels. Of course,
+        // we have no metadata with a vanilla RAI, but this is a best guess;
+        // 3rd dimensions with >3 samples are probably something like Z or time.
+        final int cAxis = source.numDimensions() > 2 && source.dimension(2) <= 3 ? 2 : -1;
+
+        String base64Image = (String) ijnb.RAIToPNG(source, 0, 1, cAxis, ValueScaling.AUTO);
+
         return new PNGImageNotebookOutput(PNGImageNotebookOutput.getMimeType(), base64Image);
     }
 

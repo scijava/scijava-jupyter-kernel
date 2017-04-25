@@ -31,13 +31,12 @@ package org.scijava.notebook;
 
 import com.twosigma.beaker.mimetype.MIMEContainer;
 import java.util.Arrays;
-import java.util.Map;
-import net.imagej.Dataset;
 import org.scijava.convert.ConvertService;
-import org.scijava.notebook.converter.ouput.JSONNotebookOutput;
-import org.scijava.notebook.converter.ouput.PNGImageNotebookOutput;
-import org.scijava.notebook.converter.ouput.PlainNotebookOutput;
 import org.scijava.log.LogService;
+import org.scijava.notebook.converter.ouput.HTMLNotebookOutput;
+import org.scijava.notebook.converter.ouput.LatexNotebookOutput;
+import org.scijava.notebook.converter.ouput.MarkdownNotebookOutput;
+import org.scijava.notebook.converter.ouput.NotebookOutput;
 
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
@@ -68,18 +67,12 @@ public class DefaultNotebookService extends AbstractService implements
     @Override
     public Object display(Object object) {
 
-        if (object.getClass() == String.class) {
-            return converService.convert(object, PlainNotebookOutput.class);
-
-        } else if (object.getClass() == Map.class) {
-            return converService.convert(object, JSONNotebookOutput.class);
-
-        } else if (Dataset.class.isAssignableFrom(object.getClass())) {
-            return converService.convert(object, PNGImageNotebookOutput.class);
-
+        if (converService.supports(object, NotebookOutput.class)) {
+            return converService.convert(object, NotebookOutput.class);
         } else {
             return object;
         }
+
     }
 
     /**
@@ -103,6 +96,33 @@ public class DefaultNotebookService extends AbstractService implements
             return new MIMEContainer(mimeTypeObj, content);
         }
 
+    }
+
+    @Override
+    public Object displayAsHTML(String content) {
+        if (converService.supports(content, HTMLNotebookOutput.class)) {
+            return converService.convert(content, HTMLNotebookOutput.class);
+        } else {
+            return content;
+        }
+    }
+
+    @Override
+    public Object displayAsMarkdown(String content) {
+        if (converService.supports(content, MarkdownNotebookOutput.class)) {
+            return converService.convert(content, MarkdownNotebookOutput.class);
+        } else {
+            return content;
+        }
+    }
+
+    @Override
+    public Object displayAsLatex(String content) {
+        if (converService.supports(content, LatexNotebookOutput.class)) {
+            return converService.convert(content, LatexNotebookOutput.class);
+        } else {
+            return content;
+        }
     }
 
 }

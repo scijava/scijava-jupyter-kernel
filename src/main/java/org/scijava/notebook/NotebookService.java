@@ -42,4 +42,10 @@ public interface NotebookService extends SciJavaService {
     public Object display(Object object);
 
     public Object displayMimetype(String mimetype, String content);
+    
+    public Object displayAsHTML(String content);
+    
+    public Object displayAsMarkdown(String content);
+    
+    public Object displayAsLatex(String content);
 }
