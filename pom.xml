@@ -9,7 +9,7 @@
     </parent>
 
     <artifactId>scijava-jupyter-kernel</artifactId>
-    <version>0.2.6</version>
+    <version>0.2.7-SNAPSHOT</version>
 
     <name>scijava-jupyter-kernel</name>
     <description>A Java kernel for Jupyter.</description>
