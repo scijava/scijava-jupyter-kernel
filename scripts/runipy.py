@@ -1,3 +1,7 @@
+# This script is used to test notebooks in `./notebooks/`
+# when commits are pushed on the remote repo.
+# CI service used is Travis.
+
 import argparse
 import sys
 
