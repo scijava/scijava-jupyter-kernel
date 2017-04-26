@@ -33,19 +33,16 @@ See also, the collection of [notebook examples](./notebooks/).
 # Add the conda-forge channel
 conda config --add channels conda-forge
 
-# Create an isolated environment
-conda create --name scijava openjdk
-
-# Activate the scijava environment
-source install scijava
-
-# Install the kernel
-conda install scijava-jupyter-kernel
+# Create an isolated environment called `java_env` and install the kernel
+conda create --name java_env scijava-jupyter-kernel
 ```
 
 - Usage :
 
 ```bash
+# Activate the `java_env` environment
+source install java_env
+
 # Check the kernels have been installed
 jupyter kernelspec list
 
@@ -79,12 +76,6 @@ mvn -Dimagej.app.directory="PATH-TO-YOUR-IMAGEJ-REPO" install
 ## Screenshot
 
 ![Scijava Jupyter Kernel Installation](teaser.gif)
-
-## Development
-
-- [Travis](https://travis-ci.org/hadim/scijava-jupyter-kernel) is used for CI.
-- [Notebook examples](./notebooks/) are tested for each commit with the [`runipy.py` script](./scripts/runipy.py).
-- [The Conda Forge recipe](https://github.com/conda-forge/scijava-jupyter-kernel-feedstock) is updated for each new release.
 
 ## License
 
