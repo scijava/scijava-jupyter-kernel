@@ -22,7 +22,7 @@
 - Ruby
 - Scala
 
-See also, the collection of [notebook examples](./notebooks/).
+See also, the collection of [notebook examples](./notebooks/Welcome.ipynb).
 
 ## Installation - Standalone
 
