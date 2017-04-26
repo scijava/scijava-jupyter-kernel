@@ -53,7 +53,7 @@ jupyter notebook
 jupyter lab
 ```
 
-*Note : the kernel does not install properly from the root Conda environment. PRs are welcome.*
+*Note : It is suggested to install the kernel in an isolated Conda environment (not in the root environment).*
 
 ## Installation - With Fiji integration
 
