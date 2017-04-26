@@ -35,8 +35,8 @@ jupyter kernelspec list
 
 python "$TRAVIS_BUILD_DIR/scripts/runipy.py" "$TRAVIS_BUILD_DIR/notebooks/Welcome.ipynb" --kernel_name "scijava-python"
 python "$TRAVIS_BUILD_DIR/scripts/runipy.py" "$TRAVIS_BUILD_DIR/notebooks/General.ipynb" --kernel_name "scijava-groovy"
-python "$TRAVIS_BUILD_DIR/scripts/runipy.py" "$TRAVIS_BUILD_DIR/notebooks/Rich\ Output.ipynb" --kernel_name "scijava-python"
-python "$TRAVIS_BUILD_DIR/scripts/runipy.py" "$TRAVIS_BUILD_DIR/notebooks/On-The-Fly\ Grabbing.ipynb" --kernel_name "scijava-python"
+python "$TRAVIS_BUILD_DIR/scripts/runipy.py" "$TRAVIS_BUILD_DIR/notebooks/Rich Output.ipynb" --kernel_name "scijava-python"
+python "$TRAVIS_BUILD_DIR/scripts/runipy.py" "$TRAVIS_BUILD_DIR/notebooks/On-The-Fly Grabbing.ipynb" --kernel_name "scijava-python"
 python "$TRAVIS_BUILD_DIR/scripts/runipy.py" "$TRAVIS_BUILD_DIR/notebooks/ImageJ.ipynb" --kernel_name "scijava-groovy"
 python "$TRAVIS_BUILD_DIR/scripts/runipy.py" "$TRAVIS_BUILD_DIR/notebooks/Scijava.ipynb" --kernel_name "scijava-groovy"
 
