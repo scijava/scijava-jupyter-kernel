@@ -3,6 +3,7 @@
 # CI service used is Travis.
 
 import argparse
+import os
 
 import nbformat
 from nbconvert.preprocessors import ExecutePreprocessor
@@ -17,7 +18,7 @@ def execute_notebook(notebook_path, kernel_name=None):
     ep = ExecutePreprocessor(timeout=600, kernel_name=kernel_name)
 
     try:
-        ep.preprocess(nb, {'metadata': {'path': 'notebooks/'}})
+        ep.preprocess(nb, {'metadata': {'path': os.path.dirname(notebook_path)}})
     except CellExecutionError:
         msg = 'Error executing the notebook "{}".\n\n'.format(notebook_path)
         print(msg)
