@@ -57,14 +57,8 @@ jupyter lab
 
 ## Installation - With Fiji integration
 
-- Clone and compile `scijava-jupyter-kernel` :
-
-```bash
-git clone https://github.com/hadim/scijava-jupyter-kernel.git
-cd scijava-jupyter-kernel
-mvn -Dimagej.app.directory="PATH-TO-YOUR-IMAGEJ-REPO" install
-```
-
+- [Download the last released JAR file](https://github.com/hadim/scijava-jupyter-kernel/releases).
+- Drop it in your Fiji plugins directory.
 - Start Fiji and launch `Analyze > Jupyter Kernel > Install Scijava Kernel`.
 - Set the path to your Python binary.
 - Choose a language (for example `jython` or `groovy`) or you can choose to install all the available languages.
