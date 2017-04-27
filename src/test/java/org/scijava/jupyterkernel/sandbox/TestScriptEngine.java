@@ -25,9 +25,14 @@ public class TestScriptEngine {
         ScriptLanguage scriptLanguage = scriptService.getLanguageByName("python");
         ScriptEngine engine = scriptLanguage.getScriptEngine();
 
-        engine.eval("print('Hello')");
-        Object result = (Object) engine.eval("9+3");
+        Object result = engine.eval("p=999\n555");
+        System.out.println(result);
+
+        scriptService = context.getService(ScriptService.class);
+        scriptLanguage = scriptService.getLanguageByName("python");
+        engine = scriptLanguage.getScriptEngine();
         
+        result = engine.eval("555");
         System.out.println(result);
 
         context.dispose();
