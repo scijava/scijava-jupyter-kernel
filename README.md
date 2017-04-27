@@ -67,8 +67,6 @@ jupyter lab
 - Check the kernels have been installed with : `jupyter kernelspec list`.
 - Launch `jupyter notebook` or `jupyter lab` and **select the kernel you want in the kernel list**.
 
-## Screenshot
-
 ![Scijava Jupyter Kernel Installation](teaser.gif)
 
 ## Development
