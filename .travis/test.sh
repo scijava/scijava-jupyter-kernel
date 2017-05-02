@@ -32,18 +32,19 @@ jupyter kernelspec list
 
 
 # Now run some notebooks
+NB_COMMAND="jupyter nbconvert --execute --ExecutePreprocessor.timeout=60"
 
-python "$TRAVIS_BUILD_DIR/scripts/runipy.py" "$TRAVIS_BUILD_DIR/notebooks/Welcome.ipynb" --kernel_name "scijava-python"
-python "$TRAVIS_BUILD_DIR/scripts/runipy.py" "$TRAVIS_BUILD_DIR/notebooks/General.ipynb" --kernel_name "scijava-groovy"
-python "$TRAVIS_BUILD_DIR/scripts/runipy.py" "$TRAVIS_BUILD_DIR/notebooks/Rich Output.ipynb" --kernel_name "scijava-python"
-python "$TRAVIS_BUILD_DIR/scripts/runipy.py" "$TRAVIS_BUILD_DIR/notebooks/On-The-Fly Grabbing.ipynb" --kernel_name "scijava-python"
-python "$TRAVIS_BUILD_DIR/scripts/runipy.py" "$TRAVIS_BUILD_DIR/notebooks/ImageJ.ipynb" --kernel_name "scijava-groovy"
-python "$TRAVIS_BUILD_DIR/scripts/runipy.py" "$TRAVIS_BUILD_DIR/notebooks/Scijava.ipynb" --kernel_name "scijava-groovy"
+"$NB_COMMAND $TRAVIS_BUILD_DIR/notebooks/Welcome.ipynb --ExecutePreprocessor.kernel_name=scijava-python"
+"$NB_COMMAND $TRAVIS_BUILD_DIR/notebooks/General.ipynb --ExecutePreprocessor.kernel_name=scijava-groovy"
+"$NB_COMMAND $TRAVIS_BUILD_DIR/notebooks/Rich Output.ipynb --ExecutePreprocessor.kernel_name=scijava-python"
+"$NB_COMMAND $TRAVIS_BUILD_DIR/notebooks/On-The-Fly Grabbing.ipynb --ExecutePreprocessor.kernel_name=scijava-python"
+"$NB_COMMAND $TRAVIS_BUILD_DIR/notebooks/ImageJ.ipynb --ExecutePreprocessor.kernel_name=scijava-groovy"
+"$NB_COMMAND $TRAVIS_BUILD_DIR/notebooks/Scijava.ipynb --ExecutePreprocessor.kernel_name=scijava-groovy"
 
-python "$TRAVIS_BUILD_DIR/scripts/runipy.py" "$TRAVIS_BUILD_DIR/notebooks/languages/Python.ipynb" --kernel_name "scijava-python"
-python "$TRAVIS_BUILD_DIR/scripts/runipy.py" "$TRAVIS_BUILD_DIR/notebooks/languages/Groovy.ipynb" --kernel_name "scijava-groovy"
-python "$TRAVIS_BUILD_DIR/scripts/runipy.py" "$TRAVIS_BUILD_DIR/notebooks/languages/Scala.ipynb" --kernel_name "scijava-scala"
-python "$TRAVIS_BUILD_DIR/scripts/runipy.py" "$TRAVIS_BUILD_DIR/notebooks/languages/Clojure.ipynb" --kernel_name "scijava-clojure"
-python "$TRAVIS_BUILD_DIR/scripts/runipy.py" "$TRAVIS_BUILD_DIR/notebooks/languages/Beanshell.ipynb" --kernel_name "scijava-beanshell"
-python "$TRAVIS_BUILD_DIR/scripts/runipy.py" "$TRAVIS_BUILD_DIR/notebooks/languages/Javascript.ipynb" --kernel_name "scijava-javascript"
+"$NB_COMMAND $TRAVIS_BUILD_DIR/notebooks/languages/Python.ipynb --ExecutePreprocessor.kernel_name=scijava-python"
+"$NB_COMMAND $TRAVIS_BUILD_DIR/notebooks/languages/Groovy.ipynb --ExecutePreprocessor.kernel_name=scijava-groovy"
+"$NB_COMMAND $TRAVIS_BUILD_DIR/notebooks/languages/Scala.ipynb --ExecutePreprocessor.kernel_name=scijava-scala"
+"$NB_COMMAND $TRAVIS_BUILD_DIR/notebooks/languages/Clojure.ipynb --ExecutePreprocessor.kernel_name=scijava-clojure"
+"$NB_COMMAND $TRAVIS_BUILD_DIR/notebooks/languages/Beanshell.ipynb --ExecutePreprocessor.kernel_name=scijava-beanshell"
+"$NB_COMMAND $TRAVIS_BUILD_DIR/notebooks/languages/Javascript.ipynb --ExecutePreprocessor.kernel_name=scijava-javascript"
 
