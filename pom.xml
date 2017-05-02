@@ -119,9 +119,9 @@
 
         <!-- The base kernel that we rely on -->
 	<dependency>
-	    <groupId>com.github.hadim.beakerx</groupId>
+	    <groupId>com.github.twosigma.beakerx</groupId>
 	    <artifactId>beaker-kernel-base</artifactId>
-	    <version>jitpack-SNAPSHOT</version>
+	    <version>264a96dceb</version>
 	</dependency>
         
         <!-- The package to convert images to PNG/JPEG -->

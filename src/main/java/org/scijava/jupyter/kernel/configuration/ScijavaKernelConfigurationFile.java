@@ -37,11 +37,11 @@ public class ScijavaKernelConfigurationFile implements ConfigurationFile {
     @Parameter
     private transient LogService log;
 
-    private File configFile;
+    private final File configFile;
     private Config configuration;
 
-    private String languageName;
-    private String logLevel;
+    private final String languageName;
+    private final String logLevel;
 
     public ScijavaKernelConfigurationFile(Context context, String scriptLanguage, String logLevel, Path connectionFile) {
         context.inject(this);
