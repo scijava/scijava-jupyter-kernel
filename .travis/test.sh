@@ -32,7 +32,7 @@ jupyter kernelspec list
 
 
 # Now run some notebooks
-NB_COMMAND="jupyter nbconvert --execute --ExecutePreprocessor.timeout=60"
+NB_COMMAND="$HOME/conda/bin/jupyter nbconvert --execute --ExecutePreprocessor.timeout=60"
 
 "$NB_COMMAND --ExecutePreprocessor.kernel_name=scijava-python $TRAVIS_BUILD_DIR/notebooks/Welcome.ipynb"
 "$NB_COMMAND --ExecutePreprocessor.kernel_name=scijava-groovy $TRAVIS_BUILD_DIR/notebooks/General.ipynb"
