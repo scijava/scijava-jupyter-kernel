@@ -15,7 +15,7 @@ def execute_notebook(notebook_path, kernel_name=None):
     print("---------------------------")
 
     nb = nbformat.read(notebook_path, nbformat.current_nbformat)
-    ep = ExecutePreprocessor(timeout=600, kernel_name=kernel_name)
+    ep = ExecutePreprocessor(timeout=60, kernel_name=kernel_name)
 
     try:
         ep.preprocess(nb, {'metadata': {'path': os.path.dirname(notebook_path)}})
