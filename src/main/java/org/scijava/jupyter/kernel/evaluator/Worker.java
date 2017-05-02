@@ -135,6 +135,7 @@ public class Worker implements Runnable {
         }
 
         this.seo.clrOutputHandler();
+        this.seo.executeCodeCallback();
         
     }
 

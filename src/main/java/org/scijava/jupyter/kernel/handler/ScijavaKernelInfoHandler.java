@@ -23,6 +23,7 @@ import java.util.HashMap;
 
 import com.twosigma.jupyter.KernelFunctionality;
 import com.twosigma.jupyter.handler.KernelHandler;
+import static com.twosigma.jupyter.handler.KernelHandlerWrapper.wrapBusyIdle;
 import com.twosigma.jupyter.message.Header;
 import com.twosigma.jupyter.message.Message;
 import java.util.List;
@@ -43,6 +44,12 @@ public class ScijavaKernelInfoHandler extends KernelHandler<Message> {
 
     @Override
     public void handle(Message message) {
+        wrapBusyIdle(kernel, message, () -> {
+            handleMsg(message);
+        });
+    }
+
+    private void handleMsg(Message message) {
 
         Message reply = new Message();
 
@@ -61,7 +68,7 @@ public class ScijavaKernelInfoHandler extends KernelHandler<Message> {
         map1.put("nbconverter_exporter", "");
 
         map.put("language_info", map1);
-        String banner = "SciJava Jupyter Kernel v" +  getClass().getPackage().getSpecificationVersion() + " | ";
+        String banner = "SciJava Jupyter Kernel v" + getClass().getPackage().getSpecificationVersion() + " | ";
         banner += "Language : " + this.scriptLanguage.getLanguageName();
         banner += " " + this.scriptLanguage.getLanguageVersion() + "\n";
         map.put("banner", banner);
