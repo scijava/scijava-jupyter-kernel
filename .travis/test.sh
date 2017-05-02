@@ -37,7 +37,7 @@ jupyter nbconvert --execute --ExecutePreprocessor.timeout="60" --ExecutePreproce
 jupyter nbconvert --execute --ExecutePreprocessor.timeout="60" --ExecutePreprocessor.kernel_name="scijava-python" "$TRAVIS_BUILD_DIR/notebooks/Rich Output.ipynb"
 jupyter nbconvert --execute --ExecutePreprocessor.timeout="60" --ExecutePreprocessor.kernel_name="scijava-python" "$TRAVIS_BUILD_DIR/notebooks/On-The-Fly Grabbing.ipynb"
 jupyter nbconvert --execute --ExecutePreprocessor.timeout="60" --ExecutePreprocessor.kernel_name="scijava-groovy" "$TRAVIS_BUILD_DIR/notebooks/ImageJ.ipynb"
-jupyter nbconvert --execute --ExecutePreprocessor.timeout="60" --ExecutePreprocessor.kernel_name="scijava-groovy" "$TRAVIS_BUILD_DIR/notebooks/Scijava.ipynb"
+#jupyter nbconvert --execute --ExecutePreprocessor.timeout="60" --ExecutePreprocessor.kernel_name="scijava-groovy" "$TRAVIS_BUILD_DIR/notebooks/Scijava.ipynb"
 jupyter nbconvert --execute --ExecutePreprocessor.timeout="60" --ExecutePreprocessor.kernel_name="scijava-python" "$TRAVIS_BUILD_DIR/notebooks/languages/Python.ipynb"
 jupyter nbconvert --execute --ExecutePreprocessor.timeout="60" --ExecutePreprocessor.kernel_name="scijava-groovy" "$TRAVIS_BUILD_DIR/notebooks/languages/Groovy.ipynb"
 jupyter nbconvert --execute --ExecutePreprocessor.timeout="60" --ExecutePreprocessor.kernel_name="scijava-scala" "$TRAVIS_BUILD_DIR/notebooks/languages/Scala.ipynb"
