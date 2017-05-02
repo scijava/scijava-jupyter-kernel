@@ -74,7 +74,7 @@ jupyter lab
 ## Development
 
 - [CI with Travis](https://travis-ci.org/hadim/scijava-jupyter-kernel) makes sure the project builds without errors for each new commit.
-- All the [notebook examples](./notebooks) are executed by the kernel during CI with the [runipy.py script](./scripts/runipy.py).
+- All the [notebook examples](./notebooks) are executed by the kernel during CI with [nbconvert](http://nbconvert.readthedocs.io/en/latest/execute_api.html).
 - A [Conda package](https://github.com/conda-forge/scijava-jupyter-kernel-feedstock) is built for each new release.
 
 ## License
