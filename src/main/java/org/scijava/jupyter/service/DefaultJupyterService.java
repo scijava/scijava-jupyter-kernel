@@ -151,9 +151,6 @@ public class DefaultJupyterService extends AbstractService implements JupyterSer
             // Setup the evaluator
             ScijavaEvaluator evaluator = new ScijavaEvaluator(context, id, id, config.getLanguageName());
 
-            // Ugly. Curtis is not going to like it :-(
-            ScijavaKernel.scriptLanguage = evaluator.getScriptLanguage();
-
             // Launch the kernel
             return new ScijavaKernel(context, id, evaluator, config, kernelSocketsFactory);
         });

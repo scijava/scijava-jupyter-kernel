@@ -22,7 +22,9 @@ import com.twosigma.jupyter.KernelParameters;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.script.ScriptEngine;
 
 import org.scijava.Context;
@@ -50,9 +52,8 @@ public class ScijavaEvaluator implements Evaluator {
     @Parameter
     Context context;
 
-    private String languageUsed;
-    private ScriptLanguage scriptLanguage;
-    private ScriptEngine scriptEngine;
+    private Map<String, ScriptEngine> scriptEngines;
+    private Map<String, ScriptLanguage> scriptLanguages;
 
     protected String shellId;
     protected String sessionId;
@@ -63,7 +64,8 @@ public class ScijavaEvaluator implements Evaluator {
         this.shellId = shellId;
         this.sessionId = sessionId;
 
-        this.setLanguage(languageName);
+        this.scriptEngines = new HashMap<>();
+        this.scriptLanguages = new HashMap<>();
     }
 
     @Override
@@ -94,10 +96,16 @@ public class ScijavaEvaluator implements Evaluator {
 
     @Override
     public void evaluate(SimpleEvaluationObject seo, String code) {
-        Worker worker = new Worker(this.context, this.scriptEngine, this.scriptLanguage);
+
+        String languageName = "groovy";
+        this.addLanguage(languageName);
+
+        Worker worker = new Worker(this.context,
+                this.scriptEngines.get(languageName),
+                this.scriptLanguages.get(languageName));
+
         worker.setup(seo, code);
         this.threadService.queue(worker);
-        //this.threadService.queue(logger);
     }
 
     @Override
@@ -107,26 +115,22 @@ public class ScijavaEvaluator implements Evaluator {
         System.exit(0);
     }
 
-    private void setLanguage(String languageName) {
+    private void addLanguage(String languageName) {
 
         if (scriptService.getLanguageByName(languageName) == null) {
             log.error("Script Language for '" + languageName + "' not found.");
             System.exit(1);
         }
 
-        this.languageUsed = languageName;
-        this.scriptLanguage = scriptService.getLanguageByName(languageName);
-        this.scriptEngine = this.scriptLanguage.getScriptEngine();
+        if (!this.scriptLanguages.keySet().contains(languageName)) {
+            this.scriptLanguages.put(languageName, scriptService.getLanguageByName(languageName));
+        }
+        
+        if (!this.scriptEngines.keySet().contains(languageName)) {
+            this.scriptEngines.put(languageName, this.scriptLanguages.get(languageName).getScriptEngine());
+        }
 
-        log.debug("Script Language found for '" + this.languageUsed + "'");
-    }
-
-    public ScriptLanguage getScriptLanguage() {
-        return this.scriptLanguage;
-    }
-
-    public String getLanguage() {
-        return this.languageUsed;
+        log.debug("Script Language found for '" + languageName + "'");
     }
 
 }
