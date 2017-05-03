@@ -5,5 +5,5 @@ cache:
   directories:
     - '$HOME/.m2/repository'
 
-install: ".travis/build.sh"
-script: ".travis/test.sh"
+install: ".ci/build.sh"
+script: ".ci/test.sh"

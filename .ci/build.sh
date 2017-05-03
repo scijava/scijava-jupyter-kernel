@@ -24,7 +24,7 @@ unzip fiji-linux64.zip
 # Install the package
 
 cd $TRAVIS_BUILD_DIR/
-mvn install -Pimagej --settings ".travis/settings.xml"
+mvn install -Pimagej --settings ".ci/settings.xml"
 
 
 # Deploy the package
