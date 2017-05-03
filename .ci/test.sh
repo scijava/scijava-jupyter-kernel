@@ -5,17 +5,17 @@ set -ex
 # Install python
 
 cd $HOME/
-wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh
-bash miniconda.sh -b -p "$HOME/conda"
+wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh > /dev/null 2>&1
+bash miniconda.sh -b -p "$HOME/conda" > /dev/null 2>&1
 export PATH="$HOME/conda/bin:$PATH"
 
 conda config --set always_yes yes --set changeps1 no
 conda config --add channels conda-forge
-conda update --yes conda
-conda update --yes --all
+conda update --yes conda > /dev/null 2>&1
+conda update --yes --all > /dev/null 2>&1
 conda info -a
 
-conda create --yes -n scijava python jupyter nbconvert
+conda create --yes -n scijava python jupyter nbconvert > /dev/null 2>&1
 
 source activate scijava
 

@@ -18,7 +18,7 @@ export PATH="$IJ_PATH:$PATH"
 mkdir -p $IJ_PATH/
 cd $HOME/
 wget --no-check-certificate https://downloads.imagej.net/fiji/latest/fiji-linux64.zip
-unzip fiji-linux64.zip
+unzip fiji-linux64.zip > /dev/null 2>&1
 
 
 # Install the package
