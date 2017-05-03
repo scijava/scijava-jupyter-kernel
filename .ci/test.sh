@@ -33,16 +33,16 @@ jupyter kernelspec list
 
 # Now run some notebooks
 
-jupyter nbconvert --execute --ExecutePreprocessor.timeout="60" --ExecutePreprocessor.kernel_name="scijava-python" "$TRAVIS_BUILD_DIR/notebooks/Welcome.ipynb"
-jupyter nbconvert --execute --ExecutePreprocessor.timeout="60" --ExecutePreprocessor.kernel_name="scijava-groovy" "$TRAVIS_BUILD_DIR/notebooks/General.ipynb"
-jupyter nbconvert --execute --ExecutePreprocessor.timeout="60" --ExecutePreprocessor.kernel_name="scijava-python" "$TRAVIS_BUILD_DIR/notebooks/Rich Output.ipynb"
-jupyter nbconvert --execute --ExecutePreprocessor.timeout="60" --ExecutePreprocessor.kernel_name="scijava-python" "$TRAVIS_BUILD_DIR/notebooks/On-The-Fly Grabbing.ipynb"
-jupyter nbconvert --execute --ExecutePreprocessor.timeout="60" --ExecutePreprocessor.kernel_name="scijava-groovy" "$TRAVIS_BUILD_DIR/notebooks/ImageJ.ipynb"
-jupyter nbconvert --execute --ExecutePreprocessor.timeout="60" --ExecutePreprocessor.kernel_name="scijava-groovy" "$TRAVIS_BUILD_DIR/notebooks/Scijava.ipynb"
-jupyter nbconvert --execute --ExecutePreprocessor.timeout="60" --ExecutePreprocessor.kernel_name="scijava-python" "$TRAVIS_BUILD_DIR/notebooks/languages/Python.ipynb"
-jupyter nbconvert --execute --ExecutePreprocessor.timeout="60" --ExecutePreprocessor.kernel_name="scijava-groovy" "$TRAVIS_BUILD_DIR/notebooks/languages/Groovy.ipynb"
-jupyter nbconvert --execute --ExecutePreprocessor.timeout="60" --ExecutePreprocessor.kernel_name="scijava-scala" "$TRAVIS_BUILD_DIR/notebooks/languages/Scala.ipynb"
-jupyter nbconvert --execute --ExecutePreprocessor.timeout="60" --ExecutePreprocessor.kernel_name="scijava-clojure" "$TRAVIS_BUILD_DIR/notebooks/languages/Clojure.ipynb"
-jupyter nbconvert --execute --ExecutePreprocessor.timeout="60" --ExecutePreprocessor.kernel_name="scijava-beanshell" "$TRAVIS_BUILD_DIR/notebooks/languages/Beanshell.ipynb"
-jupyter nbconvert --execute --ExecutePreprocessor.timeout="60" --ExecutePreprocessor.kernel_name="scijava-javascript" "$TRAVIS_BUILD_DIR/notebooks/languages/Javascript.ipynb"
+#jupyter nbconvert --execute --ExecutePreprocessor.timeout="60" --ExecutePreprocessor.kernel_name="scijava-python" "$TRAVIS_BUILD_DIR/notebooks/Welcome.ipynb"
+#jupyter nbconvert --execute --ExecutePreprocessor.timeout="60" --ExecutePreprocessor.kernel_name="scijava-groovy" "$TRAVIS_BUILD_DIR/notebooks/General.ipynb"
+#jupyter nbconvert --execute --ExecutePreprocessor.timeout="60" --ExecutePreprocessor.kernel_name="scijava-python" "$TRAVIS_BUILD_DIR/notebooks/Rich Output.ipynb"
+#jupyter nbconvert --execute --ExecutePreprocessor.timeout="60" --ExecutePreprocessor.kernel_name="scijava-python" "$TRAVIS_BUILD_DIR/notebooks/On-The-Fly Grabbing.ipynb"
+#jupyter nbconvert --execute --ExecutePreprocessor.timeout="60" --ExecutePreprocessor.kernel_name="scijava-groovy" "$TRAVIS_BUILD_DIR/notebooks/ImageJ.ipynb"
+#jupyter nbconvert --execute --ExecutePreprocessor.timeout="60" --ExecutePreprocessor.kernel_name="scijava-groovy" "$TRAVIS_BUILD_DIR/notebooks/Scijava.ipynb"
+#jupyter nbconvert --execute --ExecutePreprocessor.timeout="60" --ExecutePreprocessor.kernel_name="scijava-python" "$TRAVIS_BUILD_DIR/notebooks/languages/Python.ipynb"
+#jupyter nbconvert --execute --ExecutePreprocessor.timeout="60" --ExecutePreprocessor.kernel_name="scijava-groovy" "$TRAVIS_BUILD_DIR/notebooks/languages/Groovy.ipynb"
+#jupyter nbconvert --execute --ExecutePreprocessor.timeout="60" --ExecutePreprocessor.kernel_name="scijava-scala" "$TRAVIS_BUILD_DIR/notebooks/languages/Scala.ipynb"
+#jupyter nbconvert --execute --ExecutePreprocessor.timeout="60" --ExecutePreprocessor.kernel_name="scijava-clojure" "$TRAVIS_BUILD_DIR/notebooks/languages/Clojure.ipynb"
+#jupyter nbconvert --execute --ExecutePreprocessor.timeout="60" --ExecutePreprocessor.kernel_name="scijava-beanshell" "$TRAVIS_BUILD_DIR/notebooks/languages/Beanshell.ipynb"
+#jupyter nbconvert --execute --ExecutePreprocessor.timeout="60" --ExecutePreprocessor.kernel_name="scijava-javascript" "$TRAVIS_BUILD_DIR/notebooks/languages/Javascript.ipynb"
 
