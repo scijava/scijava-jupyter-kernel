@@ -25,6 +25,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import javax.script.Bindings;
+import javax.script.ScriptContext;
 import javax.script.ScriptEngine;
 
 import org.scijava.Context;
@@ -40,6 +42,8 @@ import org.scijava.thread.ThreadService;
  */
 public class ScijavaEvaluator implements Evaluator {
 
+    private static final String DEFAULT_LANGUAGE = "groovy";
+
     @Parameter
     private LogService log;
 
@@ -52,8 +56,9 @@ public class ScijavaEvaluator implements Evaluator {
     @Parameter
     Context context;
 
-    private Map<String, ScriptEngine> scriptEngines;
-    private Map<String, ScriptLanguage> scriptLanguages;
+    private final Map<String, ScriptEngine> scriptEngines;
+    private final Map<String, ScriptLanguage> scriptLanguages;
+    private String languageName;
 
     protected String shellId;
     protected String sessionId;
@@ -66,6 +71,8 @@ public class ScijavaEvaluator implements Evaluator {
 
         this.scriptEngines = new HashMap<>();
         this.scriptLanguages = new HashMap<>();
+
+        this.languageName = DEFAULT_LANGUAGE;
     }
 
     @Override
@@ -97,14 +104,10 @@ public class ScijavaEvaluator implements Evaluator {
     @Override
     public void evaluate(SimpleEvaluationObject seo, String code) {
 
-        String languageName = "groovy";
-        this.addLanguage(languageName);
+        code = this.setLanguage(code);
 
-        Worker worker = new Worker(this.context,
-                this.scriptEngines.get(languageName),
-                this.scriptLanguages.get(languageName));
-
-        worker.setup(seo, code);
+        Worker worker = new Worker(this.context, this.scriptEngines, this.scriptLanguages);
+        worker.setup(seo, code, this.languageName);
         this.threadService.queue(worker);
     }
 
@@ -123,14 +126,50 @@ public class ScijavaEvaluator implements Evaluator {
         }
 
         if (!this.scriptLanguages.keySet().contains(languageName)) {
-            this.scriptLanguages.put(languageName, scriptService.getLanguageByName(languageName));
-        }
-        
-        if (!this.scriptEngines.keySet().contains(languageName)) {
-            this.scriptEngines.put(languageName, this.scriptLanguages.get(languageName).getScriptEngine());
+
+            Bindings bindings = null;
+            if (!this.scriptEngines.isEmpty()) {
+                String firstLanguage = this.scriptEngines.keySet().iterator().next();
+                bindings = this.scriptEngines.get(firstLanguage).getBindings(ScriptContext.ENGINE_SCOPE);
+            }
+            
+            log.info("Script Language for '" + languageName + "' found.");
+            ScriptLanguage scriptLanguage = scriptService.getLanguageByName(languageName);
+            this.scriptLanguages.put(languageName, scriptLanguage);
+
+            ScriptEngine engine = this.scriptLanguages.get(languageName).getScriptEngine();
+            this.scriptEngines.put(languageName, engine);
+
+            // Not implemented yet
+            //engine.setBindings(this.bindings, ScriptContext.ENGINE_SCOPE);
+            if (bindings != null) {
+                this.initBindings(bindings, engine, scriptLanguage);
+            }
+
         }
 
         log.debug("Script Language found for '" + languageName + "'");
+    }
+
+    private String setLanguage(String code) {
+        if (code.startsWith("#!")) {
+            this.languageName = code.substring(2, code.indexOf(System.getProperty("line.separator"))).trim();
+
+            // Return the code string without the first line
+            code = code.substring(code.indexOf(System.getProperty("line.separator")) + 1);
+        }
+
+        this.addLanguage(this.languageName);
+        return code;
+    }
+
+    private void initBindings(Bindings bindings, ScriptEngine scriptEngine, ScriptLanguage scriptLanguage) {
+
+        Bindings currentBindings = scriptEngine.getBindings(ScriptContext.ENGINE_SCOPE);
+        bindings.keySet().forEach((String key) -> {
+            currentBindings.put(key, scriptLanguage.decode(bindings.get(key)));
+        });
+
     }
 
 }
