@@ -6,21 +6,13 @@
 
 ---
 
-`scijava-jupyter-kernel` aims to be a [Jupyter](http://jupyter.org/) kernel that integrate well with [ImageJ](http://imagej.net). See [here](https://imagej.net/Scijava_Jupyter_Kernel) for more details.
+`scijava-jupyter-kernel` aims to be a polyglot [Jupyter](http://jupyter.org/) kernel. It uses the [Scijava scripting languages](https://imagej.net/Scripting#Supported_languages) to execute the code in Jupyter client and it's possible to use different languages in the same notebook.
+
+Some of the supported languages are Groovy (default), Python, Beanshell, Clojure, Java, Javascript, Ruby and Scala.
+
+The kernel has been originally created to work with ImageJ. See [here](https://imagej.net/Scijava_Jupyter_Kernel) for more details.
 
 *Under the hood `scijava-jupyter-kernel` uses the [Beaker base kernel](https://github.com/twosigma/beakerx/tree/master/kernel/base).*
-
-[Scripting languages](https://imagej.net/Scripting#Supported_languages) supported are :
-
-- Groovy
-- Python
-- BeanShell
-- Clojure
-- Java
-- JavaScript
-- R
-- Ruby
-- Scala
 
 ## Documentation
 
