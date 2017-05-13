@@ -40,13 +40,11 @@ public class ScijavaKernelConfigurationFile implements ConfigurationFile {
     private final File configFile;
     private Config configuration;
 
-    private final String languageName;
     private final String logLevel;
 
-    public ScijavaKernelConfigurationFile(Context context, String scriptLanguage, String logLevel, Path connectionFile) {
+    public ScijavaKernelConfigurationFile(Context context, String logLevel, Path connectionFile) {
         context.inject(this);
         this.configFile = connectionFile.toFile();
-        this.languageName = scriptLanguage;
         this.logLevel = logLevel;
     }
 
@@ -60,10 +58,6 @@ public class ScijavaKernelConfigurationFile implements ConfigurationFile {
             }
         }
         return configuration;
-    }
-
-    public String getLanguageName() {
-        return this.languageName;
     }
 
     public String getLogLevel() {

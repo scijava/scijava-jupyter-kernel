@@ -20,6 +20,9 @@ import java.io.Reader;
 import java.io.StringReader;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
+import java.util.Map;
+import javax.script.Bindings;
+import javax.script.ScriptContext;
 import javax.script.ScriptEngine;
 import org.scijava.Context;
 import org.scijava.convert.ConvertService;
@@ -56,51 +59,55 @@ public class Worker implements Runnable {
     @Parameter
     private ConvertService convertService;
 
-    ScriptLanguage scriptLanguage;
-    ScriptEngine engine;
+    private final Map<String, ScriptEngine> scriptEngines;
+    private final Map<String, ScriptLanguage> scriptLanguages;
+    private String languageName;
 
     SimpleEvaluationObject seo = null;
     String code = null;
 
-    Worker(Context context, ScriptEngine engine, ScriptLanguage scriptLanguage) {
+    Worker(Context context, Map<String, ScriptEngine> scriptEngines, Map<String, ScriptLanguage> scriptLanguages) {
         context.inject(this);
-        this.engine = engine;
-        this.scriptLanguage = scriptLanguage;
+        this.scriptEngines = scriptEngines;
+        this.scriptLanguages = scriptLanguages;
     }
 
-    public void setup(SimpleEvaluationObject seo, String code) {
+    public void setup(SimpleEvaluationObject seo, String code, String languageName) {
         this.seo = seo;
         this.code = code;
+        this.languageName = languageName;
     }
 
     @Override
     public void run() {
 
+        ScriptLanguage scriptLanguage = this.scriptLanguages.get(this.languageName);
+        ScriptEngine scriptEngine = this.scriptEngines.get(this.languageName);
+
         final Reader input = new StringReader(this.code);
-
         ScriptInfo info = new ScriptInfo(context, "dummy.py", input);
-
         this.seo.setOutputHandler();
 
         try {
 
             ScriptModule module = info.createModule();
             context.inject(module);
-            module.setLanguage(this.scriptLanguage);
+            module.setLanguage(scriptLanguage);
 
             // Populate input annotation parameters
             this.preProcess(module);
             for (final ModuleItem<?> item : info.inputs()) {
                 final String name = item.getName();
-                engine.put(name, module.getInput(name));
+                scriptEngine.put(name, module.getInput(name));
             }
 
             // Execute the code
             Object returnValue = null;
             try {
-                returnValue = engine.eval(info.getReader());
-                returnValue = this.scriptLanguage.decode(returnValue);
+                returnValue = scriptEngine.eval(info.getReader());
+                returnValue = scriptLanguage.decode(returnValue);
                 this.seo.finished(returnValue);
+                this.syncBindings(this.languageName, scriptEngine, scriptLanguage);
             } catch (Throwable e) {
 
                 if (e instanceof InvocationTargetException) {
@@ -122,7 +129,7 @@ public class Worker implements Runnable {
                     // NB: This is the special implicit return value output!
                     value = returnValue;
                 } else {
-                    value = engine.get(name);
+                    value = scriptEngine.get(name);
                 }
                 final Object decoded = scriptLanguage.decode(value);
                 final Object typed = convertService.convert(decoded, item.getType());
@@ -136,7 +143,6 @@ public class Worker implements Runnable {
 
         this.seo.clrOutputHandler();
         this.seo.executeCodeCallback();
-        
     }
 
     public ModulePreprocessor preProcess(ScriptModule module) {
@@ -163,6 +169,18 @@ public class Worker implements Runnable {
                 eventService.publish(new ModulePostprocessEvent(module, p));
             }
         }
+    }
+
+    private void syncBindings(String languageName, ScriptEngine scriptEngine, ScriptLanguage scriptLanguage) {
+
+        Bindings currentBindings = scriptEngine.getBindings(ScriptContext.ENGINE_SCOPE);
+        this.scriptEngines.forEach((String name, ScriptEngine engine) -> {
+            Bindings bindings = engine.getBindings(ScriptContext.ENGINE_SCOPE);
+            currentBindings.keySet().forEach((String key) -> {
+                bindings.put(key, scriptLanguage.decode(currentBindings.get(key)));
+            });
+        });
+
     }
 
 }

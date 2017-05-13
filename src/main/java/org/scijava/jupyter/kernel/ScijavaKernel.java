@@ -29,7 +29,6 @@ import org.scijava.jupyter.kernel.handler.ScijavaKernelInfoHandler;
 import org.scijava.jupyter.service.JupyterService;
 import org.scijava.log.LogService;
 import org.scijava.plugin.Parameter;
-import org.scijava.script.ScriptLanguage;
 
 /**
  *
@@ -43,9 +42,6 @@ public class ScijavaKernel extends Kernel {
     @Parameter
     private transient LogService log;
 
-    // Ugly but needed (should be fixed upstream soon)
-    public static ScriptLanguage scriptLanguage;
-
     private final ScijavaKernelConfigurationFile config;
     private final ScijavaEvaluator evaluator;
 
@@ -57,9 +53,6 @@ public class ScijavaKernel extends Kernel {
         this.context.inject(this);
         this.config = config;
         this.evaluator = evaluator;
-
-        log.info("Scijava Kernel started.");
-        log.info("Language used : " + this.config.getLanguageName());
 
         this.setLogLevel(config.getLogLevel());
         log.info("Log level used is : " + this.config.getLogLevel());
@@ -74,7 +67,7 @@ public class ScijavaKernel extends Kernel {
 
     @Override
     public KernelHandler<Message> getKernelInfoHandler(Kernel kernel) {
-        return new ScijavaKernelInfoHandler(kernel, ScijavaKernel.scriptLanguage);
+        return new ScijavaKernelInfoHandler(kernel);
     }
 
     private void setLogLevel(String logLevel) {

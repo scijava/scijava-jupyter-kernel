@@ -35,11 +35,8 @@ import org.scijava.script.ScriptLanguage;
  */
 public class ScijavaKernelInfoHandler extends KernelHandler<Message> {
 
-    private final ScriptLanguage scriptLanguage;
-
-    public ScijavaKernelInfoHandler(KernelFunctionality kernel, ScriptLanguage scriptLanguage) {
+    public ScijavaKernelInfoHandler(KernelFunctionality kernel) {
         super(kernel);
-        this.scriptLanguage = scriptLanguage;
     }
 
     @Override
@@ -55,22 +52,20 @@ public class ScijavaKernelInfoHandler extends KernelHandler<Message> {
 
         HashMap<String, Serializable> map = new HashMap<>(6);
         map.put("protocol_version", "5.0");
-        map.put("implementation", this.scriptLanguage.getEngineName());
-        map.put("implementation_version", this.scriptLanguage.getEngineVersion());
+        map.put("implementation", "scijava");
+        map.put("implementation_version", "1.0");
 
         HashMap<String, Serializable> map1 = new HashMap<>(7);
-        map1.put("name", this.scriptLanguage.getLanguageName());
-        map1.put("version", this.scriptLanguage.getLanguageVersion());
-        map1.put("mimetype", this.scriptLanguage.getMimeTypes().toString());
-        map1.put("file_extension", this.scriptLanguage.getExtensions().toString());
-        map1.put("pygments_lexer", this.scriptLanguage.getLanguageName());
-        map1.put("codemirror_mode", this.scriptLanguage.getLanguageName());
+        map1.put("name", "scijava");
+        map1.put("version", "1.0");
+        map1.put("mimetype", "");
+        map1.put("file_extension", "");
+        map1.put("pygments_lexer", "groovy");
+        map1.put("codemirror_mode", "groovy");
         map1.put("nbconverter_exporter", "");
 
         map.put("language_info", map1);
         String banner = "SciJava Jupyter Kernel v" + getClass().getPackage().getSpecificationVersion() + " | ";
-        banner += "Language : " + this.scriptLanguage.getLanguageName();
-        banner += " " + this.scriptLanguage.getLanguageVersion() + "\n";
         map.put("banner", banner);
         map.put("beakerx", true);
 

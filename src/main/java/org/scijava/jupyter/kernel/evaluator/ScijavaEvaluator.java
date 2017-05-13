@@ -22,7 +22,11 @@ import com.twosigma.jupyter.KernelParameters;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import javax.script.Bindings;
+import javax.script.ScriptContext;
 import javax.script.ScriptEngine;
 
 import org.scijava.Context;
@@ -38,6 +42,8 @@ import org.scijava.thread.ThreadService;
  */
 public class ScijavaEvaluator implements Evaluator {
 
+    public static final String DEFAULT_LANGUAGE = "groovy";
+
     @Parameter
     private LogService log;
 
@@ -50,20 +56,23 @@ public class ScijavaEvaluator implements Evaluator {
     @Parameter
     Context context;
 
-    private String languageUsed;
-    private ScriptLanguage scriptLanguage;
-    private ScriptEngine scriptEngine;
+    private final Map<String, ScriptEngine> scriptEngines;
+    private final Map<String, ScriptLanguage> scriptLanguages;
+    private String languageName;
 
     protected String shellId;
     protected String sessionId;
 
-    public ScijavaEvaluator(Context context, String shellId, String sessionId, String languageName) {
+    public ScijavaEvaluator(Context context, String shellId, String sessionId) {
         context.inject(this);
 
         this.shellId = shellId;
         this.sessionId = sessionId;
 
-        this.setLanguage(languageName);
+        this.scriptEngines = new HashMap<>();
+        this.scriptLanguages = new HashMap<>();
+
+        this.languageName = DEFAULT_LANGUAGE;
     }
 
     @Override
@@ -94,10 +103,12 @@ public class ScijavaEvaluator implements Evaluator {
 
     @Override
     public void evaluate(SimpleEvaluationObject seo, String code) {
-        Worker worker = new Worker(this.context, this.scriptEngine, this.scriptLanguage);
-        worker.setup(seo, code);
+
+        code = this.setLanguage(code);
+
+        Worker worker = new Worker(this.context, this.scriptEngines, this.scriptLanguages);
+        worker.setup(seo, code, this.languageName);
         this.threadService.queue(worker);
-        //this.threadService.queue(logger);
     }
 
     @Override
@@ -107,26 +118,58 @@ public class ScijavaEvaluator implements Evaluator {
         System.exit(0);
     }
 
-    private void setLanguage(String languageName) {
+    private void addLanguage(String languageName) {
 
         if (scriptService.getLanguageByName(languageName) == null) {
             log.error("Script Language for '" + languageName + "' not found.");
             System.exit(1);
         }
 
-        this.languageUsed = languageName;
-        this.scriptLanguage = scriptService.getLanguageByName(languageName);
-        this.scriptEngine = this.scriptLanguage.getScriptEngine();
+        if (!this.scriptLanguages.keySet().contains(languageName)) {
 
-        log.debug("Script Language found for '" + this.languageUsed + "'");
+            Bindings bindings = null;
+            if (!this.scriptEngines.isEmpty()) {
+                String firstLanguage = this.scriptEngines.keySet().iterator().next();
+                bindings = this.scriptEngines.get(firstLanguage).getBindings(ScriptContext.ENGINE_SCOPE);
+            }
+            
+            log.info("Script Language for '" + languageName + "' found.");
+            ScriptLanguage scriptLanguage = scriptService.getLanguageByName(languageName);
+            this.scriptLanguages.put(languageName, scriptLanguage);
+
+            ScriptEngine engine = this.scriptLanguages.get(languageName).getScriptEngine();
+            this.scriptEngines.put(languageName, engine);
+
+            // Not implemented yet
+            //engine.setBindings(this.bindings, ScriptContext.ENGINE_SCOPE);
+            if (bindings != null) {
+                this.initBindings(bindings, engine, scriptLanguage);
+            }
+
+        }
+
+        log.debug("Script Language found for '" + languageName + "'");
     }
 
-    public ScriptLanguage getScriptLanguage() {
-        return this.scriptLanguage;
+    private String setLanguage(String code) {
+        if (code.startsWith("#!")) {
+            this.languageName = code.substring(2, code.indexOf(System.getProperty("line.separator"))).trim();
+
+            // Return the code string without the first line
+            code = code.substring(code.indexOf(System.getProperty("line.separator")) + 1);
+        }
+
+        this.addLanguage(this.languageName);
+        return code;
     }
 
-    public String getLanguage() {
-        return this.languageUsed;
+    private void initBindings(Bindings bindings, ScriptEngine scriptEngine, ScriptLanguage scriptLanguage) {
+
+        Bindings currentBindings = scriptEngine.getBindings(ScriptContext.ENGINE_SCOPE);
+        bindings.keySet().forEach((String key) -> {
+            currentBindings.put(key, scriptLanguage.decode(bindings.get(key)));
+        });
+
     }
 
 }
