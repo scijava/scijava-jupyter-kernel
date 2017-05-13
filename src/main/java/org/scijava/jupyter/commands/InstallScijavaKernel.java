@@ -53,16 +53,9 @@ public class InstallScijavaKernel implements Command {
     @Parameter(required = true, label = "Python binary")
     private File pythonBinaryPath;
 
-    @Parameter(required = true, label = "Script Language",
-            choices = {"Groovy", "Python", "BeanShell", "Clojure", "Java", "JavaScript", "R", "Ruby", "Scala"})
-    private String scriptLanguage = "Python";
-
     @Parameter(required = true, label = "Log Level",
             choices = {"debug", "error", "info", "none"})
     private String logLevel = "info";
-
-    @Parameter(required = false, label = "Install all the available kernels")
-    private boolean installAllKernels = false;
 
     @Parameter(required = false, label = "Additional JAVA classpath")
     private String classpath = "";
@@ -73,25 +66,11 @@ public class InstallScijavaKernel implements Command {
     @Override
     public void run() {
 
-        if (this.installAllKernels) {
-            scriptService.getLanguages().forEach((ScriptLanguage language) -> {
-                if (!"ij1 macro".equals(language.toString().toLowerCase())) {
-                    this.installLanguage(language.toString());
-                }
-            });
-        } else {
-            this.installLanguage(this.scriptLanguage);
-        }
-
-    }
-
-    protected void installLanguage(String language) {
-
         if (!this.pythonBinaryPath.isFile()) {
             log.error(this.pythonBinaryPath + " does not exist.");
         }
 
-        log.info("Installing '" + "scijava-" + language.toLowerCase() + "' kernel.");
+        log.info("Installing 'scijava' kernel.");
 
         String[] cmd = null;
         String sourceCode = null;
@@ -119,15 +98,8 @@ public class InstallScijavaKernel implements Command {
         }
         log.debug("Jupyter found.");
 
-        // Check the language is available
-        if (scriptService.getLanguageByName(language) == null) {
-            log.error("Script Language for '" + language + "' not found.");
-            return;
-        }
-        log.debug("Language '" + language + "' found.");
-
         // Create the new kernel
-        Path kernelDir = Paths.get(System.getProperty("java.io.tmpdir"), "scijava-" + language.toLowerCase());
+        Path kernelDir = Paths.get(System.getProperty("java.io.tmpdir"), "scijava");
         SystemUtil.deleteFolderRecursively(kernelDir, log);
         kernelDir.toFile().mkdir();
 
@@ -143,9 +115,9 @@ public class InstallScijavaKernel implements Command {
         // Generate the kernel.json file
         String JSONString;
         if (this.javaBinaryPath == null) {
-            JSONString = JupyterUtil.createKernelJSON(language, this.classpath, this.logLevel, null);
+            JSONString = JupyterUtil.createKernelJSON(this.classpath, this.logLevel, null);
         } else {
-            JSONString = JupyterUtil.createKernelJSON(language, this.classpath, this.logLevel, this.javaBinaryPath.toString());
+            JSONString = JupyterUtil.createKernelJSON(this.classpath, this.logLevel, this.javaBinaryPath.toString());
         }
 
         Path kernelJSONPath = Paths.get(kernelDir.toString(), "kernel.json");
@@ -174,7 +146,7 @@ public class InstallScijavaKernel implements Command {
         log.debug("Clean temporary files.");
         SystemUtil.deleteFolderRecursively(kernelDir, log);
 
-        log.info("The kernel '" + "scijava-" + language.toLowerCase() + "' has been correctly installed.");
+        log.info("The kernel 'scijava' has been correctly installed.");
     }
 
     public static void main(String... args) {

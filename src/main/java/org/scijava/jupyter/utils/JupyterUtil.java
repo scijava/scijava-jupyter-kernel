@@ -17,6 +17,7 @@ package org.scijava.jupyter.utils;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import org.scijava.jupyter.kernel.evaluator.ScijavaEvaluator;
 
 /**
  *
@@ -24,14 +25,14 @@ import org.json.simple.JSONObject;
  */
 public class JupyterUtil {
 
-    public static String createKernelJSON(String scriptLanguage, String classpath, String logLevel) {
-        return createKernelJSON(scriptLanguage, classpath, logLevel, null);
+    public static String createKernelJSON(String classpath, String logLevel) {
+        return createKernelJSON(classpath, logLevel, null);
     }
 
-    public static String createKernelJSON(String scriptLanguage, String classpath, String logLevel, String javaBinaryPath) {
+    public static String createKernelJSON(String classpath, String logLevel, String javaBinaryPath) {
         JSONObject root = new JSONObject();
-        root.put("language", scriptLanguage);
-        root.put("display_name", "Scijava - " + Character.toUpperCase(scriptLanguage.charAt(0)) + scriptLanguage.substring(1));
+        root.put("language", ScijavaEvaluator.DEFAULT_LANGUAGE);
+        root.put("display_name", "Scijava");
 
         JSONArray argv = new JSONArray();
 
@@ -56,8 +57,6 @@ public class JupyterUtil {
         argv.add(finalClasspath);
 
         argv.add("org.scijava.jupyter.kernel.ScijavaKernel");
-        argv.add("-language");
-        argv.add(scriptLanguage);
         argv.add("-verbose");
         argv.add(logLevel);
         argv.add("-connectionFile");

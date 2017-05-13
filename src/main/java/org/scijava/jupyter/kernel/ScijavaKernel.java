@@ -54,9 +54,6 @@ public class ScijavaKernel extends Kernel {
         this.config = config;
         this.evaluator = evaluator;
 
-        log.info("Scijava Kernel started.");
-        log.info("Language used : " + this.config.getLanguageName());
-
         this.setLogLevel(config.getLogLevel());
         log.info("Log level used is : " + this.config.getLogLevel());
 

@@ -42,7 +42,7 @@ import org.scijava.thread.ThreadService;
  */
 public class ScijavaEvaluator implements Evaluator {
 
-    private static final String DEFAULT_LANGUAGE = "groovy";
+    public static final String DEFAULT_LANGUAGE = "groovy";
 
     @Parameter
     private LogService log;
@@ -63,7 +63,7 @@ public class ScijavaEvaluator implements Evaluator {
     protected String shellId;
     protected String sessionId;
 
-    public ScijavaEvaluator(Context context, String shellId, String sessionId, String languageName) {
+    public ScijavaEvaluator(Context context, String shellId, String sessionId) {
         context.inject(this);
 
         this.shellId = shellId;

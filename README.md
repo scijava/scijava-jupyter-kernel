@@ -45,7 +45,7 @@ conda create --name java_env scijava-jupyter-kernel
 # Activate the `java_env` environment
 source install java_env
 
-# Check the kernels have been installed
+# Check the kernel has been installed
 jupyter kernelspec list
 
 # Launch your favorite Jupyter client
@@ -63,10 +63,9 @@ jupyter lab
 - Drop it in your Fiji plugins directory.
 - Start Fiji and launch `Analyze > Jupyter Kernel > Install Scijava Kernel`.
 - Set the path to your Python binary.
-- Choose a language (for example `jython` or `groovy`) or you can choose to install all the available languages.
 - Choose a log level.
 
-- Check the kernels have been installed with : `jupyter kernelspec list`.
+- Check the kernel has been installed with : `jupyter kernelspec list`.
 - Launch `jupyter notebook` or `jupyter lab` and **select the kernel you want in the kernel list**.
 
 ![Scijava Jupyter Kernel Installation](teaser.gif)
@@ -74,7 +73,7 @@ jupyter lab
 ## Development
 
 - [CI with Travis](https://travis-ci.org/hadim/scijava-jupyter-kernel) makes sure the project builds without errors for each new commit.
-- All the [notebook examples](./notebooks) are executed by the kernel during CI with [nbconvert](http://nbconvert.readthedocs.io/en/latest/execute_api.html).
+- All the [notebook examples](./notebooks) are executed by the kernel during CI with [nbconvert](http://nbconvert.readthedocs.io/en/latest/execute_api.html) (currently not working).
 - A [Conda package](https://github.com/conda-forge/scijava-jupyter-kernel-feedstock) is built for each new release.
 
 ## License
