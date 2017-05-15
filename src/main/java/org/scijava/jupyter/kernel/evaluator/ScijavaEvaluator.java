@@ -152,8 +152,9 @@ public class ScijavaEvaluator implements Evaluator {
     }
 
     private String setLanguage(String code) {
+
         if (code.startsWith("#!")) {
-            this.languageName = code.substring(2, code.indexOf(System.getProperty("line.separator"))).trim();
+            this.languageName = code.substring(2, code.indexOf("\n")).trim();
 
             // Return the code string without the first line
             code = code.substring(code.indexOf(System.getProperty("line.separator")) + 1);
