@@ -160,7 +160,7 @@ public class ScijavaEvaluator implements Evaluator {
                 this.languageName = code.substring(2, code.indexOf("\n")).trim();
 
                 // Return the code string without the first line
-                code = code.substring(code.indexOf(System.getProperty("line.separator")) + 1);
+                code = code.substring(code.indexOf("\n") + 1);
             } // If only one line
             else {
                 this.languageName = code.substring(2).trim();
