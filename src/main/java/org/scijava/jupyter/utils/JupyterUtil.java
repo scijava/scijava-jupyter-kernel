@@ -46,9 +46,12 @@ public class JupyterUtil {
 
         String finalClasspath = "";
         finalClasspath += SystemUtil.getImageJClassPaths();
+        
+        String classPathSeparator = SystemUtil.getClassPathSeparator();
+        
         if (classpath != null) {
             if (finalClasspath.length() > 0) {
-                finalClasspath += ":" + classpath;
+                finalClasspath += classPathSeparator + classpath;
             } else {
                 finalClasspath += classpath;
             }

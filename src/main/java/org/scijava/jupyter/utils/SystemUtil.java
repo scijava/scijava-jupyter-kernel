@@ -17,6 +17,7 @@ package org.scijava.jupyter.utils;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.FileSystems;
 import java.nio.file.FileVisitOption;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -44,9 +45,11 @@ public class SystemUtil {
         String classPaths = "";
 
         if (System.getProperty("imagej.dir") != null) {
-            classPaths += Paths.get(System.getProperty("imagej.dir"), "jars", "*") + ":";
-            classPaths += Paths.get(System.getProperty("imagej.dir"), "jars", "bio-formats", "*") + ":";
-            classPaths += Paths.get(System.getProperty("imagej.dir"), "plugins", "*") + ":";
+
+            String classPathSeparator = SystemUtil.getClassPathSeparator();
+            classPaths += Paths.get(System.getProperty("imagej.dir"), "jars") + FileSystems.getDefault().getSeparator() + "*" + classPathSeparator;
+            classPaths += Paths.get(System.getProperty("imagej.dir"), "jars", "bio-formats") + FileSystems.getDefault().getSeparator() + "*" + classPathSeparator;
+            classPaths += Paths.get(System.getProperty("imagej.dir"), "plugins") + FileSystems.getDefault().getSeparator() + "*" + classPathSeparator;
         }
 
         return classPaths;
@@ -63,6 +66,16 @@ public class SystemUtil {
                 log.error(ex);
             }
         }
+    }
+
+    public static String getClassPathSeparator() {
+        String classPathSeparator;
+        if (System.getProperty("os.name").toLowerCase().contains("windows")) {
+            classPathSeparator = ";";
+        } else {
+            classPathSeparator = ":";
+        }
+        return classPathSeparator;
     }
 
 }

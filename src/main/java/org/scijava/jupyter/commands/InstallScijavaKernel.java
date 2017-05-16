@@ -23,7 +23,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Map;
 import org.scijava.Context;
-import org.scijava.ItemIO;
 import org.scijava.command.Command;
 import org.scijava.jupyter.service.JupyterService;
 import org.scijava.jupyter.utils.JupyterUtil;
@@ -33,7 +32,6 @@ import org.scijava.log.LogService;
 import org.scijava.plugin.Menu;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
-import org.scijava.script.ScriptLanguage;
 import org.scijava.script.ScriptService;
 
 @Plugin(type = Command.class, menu = {
