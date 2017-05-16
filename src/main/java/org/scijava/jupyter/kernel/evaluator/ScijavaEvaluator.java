@@ -132,7 +132,7 @@ public class ScijavaEvaluator implements Evaluator {
                 String firstLanguage = this.scriptEngines.keySet().iterator().next();
                 bindings = this.scriptEngines.get(firstLanguage).getBindings(ScriptContext.ENGINE_SCOPE);
             }
-            
+
             log.info("Script Language for '" + languageName + "' found.");
             ScriptLanguage scriptLanguage = scriptService.getLanguageByName(languageName);
             this.scriptLanguages.put(languageName, scriptLanguage);
@@ -154,10 +154,20 @@ public class ScijavaEvaluator implements Evaluator {
     private String setLanguage(String code) {
 
         if (code.startsWith("#!")) {
-            this.languageName = code.substring(2, code.indexOf("\n")).trim();
 
-            // Return the code string without the first line
-            code = code.substring(code.indexOf(System.getProperty("line.separator")) + 1);
+            // If code is composed of multiple lines
+            if (code.split("\n").length > 1) {
+                this.languageName = code.substring(2, code.indexOf("\n")).trim();
+
+                // Return the code string without the first line
+                code = code.substring(code.indexOf(System.getProperty("line.separator")) + 1);
+            } // If only one line
+            else {
+                this.languageName = code.substring(2).trim();
+
+                code = "";
+            }
+
         }
 
         this.addLanguage(this.languageName);
