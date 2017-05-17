@@ -15,18 +15,16 @@
 	<description>A Java kernel for Jupyter.</description>
 	<url>https://github.com/hadim/scijava-jupyter-kernel</url>
 	<inceptionYear>2017</inceptionYear>
-
+	<organization>
+		<name>SciJava</name>
+		<url>http://www.scijava.org/</url>
+	</organization>
 	<licenses>
 		<license>
 			<name>Apache 2.0</name>
 			<distribution>repo</distribution>
 		</license>
 	</licenses>
-
-	<organization>
-		<name>SciJava</name>
-		<url>http://www.scijava.org/</url>
-	</organization>
 
 	<developers>
 		<developer>
@@ -55,13 +53,6 @@
 		</contributor>
 	</contributors>
 
-	<properties>
-		<package-name>org.scijava.jupyter</package-name>
-		<license.licenseName>apache_v2</license.licenseName>
-		<license.copyrightOwners>Hadrien Mary</license.copyrightOwners>
-		<netbeans.hint.license>apache20</netbeans.hint.license>
-	</properties>
-
 	<mailingLists>
 		<mailingList>
 			<name>ImageJ Forum</name>
@@ -83,6 +74,13 @@
 		<system>Jenkins</system>
 		<url>http://jenkins.imagej.net/job/scijava-jupyter-kernel/</url>
 	</ciManagement>
+
+	<properties>
+		<package-name>org.scijava.jupyter</package-name>
+		<license.licenseName>apache_v2</license.licenseName>
+		<license.copyrightOwners>Hadrien Mary</license.copyrightOwners>
+		<netbeans.hint.license>apache20</netbeans.hint.license>
+	</properties>
 
 	<repositories>
 		<repository>
@@ -195,5 +193,4 @@
 		</dependency>
 
 	</dependencies>
-
 </project>
