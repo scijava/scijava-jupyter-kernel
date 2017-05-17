@@ -40,6 +40,7 @@ public class RAIToPNGNotebookConverter<T extends RealType<T>>
     private ImageJNotebookService ijnb;
 
     @Override
+    @SuppressWarnings({ "rawtypes", "unchecked" })
     public Class<RandomAccessibleInterval<T>> getInputType() {
         return (Class) RandomAccessibleInterval.class;
     }

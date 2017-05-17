@@ -32,6 +32,7 @@ public class MapToJSONNotebookConverter<K, V>
         extends NotebookOutputConverter<Map<K, V>, JSONNotebookOutput> {
 
     @Override
+    @SuppressWarnings({ "rawtypes", "unchecked" })
     public Class<Map<K, V>> getInputType() {
         return (Class) Map.class;
     }
