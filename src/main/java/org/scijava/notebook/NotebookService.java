@@ -29,6 +29,7 @@ import org.scijava.service.SciJavaService;
  * scientific notebook software.
  *
  * @author Curtis Rueden
+ * @author Hadrien Mary
  */
 public interface NotebookService extends SciJavaService {
 

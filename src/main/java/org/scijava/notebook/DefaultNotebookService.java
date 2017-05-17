@@ -45,6 +45,7 @@ import org.scijava.service.Service;
  * AWT-driven implementation of {@link NotebookService}.
  *
  * @author Curtis Rueden
+ * @author Hadrien Mary
  */
 @Plugin(type = Service.class)
 public class DefaultNotebookService extends AbstractService implements
