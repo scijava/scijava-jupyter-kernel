@@ -115,7 +115,7 @@ public class Worker implements Runnable {
                 returnValue = scriptEngine.eval(info.getReader());
                 returnValue = scriptLanguage.decode(returnValue);
                 this.seo.finished(returnValue);
-                this.syncBindings(this.languageName, scriptEngine, scriptLanguage);
+                this.syncBindings(scriptEngine, scriptLanguage);
             } catch (Throwable e) {
 
                 if (e instanceof InvocationTargetException) {
@@ -179,7 +179,7 @@ public class Worker implements Runnable {
         }
     }
 
-    private void syncBindings(String languageName, ScriptEngine scriptEngine, ScriptLanguage scriptLanguage) {
+    private void syncBindings(ScriptEngine scriptEngine, ScriptLanguage scriptLanguage) {
 
         Bindings currentBindings = scriptEngine.getBindings(ScriptContext.ENGINE_SCOPE);
         this.scriptEngines.forEach((String name, ScriptEngine engine) -> {
