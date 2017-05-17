@@ -27,6 +27,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Map;
+
 import org.scijava.Context;
 import org.scijava.command.Command;
 import org.scijava.jupyter.service.JupyterService;

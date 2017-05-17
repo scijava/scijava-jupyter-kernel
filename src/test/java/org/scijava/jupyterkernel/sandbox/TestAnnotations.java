@@ -23,13 +23,13 @@ package org.scijava.jupyterkernel.sandbox;
 import java.io.Reader;
 import java.io.StringReader;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
 import javax.script.ScriptEngine;
 import javax.script.ScriptException;
+
 import net.imagej.ImageJ;
 import net.imagej.Main;
+
 import org.scijava.module.ModuleItem;
 import org.scijava.module.process.ModulePreprocessor;
 import org.scijava.module.process.PostprocessorPlugin;

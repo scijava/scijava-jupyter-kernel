@@ -24,6 +24,7 @@ import net.imagej.Dataset;
 import net.imagej.axis.Axes;
 import net.imagej.notebook.ImageJNotebookService;
 import net.imglib2.img.Img;
+
 import org.scijava.Priority;
 import org.scijava.convert.Converter;
 import org.scijava.notebook.converter.NotebookOutputConverter;

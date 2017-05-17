@@ -21,13 +21,16 @@
 package org.scijava.jupyter.service;
 
 import static com.twosigma.beaker.jupyter.Utils.uuid;
+
 import com.twosigma.jupyter.KernelRunner;
 import com.twosigma.jupyter.KernelSocketsFactoryImpl;
+
 import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
+
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.DefaultParser;
@@ -35,10 +38,10 @@ import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import org.scijava.Context;
 import org.scijava.command.CommandService;
-import org.scijava.jupyter.kernel.configuration.ScijavaKernelConfigurationFile;
 import org.scijava.jupyter.commands.InstallScijavaKernel;
-import org.scijava.jupyter.kernel.evaluator.ScijavaEvaluator;
 import org.scijava.jupyter.kernel.ScijavaKernel;
+import org.scijava.jupyter.kernel.configuration.ScijavaKernelConfigurationFile;
+import org.scijava.jupyter.kernel.evaluator.ScijavaEvaluator;
 import org.scijava.log.LogService;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;

@@ -21,14 +21,17 @@
 package org.scijava.jupyter.kernel.evaluator;
 
 import com.twosigma.beaker.jvm.object.SimpleEvaluationObject;
+
 import java.io.Reader;
 import java.io.StringReader;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.util.Map;
+
 import javax.script.Bindings;
 import javax.script.ScriptContext;
 import javax.script.ScriptEngine;
+
 import org.scijava.Context;
 import org.scijava.convert.ConvertService;
 import org.scijava.event.EventService;

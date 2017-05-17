@@ -20,8 +20,9 @@
 
 package org.scijava.jupyter.kernel.comm;
 
-import com.twosigma.jupyter.KernelFunctionality;
 import com.twosigma.beaker.jupyter.comm.KernelControlGetDefaultShellHandler;
+import com.twosigma.jupyter.KernelFunctionality;
+
 import org.scijava.jupyter.kernel.configuration.ScijavaVariables;
 
 /**

@@ -20,14 +20,14 @@
 
 package org.scijava.jupyter.kernel.comm;
 
-import com.twosigma.jupyter.KernelFunctionality;
-import com.twosigma.jupyter.handler.Handler;
-import com.twosigma.jupyter.message.Message;
 import com.twosigma.beaker.jupyter.comm.KernelControlCommandListHandler;
 import com.twosigma.beaker.jupyter.comm.KernelControlInterrupt;
 import com.twosigma.beaker.jupyter.comm.KernelControlSetShellHandler;
 import com.twosigma.beaker.jupyter.comm.TargetNamesEnum;
 import com.twosigma.beaker.jupyter.handler.CommOpenHandler;
+import com.twosigma.jupyter.KernelFunctionality;
+import com.twosigma.jupyter.handler.Handler;
+import com.twosigma.jupyter.message.Message;
 
 /**
  *

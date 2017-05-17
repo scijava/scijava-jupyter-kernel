@@ -22,6 +22,7 @@ package org.scijava.jupyter.service;
 
 import java.io.File;
 import java.nio.file.Path;
+
 import org.scijava.service.SciJavaService;
 
 /**

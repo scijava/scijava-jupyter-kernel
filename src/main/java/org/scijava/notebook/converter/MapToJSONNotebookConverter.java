@@ -21,6 +21,7 @@
 package org.scijava.notebook.converter;
 
 import java.util.Map;
+
 import org.scijava.Priority;
 import org.scijava.convert.Converter;
 import org.scijava.notebook.converter.ouput.JSONNotebookOutput;

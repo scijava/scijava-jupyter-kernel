@@ -22,6 +22,7 @@ package org.scijava.jupyterkernel.sandbox;
 
 import javax.script.ScriptEngine;
 import javax.script.ScriptException;
+
 import org.scijava.Context;
 import org.scijava.script.ScriptLanguage;
 import org.scijava.script.ScriptService;

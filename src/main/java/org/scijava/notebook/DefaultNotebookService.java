@@ -21,19 +21,21 @@
 package org.scijava.notebook;
 
 import com.twosigma.beaker.mimetype.MIMEContainer;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+
 import net.imagej.notebook.ImageJNotebookService;
 import net.imglib2.RandomAccessibleInterval;
+
 import org.scijava.convert.ConvertService;
 import org.scijava.log.LogService;
 import org.scijava.notebook.converter.ouput.HTMLNotebookOutput;
 import org.scijava.notebook.converter.ouput.LatexNotebookOutput;
 import org.scijava.notebook.converter.ouput.MarkdownNotebookOutput;
 import org.scijava.notebook.converter.ouput.NotebookOutput;
-
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 import org.scijava.service.AbstractService;

@@ -21,14 +21,14 @@
 package org.scijava.jupyter.kernel;
 
 import com.twosigma.beaker.jupyter.handler.CommOpenHandler;
+import com.twosigma.jupyter.Kernel;
+import com.twosigma.jupyter.KernelSocketsFactoryImpl;
 import com.twosigma.jupyter.handler.KernelHandler;
 import com.twosigma.jupyter.message.Message;
-import com.twosigma.jupyter.Kernel;
 
-import com.twosigma.jupyter.KernelSocketsFactoryImpl;
 import org.scijava.Context;
-import org.scijava.jupyter.kernel.configuration.ScijavaKernelConfigurationFile;
 import org.scijava.jupyter.kernel.comm.ScijavaCommOpenHandler;
+import org.scijava.jupyter.kernel.configuration.ScijavaKernelConfigurationFile;
 import org.scijava.jupyter.kernel.evaluator.ScijavaEvaluator;
 import org.scijava.jupyter.kernel.handler.ScijavaKernelInfoHandler;
 import org.scijava.jupyter.service.JupyterService;

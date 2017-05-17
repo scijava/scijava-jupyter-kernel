@@ -23,7 +23,6 @@ package net.imagej.notebook.converter;
 import net.imagej.notebook.ImageJNotebookService;
 import net.imagej.notebook.ImageJNotebookService.ValueScaling;
 import net.imglib2.RandomAccessibleInterval;
-import net.imglib2.img.Img;
 import net.imglib2.type.numeric.RealType;
 
 import org.scijava.Priority;

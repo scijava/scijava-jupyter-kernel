@@ -21,18 +21,17 @@
 package org.scijava.jupyter.kernel.handler;
 
 import static com.twosigma.beaker.jupyter.msg.JupyterMessages.KERNEL_INFO_REPLY;
+import static com.twosigma.jupyter.handler.KernelHandlerWrapper.wrapBusyIdle;
+
+import com.twosigma.jupyter.KernelFunctionality;
+import com.twosigma.jupyter.handler.KernelHandler;
+import com.twosigma.jupyter.message.Header;
+import com.twosigma.jupyter.message.Message;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
-
-import com.twosigma.jupyter.KernelFunctionality;
-import com.twosigma.jupyter.handler.KernelHandler;
-import static com.twosigma.jupyter.handler.KernelHandlerWrapper.wrapBusyIdle;
-import com.twosigma.jupyter.message.Header;
-import com.twosigma.jupyter.message.Message;
 import java.util.List;
-import org.scijava.script.ScriptLanguage;
 
 /**
  *

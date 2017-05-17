@@ -23,10 +23,13 @@ package org.scijava.jupyterkernel.sandbox;
 import java.io.Reader;
 import java.io.StringReader;
 import java.util.List;
+
 import javax.script.ScriptEngine;
 import javax.script.ScriptException;
+
 import net.imagej.ImageJ;
 import net.imagej.Main;
+
 import org.scijava.module.ModuleItem;
 import org.scijava.module.process.PreprocessorPlugin;
 import org.scijava.script.ScriptInfo;
