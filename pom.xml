@@ -74,8 +74,8 @@
 		<url>https://github.com/hadim/scijava-jupyter-kernel/issues</url>
 	</issueManagement>
 	<ciManagement>
-		<system>Jenkins</system>
-		<url>http://jenkins.imagej.net/job/scijava-jupyter-kernel/</url>
+		<system>Travis CI</system>
+		<url>https://travis-ci.org/hadim/scijava-jupyter-kernel</url>
 	</ciManagement>
 
 	<properties>
