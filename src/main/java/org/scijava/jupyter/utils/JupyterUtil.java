@@ -37,7 +37,7 @@ public class JupyterUtil {
     public static String createKernelJSON(String classpath, String logLevel, String javaBinaryPath) {
         JSONObject root = new JSONObject();
         root.put("language", ScijavaEvaluator.DEFAULT_LANGUAGE);
-        root.put("display_name", "Scijava");
+        root.put("display_name", "SciJava");
 
         JSONArray argv = new JSONArray();
 
