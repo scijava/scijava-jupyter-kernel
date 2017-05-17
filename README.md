@@ -16,7 +16,7 @@ The kernel has been originally created to work with ImageJ. See [here](https://i
 
 ## Documentation
 
-A documentation in the forms of a serie of notebooks is available [here](./notebooks/Welcome.ipynb).
+A documentation is available as a series of notebooks [here](./notebooks/Welcome.ipynb).
 
 ## Installation - Standalone
 
