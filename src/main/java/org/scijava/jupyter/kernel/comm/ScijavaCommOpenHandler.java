@@ -50,9 +50,8 @@ public class ScijavaCommOpenHandler extends CommOpenHandler {
     public Handler<Message>[] getKernelControlChanelHandlers(String targetName) {
         if (TargetNamesEnum.KERNEL_CONTROL_CHANNEL.getTargetName().equalsIgnoreCase(targetName)) {
             return (Handler<Message>[]) KERNEL_CONTROL_CHANNEL_HANDLERS;
-        } else {
-            return (Handler<Message>[]) new Handler<?>[0];
         }
+        return (Handler<Message>[]) new Handler<?>[0];
     }
 
 }

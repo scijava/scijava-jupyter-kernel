@@ -68,9 +68,8 @@ public class DefaultNotebookService extends AbstractService implements
 
         if (converService.supports(object, NotebookOutput.class)) {
             return converService.convert(object, NotebookOutput.class);
-        } else {
-            return object;
         }
+        return object;
 
     }
 
@@ -91,9 +90,8 @@ public class DefaultNotebookService extends AbstractService implements
         if (mimeTypeObj == null) {
             log.warn("The mimetype '" + mimetype + "' is not supported");
             return content;
-        } else {
-            return new MIMEContainer(mimeTypeObj, content);
         }
+        return new MIMEContainer(mimeTypeObj, content);
 
     }
 
@@ -101,27 +99,24 @@ public class DefaultNotebookService extends AbstractService implements
     public Object html(String content) {
         if (converService.supports(content, HTMLNotebookOutput.class)) {
             return converService.convert(content, HTMLNotebookOutput.class);
-        } else {
-            return content;
         }
+        return content;
     }
 
     @Override
     public Object markdown(String content) {
         if (converService.supports(content, MarkdownNotebookOutput.class)) {
             return converService.convert(content, MarkdownNotebookOutput.class);
-        } else {
-            return content;
         }
+        return content;
     }
 
     @Override
     public Object latex(String content) {
         if (converService.supports(content, LatexNotebookOutput.class)) {
             return converService.convert(content, LatexNotebookOutput.class);
-        } else {
-            return content;
         }
+        return content;
     }
 
     @Override
