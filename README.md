@@ -51,9 +51,16 @@ jupyter lab
 
 ## Installation - With Fiji integration
 
-- [Download the last released JAR file](https://github.com/hadim/scijava-jupyter-kernel/releases).
-- Drop it in your Fiji plugins directory.
-- Start Fiji and launch `Analyze > Jupyter Kernel > Install Scijava Kernel`.
+**Warning : Installation via Fiji is currently not available**
+
+- [Download](https://imagej.net/Fiji/Downloads) the last Fiji release.
+- Add the *Scijava Jupyter Kernel* update site in Fiji:
+    - Click [Help ▶ Update...](https://imagej.net/Update_Sites).
+    - Click `Manage update sites`.
+    - Select the *Scijava Jupyter Kernel* checkbox (see also [List of update sites](https://imagej.net/List_of_update_sites)).
+    - Click `Apply changes` and restart Fiji.
+
+- Launch `Analyze > Jupyter Kernel > Install Scijava Kernel`.
 - Set the path to your Python binary.
 - Choose a log level.
 
