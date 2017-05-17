@@ -12,7 +12,7 @@
 	<version>0.3.3-SNAPSHOT</version>
 
 	<name>scijava-jupyter-kernel</name>
-	<description>A Java kernel for Jupyter.</description>
+	<description>SciJava polyglot kernel for Jupyter.</description>
 	<url>https://github.com/hadim/scijava-jupyter-kernel</url>
 	<inceptionYear>2017</inceptionYear>
 	<organization>
