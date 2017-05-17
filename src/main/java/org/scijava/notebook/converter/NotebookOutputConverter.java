@@ -29,7 +29,7 @@ import org.scijava.plugin.Parameter;
  *
  * @author hadim
  */
-public abstract class NotebookOutputConverter<I extends Object, O extends NotebookOutput>
+public abstract class NotebookOutputConverter<I, O extends NotebookOutput>
         extends AbstractConverter<I, O> {
 
     @Parameter

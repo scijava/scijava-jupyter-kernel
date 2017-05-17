@@ -26,16 +26,16 @@ import org.scijava.notebook.converter.ouput.MarkdownNotebookOutput;
 import org.scijava.plugin.Plugin;
 
 @Plugin(type = Converter.class, priority = Priority.LOW_PRIORITY)
-public class StringToMarkdownNotebookConverter<O extends String>
-        extends NotebookOutputConverter<O, MarkdownNotebookOutput> {
+public class StringToMarkdownNotebookConverter
+        extends NotebookOutputConverter<String, MarkdownNotebookOutput> {
 
     @Override
-    public Class getInputType() {
+    public Class<String> getInputType() {
         return String.class;
     }
 
     @Override
-    public Class getOutputType() {
+    public Class<MarkdownNotebookOutput> getOutputType() {
         return MarkdownNotebookOutput.class;
     }
 

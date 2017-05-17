@@ -26,16 +26,16 @@ import org.scijava.notebook.converter.ouput.PlainNotebookOutput;
 import org.scijava.plugin.Plugin;
 
 @Plugin(type = Converter.class, priority = Priority.FIRST_PRIORITY)
-public class StringToPlainNotebookConverter<O extends String>
-        extends NotebookOutputConverter<O, PlainNotebookOutput> {
+public class StringToPlainNotebookConverter
+        extends NotebookOutputConverter<String, PlainNotebookOutput> {
 
     @Override
-    public Class getInputType() {
+    public Class<String> getInputType() {
         return String.class;
     }
 
     @Override
-    public Class getOutputType() {
+    public Class<PlainNotebookOutput> getOutputType() {
         return PlainNotebookOutput.class;
     }
 

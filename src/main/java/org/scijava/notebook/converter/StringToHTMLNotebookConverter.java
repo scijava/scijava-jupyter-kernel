@@ -26,16 +26,16 @@ import org.scijava.notebook.converter.ouput.HTMLNotebookOutput;
 import org.scijava.plugin.Plugin;
 
 @Plugin(type = Converter.class, priority = Priority.LOW_PRIORITY)
-public class StringToHTMLNotebookConverter<O extends String>
-        extends NotebookOutputConverter<O, HTMLNotebookOutput> {
+public class StringToHTMLNotebookConverter
+        extends NotebookOutputConverter<String, HTMLNotebookOutput> {
 
     @Override
-    public Class getInputType() {
+    public Class<String> getInputType() {
         return String.class;
     }
 
     @Override
-    public Class getOutputType() {
+    public Class<HTMLNotebookOutput> getOutputType() {
         return HTMLNotebookOutput.class;
     }
 

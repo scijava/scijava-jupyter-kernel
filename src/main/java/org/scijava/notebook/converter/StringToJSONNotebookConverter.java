@@ -26,16 +26,16 @@ import org.scijava.notebook.converter.ouput.JSONNotebookOutput;
 import org.scijava.plugin.Plugin;
 
 @Plugin(type = Converter.class, priority = Priority.LOW_PRIORITY)
-public class StringToJSONNotebookConverter<O extends String>
-        extends NotebookOutputConverter<O, JSONNotebookOutput> {
+public class StringToJSONNotebookConverter
+        extends NotebookOutputConverter<String, JSONNotebookOutput> {
 
     @Override
-    public Class getInputType() {
+    public Class<String> getInputType() {
         return String.class;
     }
 
     @Override
-    public Class getOutputType() {
+    public Class<JSONNotebookOutput> getOutputType() {
         return JSONNotebookOutput.class;
     }
 

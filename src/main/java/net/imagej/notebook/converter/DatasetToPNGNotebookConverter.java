@@ -32,19 +32,19 @@ import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 @Plugin(type = Converter.class, priority = Priority.LOW_PRIORITY)
-public class DatasetToPNGNotebookConverter<O extends Dataset>
-        extends NotebookOutputConverter<O, PNGImageNotebookOutput> {
+public class DatasetToPNGNotebookConverter
+        extends NotebookOutputConverter<Dataset, PNGImageNotebookOutput> {
 
     @Parameter
     private ImageJNotebookService ijnb;
 
     @Override
-    public Class getInputType() {
+    public Class<Dataset> getInputType() {
         return Dataset.class;
     }
 
     @Override
-    public Class getOutputType() {
+    public Class<PNGImageNotebookOutput> getOutputType() {
         return PNGImageNotebookOutput.class;
     }
 

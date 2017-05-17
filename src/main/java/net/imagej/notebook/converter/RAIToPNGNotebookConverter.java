@@ -24,6 +24,8 @@ import net.imagej.notebook.ImageJNotebookService;
 import net.imagej.notebook.ImageJNotebookService.ValueScaling;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.img.Img;
+import net.imglib2.type.numeric.RealType;
+
 import org.scijava.Priority;
 import org.scijava.convert.Converter;
 import org.scijava.notebook.converter.NotebookOutputConverter;
@@ -32,26 +34,26 @@ import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 @Plugin(type = Converter.class, priority = Priority.LOW_PRIORITY)
-public class RAIToPNGNotebookConverter<O extends RandomAccessibleInterval>
-        extends NotebookOutputConverter<O, PNGImageNotebookOutput> {
+public class RAIToPNGNotebookConverter<T extends RealType<T>>
+        extends NotebookOutputConverter<RandomAccessibleInterval<T>, PNGImageNotebookOutput> {
 
     @Parameter
     private ImageJNotebookService ijnb;
 
     @Override
-    public Class getInputType() {
-        return RandomAccessibleInterval.class;
+    public Class<RandomAccessibleInterval<T>> getInputType() {
+        return (Class) RandomAccessibleInterval.class;
     }
 
     @Override
-    public Class getOutputType() {
+    public Class<PNGImageNotebookOutput> getOutputType() {
         return PNGImageNotebookOutput.class;
     }
 
     @Override
     public PNGImageNotebookOutput convert(Object object) {
 
-        RandomAccessibleInterval source = (RandomAccessibleInterval) object;
+        RandomAccessibleInterval<T> source = (RandomAccessibleInterval<T>) object;
 
         // NB: Assume <=3 samples in the 3rd dimension means channels. Of course,
         // we have no metadata with a vanilla RAI, but this is a best guess;
