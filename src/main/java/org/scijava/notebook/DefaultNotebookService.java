@@ -59,12 +59,6 @@ public class DefaultNotebookService extends AbstractService implements
     @Parameter
     private ImageJNotebookService ijNotebookService;
 
-    /**
-     * Use the most appropriate output type according to the input object.
-     *
-     * @param object
-     * @return
-     */
     @Override
     public Object display(Object object) {
 
@@ -75,13 +69,6 @@ public class DefaultNotebookService extends AbstractService implements
 
     }
 
-    /**
-     * Display a content with a given mimetype.
-     *
-     * @param mimetype
-     * @param content
-     * @return
-     */
     @Override
     public Object displayMimetype(String mimetype, String content) {
 
