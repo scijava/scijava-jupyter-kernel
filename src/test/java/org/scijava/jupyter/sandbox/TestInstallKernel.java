@@ -18,7 +18,7 @@
  * #L%
  */
 
-package org.scijava.jupyterkernel.sandbox;
+package org.scijava.jupyter.sandbox;
 
 import org.scijava.Context;
 import org.scijava.jupyter.service.JupyterService;

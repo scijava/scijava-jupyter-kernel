@@ -18,7 +18,7 @@
  * #L%
  */
 
-package org.scijava.jupyterkernel.sandbox;
+package org.scijava.jupyter.sandbox;
 
 import java.io.Reader;
 import java.io.StringReader;
@@ -31,6 +31,8 @@ import net.imagej.ImageJ;
 import net.imagej.Main;
 
 import org.scijava.module.ModuleItem;
+import org.scijava.module.process.ModulePreprocessor;
+import org.scijava.module.process.PostprocessorPlugin;
 import org.scijava.module.process.PreprocessorPlugin;
 import org.scijava.script.ScriptInfo;
 import org.scijava.script.ScriptLanguage;
@@ -40,23 +42,21 @@ import org.scijava.script.ScriptModule;
  *
  * @author Hadrien Mary
  */
-public class TestGroovy {
+public class TestAnnotations {
 
-    public static void main(String[] args) throws ScriptException {
+    public static void main(final String[] args) throws ScriptException {
         ImageJ ij = Main.launch(args);
-
-        String code = "";
-        //code += "@Grab('org.springframework:spring-orm:3.2.5.RELEASE')\n";
-        code += "import org.springframework.jdbc.core.JdbcTemplate\nprintln JdbcTemplate\n";
-        code += "println 'test'";
+        
+        String code = "#@LogService log\n#@ImageJ ij\nprint('log')\nprint('jjjj')";
         final Reader input = new StringReader(code);
 
         ScriptInfo info = new ScriptInfo(ij.context(), "dummy.py", input);
         final String path = info.getPath();
 
         List<? extends PreprocessorPlugin> pre = ij.plugin().createInstancesOfType(PreprocessorPlugin.class);
+        List<? extends PostprocessorPlugin> post = ij.plugin().createInstancesOfType(PostprocessorPlugin.class);
 
-        ScriptLanguage scriptLanguage = ij.script().getLanguageByName("groovy");
+        ScriptLanguage scriptLanguage = ij.script().getLanguageByName("jython");
         ScriptEngine scriptEngine = scriptLanguage.getScriptEngine();
 
         ScriptModule module;
@@ -64,19 +64,23 @@ public class TestGroovy {
         ij.context().inject(module);
         module.setLanguage(scriptLanguage);
 
-        pre.forEach((p) -> {
+        for (final ModulePreprocessor p : pre) {
             p.process(module);
-        });
+        }
+
+        ij.log().info(module);
+        ij.log().info(module.getInputs());
         
         for (final ModuleItem<?> item : info.inputs()) {
             final String name = item.getName();
+            ij.log().info(name);
             scriptEngine.put(name, module.getInput(name));
         }
         
         scriptEngine.eval(code);
         
-        ij.context().dispose();
-        
+        //ij.module().run(module, true);
+
     }
 
 }

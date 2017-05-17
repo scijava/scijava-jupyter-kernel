@@ -18,31 +18,24 @@
  * #L%
  */
 
-package org.scijava.jupyterkernel.sandbox;
+package org.scijava.jupyter.sandbox;
 
-import org.python.core.PyException;
-import org.python.util.PythonInterpreter;
+import org.scijava.Context;
+import org.scijava.jupyter.service.JupyterService;
 
 /**
  *
  * @author Hadrien Mary
  */
-public class TestJython {
+public class TestRunKernel {
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String[] args) throws PyException {
+    public static void main(final String[] args) {
 
-        PythonInterpreter interp = new PythonInterpreter();
-
-        Object result = interp.eval(interp.compile("p=999\n555")).__tojava__(Object.class);
-        System.out.println(result);
-
-        interp = new PythonInterpreter();
-
-        result = interp.eval(interp.compile("555")).__tojava__(Object.class);
-        System.out.println(result);
-        
+        // Warning : if run from your IDE the classpath won't be set to your Fiji installation
+        Context context = new Context();
+        JupyterService jupyter = context.service(JupyterService.class);
+        jupyter.runKernel("jython", "info", "");
+        context.dispose();
     }
+
 }

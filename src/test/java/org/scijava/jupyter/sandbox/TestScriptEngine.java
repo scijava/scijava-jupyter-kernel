@@ -18,7 +18,7 @@
  * #L%
  */
 
-package org.scijava.jupyterkernel.sandbox;
+package org.scijava.jupyter.sandbox;
 
 import javax.script.ScriptEngine;
 import javax.script.ScriptException;
