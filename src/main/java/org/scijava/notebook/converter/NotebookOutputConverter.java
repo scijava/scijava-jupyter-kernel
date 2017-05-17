@@ -27,7 +27,7 @@ import org.scijava.plugin.Parameter;
 
 /**
  *
- * @author hadim
+ * @author Hadrien Mary
  */
 public abstract class NotebookOutputConverter<I, O extends NotebookOutput>
         extends AbstractConverter<I, O> {

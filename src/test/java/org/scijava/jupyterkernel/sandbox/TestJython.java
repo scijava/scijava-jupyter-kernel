@@ -25,7 +25,7 @@ import org.python.util.PythonInterpreter;
 
 /**
  *
- * @author hadim
+ * @author Hadrien Mary
  */
 public class TestJython {
 

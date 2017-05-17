@@ -24,7 +24,7 @@ import com.twosigma.beaker.mimetype.MIMEContainer;
 
 /**
  *
- * @author hadim
+ * @author Hadrien Mary
  */
 public abstract class NotebookOutput extends MIMEContainer {
 
