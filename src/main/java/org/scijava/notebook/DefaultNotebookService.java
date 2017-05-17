@@ -55,7 +55,7 @@ public class DefaultNotebookService extends AbstractService implements
     private LogService log;
 
     @Parameter
-    private ConvertService converService;
+    private ConvertService convertService;
 
     @Parameter
     private ImageJNotebookService ijNotebookService;
@@ -63,8 +63,8 @@ public class DefaultNotebookService extends AbstractService implements
     @Override
     public Object display(Object object) {
 
-        if (converService.supports(object, NotebookOutput.class)) {
-            return converService.convert(object, NotebookOutput.class);
+        if (convertService.supports(object, NotebookOutput.class)) {
+            return convertService.convert(object, NotebookOutput.class);
         }
         return object;
 
@@ -87,24 +87,24 @@ public class DefaultNotebookService extends AbstractService implements
 
     @Override
     public Object html(String content) {
-        if (converService.supports(content, HTMLNotebookOutput.class)) {
-            return converService.convert(content, HTMLNotebookOutput.class);
+        if (convertService.supports(content, HTMLNotebookOutput.class)) {
+            return convertService.convert(content, HTMLNotebookOutput.class);
         }
         return content;
     }
 
     @Override
     public Object markdown(String content) {
-        if (converService.supports(content, MarkdownNotebookOutput.class)) {
-            return converService.convert(content, MarkdownNotebookOutput.class);
+        if (convertService.supports(content, MarkdownNotebookOutput.class)) {
+            return convertService.convert(content, MarkdownNotebookOutput.class);
         }
         return content;
     }
 
     @Override
     public Object latex(String content) {
-        if (converService.supports(content, LatexNotebookOutput.class)) {
-            return converService.convert(content, LatexNotebookOutput.class);
+        if (convertService.supports(content, LatexNotebookOutput.class)) {
+            return convertService.convert(content, LatexNotebookOutput.class);
         }
         return content;
     }
@@ -147,7 +147,7 @@ public class DefaultNotebookService extends AbstractService implements
     // With RandomAccessibleInterval[] or List<RandomAccessibleInterval> as a type ?
     public Object tiles(final int[] gridLayout, final RandomAccessibleInterval... images) {
         RandomAccessibleInterval rai = ijNotebookService.mosaic(gridLayout, images);
-        return converService.convert(rai, NotebookOutput.class);
+        return convertService.convert(rai, NotebookOutput.class);
     }
 
 }
