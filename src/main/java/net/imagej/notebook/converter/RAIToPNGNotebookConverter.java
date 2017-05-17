@@ -46,7 +46,7 @@ public class RAIToPNGNotebookConverter<O extends RandomAccessibleInterval>
     @Override
     public PNGImageNotebookOutput convert(Object object) {
 
-        Img source = (Img) object;
+        RandomAccessibleInterval source = (RandomAccessibleInterval) object;
 
         // NB: Assume <=3 samples in the 3rd dimension means channels. Of course,
         // we have no metadata with a vanilla RAI, but this is a best guess;
