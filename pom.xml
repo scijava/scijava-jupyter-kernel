@@ -58,7 +58,7 @@
 
     <properties>
         <package-name>org.scijava.jupyter</package-name>
-        <license.licenseName>apache_2</license.licenseName>
+        <license.licenseName>apache_v2</license.licenseName>
         <license.copyrightOwners>Hadrien Mary</license.copyrightOwners>
         <netbeans.hint.license>apache20</netbeans.hint.license>
     </properties>
