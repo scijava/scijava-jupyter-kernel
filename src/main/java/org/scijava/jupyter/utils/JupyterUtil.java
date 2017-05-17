@@ -34,6 +34,7 @@ public class JupyterUtil {
         return createKernelJSON(classpath, logLevel, null);
     }
 
+    @SuppressWarnings("unchecked")
     public static String createKernelJSON(String classpath, String logLevel, String javaBinaryPath) {
         JSONObject root = new JSONObject();
         root.put("language", ScijavaEvaluator.DEFAULT_LANGUAGE);
