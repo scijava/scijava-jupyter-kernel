@@ -28,12 +28,8 @@ import com.twosigma.beaker.mimetype.MIMEContainer;
  */
 public class LatexNotebookOutput extends NotebookOutput {
 
-    public static MIMEContainer.MIME getMimeType() {
-        return MIMEContainer.MIME.TEXT_LATEX;
-    }
-
-    public LatexNotebookOutput(MIME mimeTypeObj, String content) {
-        super(mimeTypeObj, content);
+    public LatexNotebookOutput(String content) {
+        super(MIMEContainer.MIME.TEXT_LATEX, content);
     }
 
 }

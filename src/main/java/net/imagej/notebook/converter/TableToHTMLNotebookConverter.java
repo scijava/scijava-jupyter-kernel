@@ -70,7 +70,7 @@ public class TableToHTMLNotebookConverter<O extends Table>
 
         htmlString += "</table>";
 
-        return new HTMLNotebookOutput(HTMLNotebookOutput.getMimeType(), htmlString);
+        return new HTMLNotebookOutput(htmlString);
     }
 
 }

@@ -60,7 +60,7 @@ public class DatasetToPNGNotebookConverter
                 source.dimensionIndex(Axes.CHANNEL),
                 ImageJNotebookService.ValueScaling.AUTO);
 
-        return new PNGImageNotebookOutput(PNGImageNotebookOutput.getMimeType(), base64Image);
+        return new PNGImageNotebookOutput(base64Image);
     }
 
 }

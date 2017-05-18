@@ -28,12 +28,8 @@ import com.twosigma.beaker.mimetype.MIMEContainer;
  */
 public class HTMLNotebookOutput extends NotebookOutput {
 
-    public static MIMEContainer.MIME getMimeType() {
-        return MIMEContainer.MIME.TEXT_HTML;
-    }
-
-    public HTMLNotebookOutput(MIME mimeTypeObj, String content) {
-        super(mimeTypeObj, content);
+    public HTMLNotebookOutput(String content) {
+        super(MIMEContainer.MIME.TEXT_HTML, content);
     }
 
 }

@@ -28,12 +28,8 @@ import com.twosigma.beaker.mimetype.MIMEContainer;
  */
 public class PNGImageNotebookOutput extends ImageNotebookOutput {
 
-    public static MIMEContainer.MIME getMimeType() {
-        return MIMEContainer.MIME.IMAGE_PNG;
-    }
-
-    public PNGImageNotebookOutput(MIME mimeTypeObj, String content) {
-        super(mimeTypeObj, content);
+    public PNGImageNotebookOutput(String content) {
+        super(MIMEContainer.MIME.IMAGE_PNG, content);
     }
 
 }

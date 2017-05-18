@@ -28,11 +28,6 @@ import com.twosigma.beaker.mimetype.MIMEContainer;
  */
 public abstract class NotebookOutput extends MIMEContainer {
 
-    public static MIMEContainer.MIME getMimeType() {
-        // Default mimetype
-        return MIMEContainer.MIME.TEXT_PLAIN;
-    }
-
     public NotebookOutput(MIME mimeTypeObj, String content) {
         super(mimeTypeObj, content);
     }

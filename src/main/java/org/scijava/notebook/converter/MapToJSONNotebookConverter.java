@@ -44,8 +44,7 @@ public class MapToJSONNotebookConverter<K, V>
 
     @Override
     public JSONNotebookOutput convert(Object object) {
-        return new JSONNotebookOutput(JSONNotebookOutput.getMimeType(),
-                object.toString());
+        return new JSONNotebookOutput(object.toString());
     }
 
 }

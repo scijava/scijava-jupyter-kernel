@@ -41,8 +41,7 @@ public class StringToJSONNotebookConverter
 
     @Override
     public JSONNotebookOutput convert(Object object) {
-        return new JSONNotebookOutput(JSONNotebookOutput.getMimeType(),
-                (String) object);
+        return new JSONNotebookOutput((String) object);
     }
 
 }

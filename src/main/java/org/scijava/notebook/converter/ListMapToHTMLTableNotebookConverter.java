@@ -27,7 +27,6 @@ import java.util.Map;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.scijava.Priority;
 import org.scijava.convert.Converter;
-import org.scijava.notebook.converter.output.HTMLNotebookOutput;
 import org.scijava.notebook.converter.output.HTMLTableNotebookOutput;
 import org.scijava.plugin.Plugin;
 
@@ -103,8 +102,7 @@ public class ListMapToHTMLTableNotebookConverter<K, V> extends
 
         final String styledTable = style + htmlString;
 
-        return new HTMLTableNotebookOutput(HTMLNotebookOutput.getMimeType(),
-            styledTable);
+        return new HTMLTableNotebookOutput(styledTable);
     }
 
 }

@@ -41,8 +41,7 @@ public class StringToMarkdownNotebookConverter
 
     @Override
     public MarkdownNotebookOutput convert(Object object) {
-        return new MarkdownNotebookOutput(MarkdownNotebookOutput.getMimeType(),
-                (String) object);
+        return new MarkdownNotebookOutput((String) object);
     }
 
 }

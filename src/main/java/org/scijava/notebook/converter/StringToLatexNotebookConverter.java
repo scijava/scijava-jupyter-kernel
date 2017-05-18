@@ -41,8 +41,7 @@ public class StringToLatexNotebookConverter
 
     @Override
     public LatexNotebookOutput convert(Object object) {
-        return new LatexNotebookOutput(LatexNotebookOutput.getMimeType(),
-                (String) object);
+        return new LatexNotebookOutput((String) object);
     }
 
 }

@@ -42,8 +42,7 @@ public class StringToHTMLNotebookConverter
 
     @Override
     public HTMLNotebookOutput convert(Object object) {
-        return new HTMLNotebookOutput(HTMLNotebookOutput.getMimeType(),
-            StringEscapeUtils.escapeHtml4((String) object));
+        return new HTMLNotebookOutput(StringEscapeUtils.escapeHtml4((String) object));
     }
 
 }

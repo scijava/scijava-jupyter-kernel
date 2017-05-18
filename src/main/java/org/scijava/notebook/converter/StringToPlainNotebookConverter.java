@@ -41,8 +41,7 @@ public class StringToPlainNotebookConverter
 
     @Override
     public PlainNotebookOutput convert(Object object) {
-        return new PlainNotebookOutput(PlainNotebookOutput.getMimeType(),
-                (String) object);
+        return new PlainNotebookOutput((String) object);
     }
 
 }

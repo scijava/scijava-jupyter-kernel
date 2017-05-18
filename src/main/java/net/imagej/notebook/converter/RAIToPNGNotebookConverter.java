@@ -62,7 +62,7 @@ public class RAIToPNGNotebookConverter<T extends RealType<T>>
 
         String base64Image = (String) ijnb.RAIToPNG(source, 0, 1, cAxis, ValueScaling.AUTO);
 
-        return new PNGImageNotebookOutput(PNGImageNotebookOutput.getMimeType(), base64Image);
+        return new PNGImageNotebookOutput(base64Image);
     }
 
 }
