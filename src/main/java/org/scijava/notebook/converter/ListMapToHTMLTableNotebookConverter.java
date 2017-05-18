@@ -24,7 +24,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.lang3.StringEscapeUtils;
 import org.scijava.Priority;
 import org.scijava.convert.Converter;
 import org.scijava.notebook.converter.output.HTMLTableNotebookOutput;
@@ -42,7 +41,7 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Converter.class, priority = Priority.LOW_PRIORITY)
 public class ListMapToHTMLTableNotebookConverter<K, V> extends
-    NotebookOutputConverter<List<Map<K, V>>, HTMLTableNotebookOutput>
+    HTMLNotebookOutputConverter<List<Map<K, V>>, HTMLTableNotebookOutput>
 {
 
     @Override
@@ -80,7 +79,7 @@ public class ListMapToHTMLTableNotebookConverter<K, V> extends
         htmlString += "<tr>";
         for (final Object header : headers) {
             htmlString += "<th>";
-            htmlString += StringEscapeUtils.escapeHtml4(header.toString());
+            htmlString += asHTML(header);
             htmlString += "</th>";
         }
         htmlString += "</tr></thead><tbody>";
@@ -91,8 +90,7 @@ public class ListMapToHTMLTableNotebookConverter<K, V> extends
             for (final Object header : headers) {
                 htmlString += "<td>";
                 final Map<?, ?> row = table.get(i);
-                if (row.containsKey(header)) htmlString += StringEscapeUtils
-                    .escapeHtml4(row.get(header).toString());
+                if (row.containsKey(header)) htmlString += asHTML(row.get(header));
                 htmlString += "</td>";
             }
             htmlString += "</tr>";

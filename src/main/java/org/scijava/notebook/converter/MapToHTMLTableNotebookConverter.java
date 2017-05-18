@@ -22,10 +22,11 @@ package org.scijava.notebook.converter;
 
 import java.util.Map;
 
-import org.apache.commons.lang3.StringEscapeUtils;
 import org.scijava.Priority;
+import org.scijava.convert.ConvertService;
 import org.scijava.convert.Converter;
 import org.scijava.notebook.converter.output.HTMLTableNotebookOutput;
+import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
@@ -39,8 +40,11 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Converter.class, priority = Priority.LOW_PRIORITY)
 public class MapToHTMLTableNotebookConverter<K, V> extends
-    NotebookOutputConverter<Map<K, V>, HTMLTableNotebookOutput>
+    HTMLNotebookOutputConverter<Map<K, V>, HTMLTableNotebookOutput>
 {
+
+    @Parameter
+    private ConvertService convertService;
 
     @Override
     @SuppressWarnings({ "rawtypes", "unchecked" })
@@ -75,9 +79,9 @@ public class MapToHTMLTableNotebookConverter<K, V> extends
 
         // Append the rows
         for (final K key : table.keySet()) {
-            htmlString += "<tr><td>" + StringEscapeUtils.escapeHtml4(key
-                .toString()) + "</td><td>" + StringEscapeUtils.escapeHtml4(table
-                    .get(key).toString()) + "</td></tr>";
+            final String k = asHTML(key);
+            final String v = asHTML(table.get(key));
+            htmlString += "<tr><td>" + k + "</td><td>" + v + "</td></tr>";
         }
         htmlString += "</tbody></table>";
 
