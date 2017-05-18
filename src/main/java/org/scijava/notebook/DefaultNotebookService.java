@@ -134,17 +134,17 @@ public class DefaultNotebookService extends AbstractService implements
     }
 
     @Override
-    public Object table(List<Map> table) {
+    public Object table(List<Map<?, ?>> table) {
 
         String htmlString = "<table>";
 
-        List<String> headers = new ArrayList<>(table.get(0).keySet());
+        List<?> headers = new ArrayList<>(table.get(0).keySet());
 
         // Set column headers
         htmlString += "<tr>";
-        for (String header : headers) {
+        for (Object header : headers) {
             htmlString += "<th>";
-            htmlString += header;
+            htmlString += header.toString();
             htmlString += "</th>";
         }
         htmlString += "</tr>";
@@ -152,9 +152,10 @@ public class DefaultNotebookService extends AbstractService implements
         // Append the rows
         for (int i = 0; i < table.size(); i++) {
             htmlString += "<tr>";
-            for (String header : headers) {
+            for (Object header : headers) {
                 htmlString += "<td>";
-                htmlString += table.get(i).getOrDefault(header, "");
+                final Map<?, ?> row = table.get(i);
+                if (row.containsKey(header)) htmlString += row.get(header);
                 htmlString += "</td>";
             }
             htmlString += "</tr>";

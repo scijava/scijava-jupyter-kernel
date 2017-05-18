@@ -51,5 +51,5 @@ public interface NotebookService extends SciJavaService {
     
     public Object latex(String content);
     
-    public Object table(List<Map> table);
+    public Object table(List<Map<?, ?>> table);
 }
