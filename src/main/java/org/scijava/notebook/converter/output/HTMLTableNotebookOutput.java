@@ -25,7 +25,7 @@ package org.scijava.notebook.converter.output;
  *
  * @author Alison Walter
  */
-public class HTMLTableNotebookOutput extends NotebookOutput {
+public class HTMLTableNotebookOutput extends HTMLNotebookOutput {
 
     public HTMLTableNotebookOutput(MIME mimeTypeObj, String content) {
         super(mimeTypeObj, content);
