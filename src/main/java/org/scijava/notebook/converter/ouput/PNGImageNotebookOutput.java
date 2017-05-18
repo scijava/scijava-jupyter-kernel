@@ -26,7 +26,7 @@ import com.twosigma.beaker.mimetype.MIMEContainer;
  *
  * @author Hadrien Mary
  */
-public class PNGImageNotebookOutput extends NotebookOutput {
+public class PNGImageNotebookOutput extends ImageNotebookOutput {
 
     public static MIMEContainer.MIME getMimeType() {
         return MIMEContainer.MIME.IMAGE_PNG;
