@@ -23,16 +23,16 @@ package org.scijava.notebook;
 import java.util.List;
 import java.util.Map;
 
-import org.scijava.notebook.converter.ouput.HTMLNotebookOutput;
-import org.scijava.notebook.converter.ouput.HTMLTableNotebookOutput;
-import org.scijava.notebook.converter.ouput.ImageNotebookOutput;
-import org.scijava.notebook.converter.ouput.JPGImageNotebookOutput;
-import org.scijava.notebook.converter.ouput.JSONNotebookOutput;
-import org.scijava.notebook.converter.ouput.LatexNotebookOutput;
-import org.scijava.notebook.converter.ouput.MarkdownNotebookOutput;
-import org.scijava.notebook.converter.ouput.NotebookOutput;
-import org.scijava.notebook.converter.ouput.PNGImageNotebookOutput;
-import org.scijava.notebook.converter.ouput.PlainNotebookOutput;
+import org.scijava.notebook.converter.output.HTMLNotebookOutput;
+import org.scijava.notebook.converter.output.HTMLTableNotebookOutput;
+import org.scijava.notebook.converter.output.ImageNotebookOutput;
+import org.scijava.notebook.converter.output.JPGImageNotebookOutput;
+import org.scijava.notebook.converter.output.JSONNotebookOutput;
+import org.scijava.notebook.converter.output.LatexNotebookOutput;
+import org.scijava.notebook.converter.output.MarkdownNotebookOutput;
+import org.scijava.notebook.converter.output.NotebookOutput;
+import org.scijava.notebook.converter.output.PNGImageNotebookOutput;
+import org.scijava.notebook.converter.output.PlainNotebookOutput;
 import org.scijava.service.SciJavaService;
 
 /**

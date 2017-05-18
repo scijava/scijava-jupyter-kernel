@@ -22,7 +22,7 @@ package org.scijava.notebook.converter;
 
 import org.scijava.Priority;
 import org.scijava.convert.Converter;
-import org.scijava.notebook.converter.ouput.PlainNotebookOutput;
+import org.scijava.notebook.converter.output.PlainNotebookOutput;
 import org.scijava.plugin.Plugin;
 
 @Plugin(type = Converter.class, priority = Priority.FIRST_PRIORITY)

@@ -19,7 +19,7 @@ import net.imagej.table.Table;
 import org.scijava.Priority;
 import org.scijava.convert.Converter;
 import org.scijava.notebook.converter.NotebookOutputConverter;
-import org.scijava.notebook.converter.ouput.HTMLNotebookOutput;
+import org.scijava.notebook.converter.output.HTMLNotebookOutput;
 import org.scijava.plugin.Plugin;
 
 @Plugin(type = Converter.class, priority = Priority.LOW_PRIORITY)

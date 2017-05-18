@@ -1,4 +1,4 @@
-package org.scijava.notebook.converter.ouput;
+package org.scijava.notebook.converter.output;
 
 /**
  * For displaying images as output.

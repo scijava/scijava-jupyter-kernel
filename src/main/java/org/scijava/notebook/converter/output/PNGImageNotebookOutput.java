@@ -18,7 +18,7 @@
  * #L%
  */
 
-package org.scijava.notebook.converter.ouput;
+package org.scijava.notebook.converter.output;
 
 import com.twosigma.beaker.mimetype.MIMEContainer;
 
@@ -26,13 +26,13 @@ import com.twosigma.beaker.mimetype.MIMEContainer;
  *
  * @author Hadrien Mary
  */
-public class HTMLNotebookOutput extends NotebookOutput {
+public class PNGImageNotebookOutput extends ImageNotebookOutput {
 
     public static MIMEContainer.MIME getMimeType() {
-        return MIMEContainer.MIME.TEXT_HTML;
+        return MIMEContainer.MIME.IMAGE_PNG;
     }
 
-    public HTMLNotebookOutput(MIME mimeTypeObj, String content) {
+    public PNGImageNotebookOutput(MIME mimeTypeObj, String content) {
         super(mimeTypeObj, content);
     }
 

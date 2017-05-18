@@ -18,16 +18,21 @@
  * #L%
  */
 
-package org.scijava.notebook.converter.ouput;
+package org.scijava.notebook.converter.output;
+
+import com.twosigma.beaker.mimetype.MIMEContainer;
 
 /**
- * For displaying HTML tables as output.
  *
- * @author Alison Walter
+ * @author Hadrien Mary
  */
-public class HTMLTableNotebookOutput extends NotebookOutput {
+public class JPGImageNotebookOutput extends ImageNotebookOutput {
 
-    public HTMLTableNotebookOutput(MIME mimeTypeObj, String content) {
+    public static MIMEContainer.MIME getMimeType() {
+        return MIMEContainer.MIME.IMAGE_JPEG;
+    }
+
+    public JPGImageNotebookOutput(MIME mimeTypeObj, String content) {
         super(mimeTypeObj, content);
     }
 

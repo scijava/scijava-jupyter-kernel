@@ -32,10 +32,10 @@ import net.imglib2.RandomAccessibleInterval;
 
 import org.scijava.convert.ConvertService;
 import org.scijava.log.LogService;
-import org.scijava.notebook.converter.ouput.HTMLNotebookOutput;
-import org.scijava.notebook.converter.ouput.LatexNotebookOutput;
-import org.scijava.notebook.converter.ouput.MarkdownNotebookOutput;
-import org.scijava.notebook.converter.ouput.NotebookOutput;
+import org.scijava.notebook.converter.output.HTMLNotebookOutput;
+import org.scijava.notebook.converter.output.LatexNotebookOutput;
+import org.scijava.notebook.converter.output.MarkdownNotebookOutput;
+import org.scijava.notebook.converter.output.NotebookOutput;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 import org.scijava.service.AbstractService;

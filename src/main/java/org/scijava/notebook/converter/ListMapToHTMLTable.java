@@ -27,8 +27,8 @@ import java.util.Map;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.scijava.Priority;
 import org.scijava.convert.Converter;
-import org.scijava.notebook.converter.ouput.HTMLNotebookOutput;
-import org.scijava.notebook.converter.ouput.HTMLTableNotebookOutput;
+import org.scijava.notebook.converter.output.HTMLNotebookOutput;
+import org.scijava.notebook.converter.output.HTMLTableNotebookOutput;
 import org.scijava.plugin.Plugin;
 
 /**

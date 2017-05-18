@@ -18,7 +18,7 @@
  * #L%
  */
 
-package org.scijava.notebook.converter.ouput;
+package org.scijava.notebook.converter.output;
 
 import com.twosigma.beaker.mimetype.MIMEContainer;
 
