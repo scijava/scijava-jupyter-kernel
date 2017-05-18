@@ -24,6 +24,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.scijava.notebook.converter.ouput.HTMLNotebookOutput;
+import org.scijava.notebook.converter.ouput.HTMLTableNotebookOutput;
+import org.scijava.notebook.converter.ouput.ImageNotebookOutput;
 import org.scijava.notebook.converter.ouput.JPGImageNotebookOutput;
 import org.scijava.notebook.converter.ouput.JSONNotebookOutput;
 import org.scijava.notebook.converter.ouput.LatexNotebookOutput;
@@ -49,12 +51,14 @@ public interface NotebookService extends SciJavaService {
     enum OutputType {
 
         HTML(HTMLNotebookOutput.class),
+        IMAGE(ImageNotebookOutput.class),
         JPEG_IMAGE(JPGImageNotebookOutput.class),
         JSON(JSONNotebookOutput.class),
         LATEX(LatexNotebookOutput.class),
         MARKDOWN(MarkdownNotebookOutput.class),
         PLAIN(PlainNotebookOutput.class),
-        PNG_IMAGE(PNGImageNotebookOutput.class);
+        PNG_IMAGE(PNGImageNotebookOutput.class),
+        TABLE(HTMLTableNotebookOutput.class);
 
         private final Class<? extends NotebookOutput> outputType;
 
