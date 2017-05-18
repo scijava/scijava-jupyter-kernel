@@ -111,12 +111,20 @@ public interface NotebookService extends SciJavaService {
      * @return A result of the specified MIME type.
      */
     Object displayMimetype(String mimetype, String content);
-    
-    Object html(String content);
-    
-    Object markdown(String content);
-    
-    Object latex(String content);
-    
-    Object table(List<Map<?, ?>> table);
+
+    default Object html(String content) {
+        return display(content, HTMLNotebookOutput.class);
+    }
+
+    default Object markdown(String content) {
+        return display(content, MarkdownNotebookOutput.class);
+    }
+
+    default Object latex(String content) {
+        return display(content, LatexNotebookOutput.class);
+    }
+
+    default Object table(Object table) {
+        return display(table, HTMLTableNotebookOutput.class);
+    }
 }
