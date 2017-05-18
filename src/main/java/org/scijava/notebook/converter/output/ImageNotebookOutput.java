@@ -25,9 +25,15 @@ package org.scijava.notebook.converter.output;
  *
  * @author Alison Walter
  */
-public abstract class ImageNotebookOutput extends NotebookOutput {
+public abstract class ImageNotebookOutput extends HTMLFriendlyNotebookOutput {
 
     public ImageNotebookOutput(MIME mimeTypeObj, String content) {
         super(mimeTypeObj, content);
+    }
+
+    @Override
+    public String toHTML() {
+        final String mime = getMime().getMime();
+        return "<img src=\"data:" + mime + ";base64, " + getCode() + "\" />";
     }
 }
