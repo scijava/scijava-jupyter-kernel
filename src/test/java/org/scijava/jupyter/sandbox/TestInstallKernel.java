@@ -18,22 +18,32 @@
  * #L%
  */
 
-package org.scijava.notebook.converter.ouput;
+package org.scijava.jupyter.sandbox;
 
-import com.twosigma.beaker.mimetype.MIMEContainer;
+import org.scijava.Context;
+import org.scijava.jupyter.service.JupyterService;
+import org.scijava.script.ScriptService;
 
 /**
  *
  * @author Hadrien Mary
  */
-public class LatexNotebookOutput extends NotebookOutput {
+public class TestInstallKernel {
 
-    public static MIMEContainer.MIME getMimeType() {
-        return MIMEContainer.MIME.TEXT_LATEX;
-    }
+    public static void main(String... args) {
 
-    public LatexNotebookOutput(MIME mimeTypeObj, String content) {
-        super(mimeTypeObj, content);
+        String pythonBinaryPath = "/home/hadim/local/conda/bin/python";
+
+        Context context = new Context();
+        JupyterService jupyter = context.service(JupyterService.class);
+        ScriptService scriptService = context.service(ScriptService.class);
+        
+        //jupyter.installKernel("groovy", "info", pythonBinaryPath);
+        
+        System.out.println(scriptService.getLanguages());
+        
+        context.dispose();
+
     }
 
 }

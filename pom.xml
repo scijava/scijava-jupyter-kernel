@@ -1,200 +1,199 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
 
-    <parent>
-        <groupId>org.scijava</groupId>
-        <artifactId>pom-scijava</artifactId>
-        <version>14.0.0</version>
-    </parent>
+	<parent>
+		<groupId>org.scijava</groupId>
+		<artifactId>pom-scijava</artifactId>
+		<version>14.0.0</version>
+	</parent>
 
-    <artifactId>scijava-jupyter-kernel</artifactId>
-    <version>0.3.3-SNAPSHOT</version>
+	<artifactId>scijava-jupyter-kernel</artifactId>
+	<version>0.3.3-SNAPSHOT</version>
 
-    <name>scijava-jupyter-kernel</name>
-    <description>A Java kernel for Jupyter.</description>
-    <url>https://github.com/hadim/scijava-jupyter-kernel</url>
-    <inceptionYear>2017</inceptionYear>
+	<name>scijava-jupyter-kernel</name>
+	<description>SciJava polyglot kernel for Jupyter.</description>
+	<url>https://github.com/hadim/scijava-jupyter-kernel</url>
+	<inceptionYear>2017</inceptionYear>
+	<organization>
+		<name>SciJava</name>
+		<url>http://www.scijava.org/</url>
+	</organization>
+	<licenses>
+		<license>
+			<name>Apache 2.0</name>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
 
-    <licenses>
-        <license>
-            <name>Apache 2.0</name>
-            <distribution>repo</distribution>
-        </license>
-    </licenses>
+	<developers>
+		<developer>
+			<id>hadim</id>
+			<name>Hadrien Mary</name>
+			<url>http://imagej.net/User:Hadim</url>
+			<roles>
+				<role>founder</role>
+				<role>lead</role>
+				<role>developer</role>
+				<role>debugger</role>
+				<role>reviewer</role>
+				<role>support</role>
+				<role>maintainer</role>
+			</roles>
+			<timezone>-5</timezone>
+		</developer>
+	</developers>
+	<contributors>
+		<contributor>
+			<name>Curtis Rueden</name>
+			<url>http://imagej.net/User:Rueden</url>
+			<properties><id>ctrueden</id></properties>
+		</contributor>
+		<contributor>
+			<name>Stefan Helfrich</name>
+			<url>http://imagej.net/User:Stelfrich</url>
+			<properties><id>stelfrich</id></properties>
+		</contributor>
+	</contributors>
 
-    <organization>
-        <name>SciJava</name>
-        <url>http://www.scijava.org/</url>
-    </organization>
+	<mailingLists>
+		<mailingList>
+			<name>ImageJ Forum</name>
+			<archive>http://forum.imagej.net/</archive>
+		</mailingList>
+	</mailingLists>
 
-    <developers>
-        <developer>
-            <id>hadim</id>
-            <name>Hadrien Mary</name>
-            <url>http://imagej.net/User:Hadim</url>
-            <roles>
-                <role>founder</role>
-                <role>lead</role>
-                <role>developer</role>
-                <role>debugger</role>
-                <role>reviewer</role>
-                <role>support</role>
-                <role>maintainer</role>
-            </roles>
-            <timezone>-5</timezone>
-        </developer>
-    </developers>
-    <contributors>
-        <!--
-        NB: Need a least one element to override the parent.
-        See: https://issues.apache.org/jira/browse/MNG-5220
-        -->
-        <contributor>
-            <name>None</name>
-        </contributor>
-    </contributors>
+	<scm>
+		<connection>scm:git:git://github.com/hadim/scijava-jupyter-kernel</connection>
+		<developerConnection>scm:git:git@github.com:hadim/scijava-jupyter-kernel</developerConnection>
+		<tag>HEAD</tag>
+		<url>https://github.com/hadim/scijava-jupyter-kernel</url>
+	</scm>
+	<issueManagement>
+		<system>GitHub Issues</system>
+		<url>https://github.com/hadim/scijava-jupyter-kernel/issues</url>
+	</issueManagement>
+	<ciManagement>
+		<system>Travis CI</system>
+		<url>https://travis-ci.org/hadim/scijava-jupyter-kernel</url>
+	</ciManagement>
 
-    <properties>
-        <package-name>scijava-jupyter-kernel</package-name>
-        <license.licenseName>apache_2</license.licenseName>
-        <license.copyrightOwners>Hadrien Mary</license.copyrightOwners>
-        <netbeans.hint.license>apache20</netbeans.hint.license>
-    </properties>
+	<properties>
+		<package-name>org.scijava.jupyter</package-name>
+		<license.licenseName>apache_v2</license.licenseName>
+		<license.copyrightOwners>Hadrien Mary</license.copyrightOwners>
+		<netbeans.hint.license>apache20</netbeans.hint.license>
+	</properties>
 
-    <mailingLists>
-        <mailingList>
-            <name>ImageJ Forum</name>
-            <archive>http://forum.imagej.net/</archive>
-        </mailingList>
-    </mailingLists>
+	<repositories>
+		<repository>
+			<id>imagej.public</id>
+			<url>http://maven.imagej.net/content/groups/public</url>
+		</repository>
+		<repository>
+			<id>jitpack.io</id>
+			<url>https://jitpack.io</url>
+		</repository>
+	</repositories>
 
-    <scm>
-        <connection>scm:git:git://github.com/hadim/scijava-jupyter-kernel</connection>
-        <developerConnection>scm:git:git@github.com:hadim/scijava-jupyter-kernel</developerConnection>
-        <tag>HEAD</tag>
-        <url>https://github.com/hadim/scijava-jupyter-kernel</url>
-    </scm>
-    <issueManagement>
-        <system>GitHub Issues</system>
-        <url>https://github.com/hadim/scijava-jupyter-kernel/issues</url>
-    </issueManagement>
-    <ciManagement>
-        <system>Jenkins</system>
-        <url>http://jenkins.imagej.net/job/scijava-jupyter-kernel/</url>
-    </ciManagement>
-    
-    <repositories>
-        <repository>
-            <id>imagej.public</id>
-            <url>http://maven.imagej.net/content/groups/public</url>
-        </repository>
-        <repository>
-            <id>jitpack.io</id>
-            <url>https://jitpack.io</url>
-        </repository>
-    </repositories>
+	<dependencies>
 
-    <dependencies>
+		<dependency>
+			<groupId>org.scijava</groupId>
+			<artifactId>scijava-common</artifactId>
+		</dependency>
 
-        <dependency>
-            <groupId>org.scijava</groupId>
-            <artifactId>scijava-common</artifactId>
-        </dependency>
+		<!-- Used to parse command line parameters -->
+		<dependency>
+			<groupId>commons-cli</groupId>
+			<artifactId>commons-cli</artifactId>
+			<version>1.4</version>
+		</dependency>
 
-        <!-- Used to parse command line parameters -->
-        <dependency>
-            <groupId>commons-cli</groupId>
-            <artifactId>commons-cli</artifactId>
-            <version>1.4</version>
-        </dependency>
-        
-        <!-- Used to create the kernel.json file -->
-        <dependency>
-            <groupId>com.googlecode.json-simple</groupId>
-            <artifactId>json-simple</artifactId>
-            <version>1.1.1</version>
-        </dependency>
+		<!-- Used to create the kernel.json file -->
+		<dependency>
+			<groupId>com.googlecode.json-simple</groupId>
+			<artifactId>json-simple</artifactId>
+			<version>1.1.1</version>
+		</dependency>
 
-        <!-- The base kernel that we rely on -->
-        <dependency>
-            <groupId>com.github.twosigma.beakerx</groupId>
-            <artifactId>beaker-kernel-base</artifactId>
-            <version>68a7965</version>
-        </dependency>
-        
-        <!-- The package to convert images to PNG/JPEG -->
-        <dependency>
-            <groupId>com.github.jai-imageio</groupId>
-            <artifactId>jai-imageio-core</artifactId>
-            <version>1.3.1</version>
-        </dependency>
+		<!-- The base kernel that we rely on -->
+		<dependency>
+			<groupId>com.github.twosigma.beakerx</groupId>
+			<artifactId>beaker-kernel-base</artifactId>
+			<version>68a7965</version>
+		</dependency>
 
-        <!-- ImageJ packages used in the NotebookService -->
-        <dependency>
-            <groupId>net.imagej</groupId>
-            <artifactId>imagej</artifactId>
-        </dependency>
-        
-        <dependency>
-            <groupId>net.imagej</groupId>
-            <artifactId>imagej-ops</artifactId>
-        </dependency>
+		<!-- The package to convert images to PNG/JPEG -->
+		<dependency>
+			<groupId>com.github.jai-imageio</groupId>
+			<artifactId>jai-imageio-core</artifactId>
+			<version>1.3.1</version>
+		</dependency>
 
-        <!-- Supported languages -->
-        <dependency>
-            <groupId>org.scijava</groupId>
-            <artifactId>scripting-beanshell</artifactId>
-        </dependency>
-        
-        <dependency>
-            <groupId>org.scijava</groupId>
-            <artifactId>scripting-clojure</artifactId>
-        </dependency>
-        
-        <dependency>
-            <groupId>org.scijava</groupId>
-            <artifactId>scripting-groovy</artifactId>
-        </dependency>
-        
-        <dependency>
-            <groupId>org.scijava</groupId>
-            <artifactId>scripting-java</artifactId>
-        </dependency>
-        
-        <dependency>
-            <groupId>org.scijava</groupId>
-            <artifactId>scripting-javascript</artifactId>
-        </dependency>
-        
-        <dependency>
-            <groupId>org.scijava</groupId>
-            <artifactId>scripting-jruby</artifactId>
-        </dependency>
-        
-        <dependency>
-            <groupId>org.scijava</groupId>
-            <artifactId>scripting-jython</artifactId>
-        </dependency>
-        
-        <dependency>
-            <groupId>org.scijava</groupId>
-            <artifactId>scripting-renjin</artifactId>
-        </dependency>
-        
-        <dependency>
-            <groupId>org.scijava</groupId>
-            <artifactId>scripting-scala</artifactId>
-        </dependency>
+		<!-- ImageJ packages used in the NotebookService -->
+		<dependency>
+			<groupId>net.imagej</groupId>
+			<artifactId>imagej</artifactId>
+		</dependency>
 
-        <!-- Test dependencies -->
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <scope>test</scope>
-        </dependency>
+		<dependency>
+			<groupId>net.imagej</groupId>
+			<artifactId>imagej-ops</artifactId>
+		</dependency>
 
-    </dependencies>
+		<!-- Supported languages -->
+		<dependency>
+			<groupId>org.scijava</groupId>
+			<artifactId>scripting-beanshell</artifactId>
+		</dependency>
 
+		<dependency>
+			<groupId>org.scijava</groupId>
+			<artifactId>scripting-clojure</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.scijava</groupId>
+			<artifactId>scripting-groovy</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.scijava</groupId>
+			<artifactId>scripting-java</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.scijava</groupId>
+			<artifactId>scripting-javascript</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.scijava</groupId>
+			<artifactId>scripting-jruby</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.scijava</groupId>
+			<artifactId>scripting-jython</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.scijava</groupId>
+			<artifactId>scripting-renjin</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.scijava</groupId>
+			<artifactId>scripting-scala</artifactId>
+		</dependency>
+
+		<!-- Test dependencies -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+	</dependencies>
 </project>

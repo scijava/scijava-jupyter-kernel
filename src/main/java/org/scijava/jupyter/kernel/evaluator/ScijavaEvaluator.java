@@ -1,18 +1,23 @@
-/* 
- * Copyright 2017 Hadrien Mary.
- *
+/*-
+ * #%L
+ * SciJava polyglot kernel for Jupyter.
+ * %%
+ * Copyright (C) 2017 Hadrien Mary
+ * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
+ * 
  *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
+ * #L%
  */
+
 package org.scijava.jupyter.kernel.evaluator;
 
 import com.twosigma.beaker.autocomplete.AutocompleteResult;
@@ -25,6 +30,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import javax.script.Bindings;
 import javax.script.ScriptContext;
 import javax.script.ScriptEngine;
@@ -118,14 +124,14 @@ public class ScijavaEvaluator implements Evaluator {
         System.exit(0);
     }
 
-    private void addLanguage(String languageName) {
+    private void addLanguage(String langName) {
 
-        if (scriptService.getLanguageByName(languageName) == null) {
-            log.error("Script Language for '" + languageName + "' not found.");
+        if (scriptService.getLanguageByName(langName) == null) {
+            log.error("Script Language for '" + langName + "' not found.");
             System.exit(1);
         }
 
-        if (!this.scriptLanguages.keySet().contains(languageName)) {
+        if (!this.scriptLanguages.keySet().contains(langName)) {
 
             Bindings bindings = null;
             if (!this.scriptEngines.isEmpty()) {
@@ -133,12 +139,12 @@ public class ScijavaEvaluator implements Evaluator {
                 bindings = this.scriptEngines.get(firstLanguage).getBindings(ScriptContext.ENGINE_SCOPE);
             }
 
-            log.info("Script Language for '" + languageName + "' found.");
-            ScriptLanguage scriptLanguage = scriptService.getLanguageByName(languageName);
-            this.scriptLanguages.put(languageName, scriptLanguage);
+            log.info("Script Language for '" + langName + "' found.");
+            ScriptLanguage scriptLanguage = scriptService.getLanguageByName(langName);
+            this.scriptLanguages.put(langName, scriptLanguage);
 
-            ScriptEngine engine = this.scriptLanguages.get(languageName).getScriptEngine();
-            this.scriptEngines.put(languageName, engine);
+            ScriptEngine engine = this.scriptLanguages.get(langName).getScriptEngine();
+            this.scriptEngines.put(langName, engine);
 
             // Not implemented yet
             //engine.setBindings(this.bindings, ScriptContext.ENGINE_SCOPE);
@@ -148,7 +154,7 @@ public class ScijavaEvaluator implements Evaluator {
 
         }
 
-        log.debug("Script Language found for '" + languageName + "'");
+        log.debug("Script Language found for '" + langName + "'");
     }
 
     private String setLanguage(String code) {
