@@ -36,9 +36,6 @@ import java.util.List;
 import java.util.Map;
 import net.imagej.notebook.ImageJNotebookService;
 import net.imglib2.RandomAccessibleInterval;
-import net.imglib2.type.NativeType;
-
-import net.imglib2.type.numeric.RealType;
 import org.scijava.convert.ConvertService;
 import org.scijava.log.LogService;
 import org.scijava.notebook.converter.ouput.HTMLNotebookOutput;
