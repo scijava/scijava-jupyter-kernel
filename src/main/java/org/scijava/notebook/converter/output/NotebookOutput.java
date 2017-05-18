@@ -18,7 +18,7 @@
  * #L%
  */
 
-package org.scijava.notebook.converter.ouput;
+package org.scijava.notebook.converter.output;
 
 import com.twosigma.beaker.mimetype.MIMEContainer;
 
@@ -26,13 +26,14 @@ import com.twosigma.beaker.mimetype.MIMEContainer;
  *
  * @author Hadrien Mary
  */
-public class JSONNotebookOutput extends NotebookOutput {
+public abstract class NotebookOutput extends MIMEContainer {
 
     public static MIMEContainer.MIME getMimeType() {
+        // Default mimetype
         return MIMEContainer.MIME.TEXT_PLAIN;
     }
 
-    public JSONNotebookOutput(MIME mimeTypeObj, String content) {
+    public NotebookOutput(MIME mimeTypeObj, String content) {
         super(mimeTypeObj, content);
     }
 

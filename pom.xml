@@ -83,6 +83,7 @@
 		<license.licenseName>apache_v2</license.licenseName>
 		<license.copyrightOwners>Hadrien Mary</license.copyrightOwners>
 		<netbeans.hint.license>apache20</netbeans.hint.license>
+		<commons-lang3.version>3.5</commons-lang3.version>
 	</properties>
 
 	<repositories>
@@ -101,6 +102,12 @@
 		<dependency>
 			<groupId>org.scijava</groupId>
 			<artifactId>scijava-common</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+			<version>${commons-lang3.version}</version>
 		</dependency>
 
 		<!-- Used to parse command line parameters -->

@@ -22,7 +22,7 @@ package org.scijava.notebook.converter;
 
 import org.scijava.convert.AbstractConverter;
 import org.scijava.log.LogService;
-import org.scijava.notebook.converter.ouput.NotebookOutput;
+import org.scijava.notebook.converter.output.NotebookOutput;
 import org.scijava.plugin.Parameter;
 
 /**

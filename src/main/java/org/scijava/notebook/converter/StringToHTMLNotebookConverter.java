@@ -20,9 +20,10 @@
 
 package org.scijava.notebook.converter;
 
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.scijava.Priority;
 import org.scijava.convert.Converter;
-import org.scijava.notebook.converter.ouput.HTMLNotebookOutput;
+import org.scijava.notebook.converter.output.HTMLNotebookOutput;
 import org.scijava.plugin.Plugin;
 
 @Plugin(type = Converter.class, priority = Priority.LOW_PRIORITY)
@@ -42,7 +43,7 @@ public class StringToHTMLNotebookConverter
     @Override
     public HTMLNotebookOutput convert(Object object) {
         return new HTMLNotebookOutput(HTMLNotebookOutput.getMimeType(),
-                (String) object);
+            StringEscapeUtils.escapeHtml4((String) object));
     }
 
 }
