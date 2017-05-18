@@ -20,8 +20,6 @@
 
 package org.scijava.notebook.converter;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang3.StringEscapeUtils;
@@ -32,24 +30,23 @@ import org.scijava.notebook.converter.output.HTMLTableNotebookOutput;
 import org.scijava.plugin.Plugin;
 
 /**
- * Converts a {@code List<Map<K,V>>} in to an HTML table. The first {@code Map}
- * in the list's keys will be used as the headers for this table and dictate
- * the number of columns the table has.
+ * Converts a {@code Map} to a two column HTML table. The headers for this
+ * table are Key and Value.
  *
  * @author Alison Walter
  *
- * @param <K> data type of keys
- * @param <V> data type of values
+ * @param <K> data type used for the key
+ * @param <V> data type used for the values
  */
 @Plugin(type = Converter.class, priority = Priority.LOW_PRIORITY)
-public class ListMapToHTMLTable<K, V> extends
-    NotebookOutputConverter<List<Map<K, V>>, HTMLTableNotebookOutput>
+public class MapToHTMLTableNotebookConverter<K, V> extends
+    NotebookOutputConverter<Map<K, V>, HTMLTableNotebookOutput>
 {
 
     @Override
     @SuppressWarnings({ "rawtypes", "unchecked" })
-    public Class<List<Map<K, V>>> getInputType() {
-        return (Class) List.class;
+    public Class<Map<K, V>> getInputType() {
+        return (Class) Map.class;
     }
 
     @Override
@@ -60,7 +57,7 @@ public class ListMapToHTMLTable<K, V> extends
     @Override
     public HTMLTableNotebookOutput convert(final Object object) {
         @SuppressWarnings("unchecked")
-        final List<Map<K, V>> table = (List<Map<K, V>>) object;
+        final Map<K, V> table = (Map<K, V>) object;
 
         // Style for the HTML table
         final String style = "<style>" +
@@ -73,32 +70,16 @@ public class ListMapToHTMLTable<K, V> extends
             "table.converted tbody tr:hover {background: #BDF4B5;}" +
             "</style>";
 
-        String htmlString = "<table class=\"converted\"><thead>";
-
-        final List<?> headers = new ArrayList<>(table.get(0).keySet());
-
-        // Set column headers
-        htmlString += "<tr>";
-        for (final Object header : headers) {
-            htmlString += "<th>";
-            htmlString += StringEscapeUtils.escapeHtml4(header.toString());
-            htmlString += "</th>";
-        }
-        htmlString += "</tr></thead><tbody>";
+        // Default headers for a Map will be Key and Value
+        String htmlString =
+            "<table class=\"converted\"><thead><th>Key</th><th>Value</th></thead><tbody>";
 
         // Append the rows
-        for (int i = 0; i < table.size(); i++) {
-            htmlString += "<tr>";
-            for (final Object header : headers) {
-                htmlString += "<td>";
-                final Map<?, ?> row = table.get(i);
-                if (row.containsKey(header)) htmlString += StringEscapeUtils
-                    .escapeHtml4(row.get(header).toString());
-                htmlString += "</td>";
-            }
-            htmlString += "</tr>";
+        for (final K key : table.keySet()) {
+            htmlString += "<tr><td>" + StringEscapeUtils.escapeHtml4(key
+                .toString()) + "</td><td>" + StringEscapeUtils.escapeHtml4(table
+                    .get(key).toString()) + "</td></tr>";
         }
-
         htmlString += "</tbody></table>";
 
         final String styledTable = style + htmlString;
