@@ -22,6 +22,15 @@ package org.scijava.notebook;
 
 import java.util.List;
 import java.util.Map;
+
+import org.scijava.notebook.converter.ouput.HTMLNotebookOutput;
+import org.scijava.notebook.converter.ouput.JPGImageNotebookOutput;
+import org.scijava.notebook.converter.ouput.JSONNotebookOutput;
+import org.scijava.notebook.converter.ouput.LatexNotebookOutput;
+import org.scijava.notebook.converter.ouput.MarkdownNotebookOutput;
+import org.scijava.notebook.converter.ouput.NotebookOutput;
+import org.scijava.notebook.converter.ouput.PNGImageNotebookOutput;
+import org.scijava.notebook.converter.ouput.PlainNotebookOutput;
 import org.scijava.service.SciJavaService;
 
 /**
@@ -34,12 +43,61 @@ import org.scijava.service.SciJavaService;
 public interface NotebookService extends SciJavaService {
 
     /**
+     * Convenience enum to make it slightly easier to call {@link #display} with
+     * a known finite set of options.
+     */
+    enum OutputType {
+
+        HTML(HTMLNotebookOutput.class),
+        JPEG_IMAGE(JPGImageNotebookOutput.class),
+        JSON(JSONNotebookOutput.class),
+        LATEX(LatexNotebookOutput.class),
+        MARKDOWN(MarkdownNotebookOutput.class),
+        PLAIN(PlainNotebookOutput.class),
+        PNG_IMAGE(PNGImageNotebookOutput.class);
+
+        private final Class<? extends NotebookOutput> outputType;
+
+        OutputType(Class<? extends NotebookOutput> outputType) {
+            this.outputType = outputType;
+        }
+
+        public Class<? extends NotebookOutput> outputType() {
+            return outputType;
+        }
+    }
+
+    /**
      * Converts the input object to a notebook-appropriate data type.
      *
      * @param object The object to convert to a notebook-friendly result.
      * @return A result which is displays well in a notebook.
      */
-    Object display(Object object);
+    default Object display(final Object object) {
+        return display(object, NotebookOutput.class);
+    }
+
+    /**
+     * Converts the input object to notebook-appropriate data of the specified
+     * type.
+     *
+     * @param object The object to convert to a notebook-friendly result.
+     * @param outputType The type of notebook-appropriate data.
+     * @return A result which is displays well in a notebook.
+     */
+    default Object display(final Object object, final OutputType outputType) {
+        return display(object, outputType.outputType());
+    }
+
+    /**
+     * Converts the input object to notebook-appropriate data of the specified
+     * type.
+     *
+     * @param object The object to convert to a notebook-friendly result.
+     * @param outputType The type of notebook-appropriate data.
+     * @return A result which is displays well in a notebook.
+     */
+    Object display(Object object, Class<? extends NotebookOutput> outputType);
 
     /**
      * Displays content as a given MIME type.

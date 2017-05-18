@@ -61,13 +61,13 @@ public class DefaultNotebookService extends AbstractService implements
     private ImageJNotebookService ijNotebookService;
 
     @Override
-    public Object display(Object object) {
-
-        if (convertService.supports(object, NotebookOutput.class)) {
-            return convertService.convert(object, NotebookOutput.class);
+    public Object display(final Object object,
+        final Class<? extends NotebookOutput> outputType)
+    {
+        if (convertService.supports(object, outputType)) {
+            return convertService.convert(object, outputType);
         }
         return object;
-
     }
 
     @Override
