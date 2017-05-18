@@ -28,6 +28,7 @@ import org.apache.commons.lang3.StringEscapeUtils;
 import org.scijava.Priority;
 import org.scijava.convert.Converter;
 import org.scijava.notebook.converter.ouput.HTMLNotebookOutput;
+import org.scijava.notebook.converter.ouput.HTMLTableNotebookOutput;
 import org.scijava.plugin.Plugin;
 
 /**
@@ -42,7 +43,7 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Converter.class, priority = Priority.LOW_PRIORITY)
 public class ListMapToHTMLTable<K, V> extends
-    NotebookOutputConverter<List<Map<K, V>>, HTMLNotebookOutput>
+    NotebookOutputConverter<List<Map<K, V>>, HTMLTableNotebookOutput>
 {
 
     @Override
@@ -52,12 +53,12 @@ public class ListMapToHTMLTable<K, V> extends
     }
 
     @Override
-    public Class<HTMLNotebookOutput> getOutputType() {
-        return HTMLNotebookOutput.class;
+    public Class<HTMLTableNotebookOutput> getOutputType() {
+        return HTMLTableNotebookOutput.class;
     }
 
     @Override
-    public HTMLNotebookOutput convert(final Object object) {
+    public HTMLTableNotebookOutput convert(final Object object) {
         @SuppressWarnings("unchecked")
         final List<Map<K, V>> table = (List<Map<K, V>>) object;
 
@@ -102,7 +103,7 @@ public class ListMapToHTMLTable<K, V> extends
 
         final String styledTable = style + htmlString;
 
-        return new HTMLNotebookOutput(HTMLNotebookOutput.getMimeType(),
+        return new HTMLTableNotebookOutput(HTMLNotebookOutput.getMimeType(),
             styledTable);
     }
 
