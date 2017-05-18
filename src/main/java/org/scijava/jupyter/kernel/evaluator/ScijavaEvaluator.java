@@ -108,7 +108,7 @@ public class ScijavaEvaluator implements Evaluator {
 
         Worker worker = new Worker(this.context, this.scriptEngines, this.scriptLanguages);
         worker.setup(seo, code, this.languageName);
-        this.threadService.queue(worker);
+        this.threadService.getExecutorService().submit(worker);
     }
 
     @Override
