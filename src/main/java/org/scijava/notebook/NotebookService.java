@@ -39,7 +39,7 @@ public interface NotebookService extends SciJavaService {
      * @param object The object to convert to a notebook-friendly result.
      * @return A result which is displays well in a notebook.
      */
-    public Object display(Object object);
+    Object display(Object object);
 
     /**
      * Displays content as a given MIME type.
@@ -48,13 +48,13 @@ public interface NotebookService extends SciJavaService {
      * @param content The content to display.
      * @return A result of the specified MIME type.
      */
-    public Object displayMimetype(String mimetype, String content);
+    Object displayMimetype(String mimetype, String content);
     
-    public Object html(String content);
+    Object html(String content);
     
-    public Object markdown(String content);
+    Object markdown(String content);
     
-    public Object latex(String content);
+    Object latex(String content);
     
-    public Object table(List<Map<?, ?>> table);
+    Object table(List<Map<?, ?>> table);
 }
