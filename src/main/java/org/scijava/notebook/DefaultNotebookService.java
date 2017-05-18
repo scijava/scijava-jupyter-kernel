@@ -30,7 +30,15 @@
 package org.scijava.notebook;
 
 import com.twosigma.beaker.mimetype.MIMEContainer;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import net.imagej.notebook.ImageJNotebookService;
+import net.imglib2.RandomAccessibleInterval;
+import net.imglib2.type.NativeType;
+
+import net.imglib2.type.numeric.RealType;
 import org.scijava.convert.ConvertService;
 import org.scijava.log.LogService;
 import org.scijava.notebook.converter.ouput.HTMLNotebookOutput;
@@ -57,6 +65,9 @@ public class DefaultNotebookService extends AbstractService implements
 
     @Parameter
     private ConvertService converService;
+
+    @Parameter
+    private ImageJNotebookService ijNotebookService;
 
     /**
      * Use the most appropriate output type according to the input object.
@@ -99,7 +110,7 @@ public class DefaultNotebookService extends AbstractService implements
     }
 
     @Override
-    public Object displayAsHTML(String content) {
+    public Object html(String content) {
         if (converService.supports(content, HTMLNotebookOutput.class)) {
             return converService.convert(content, HTMLNotebookOutput.class);
         } else {
@@ -108,7 +119,7 @@ public class DefaultNotebookService extends AbstractService implements
     }
 
     @Override
-    public Object displayAsMarkdown(String content) {
+    public Object markdown(String content) {
         if (converService.supports(content, MarkdownNotebookOutput.class)) {
             return converService.convert(content, MarkdownNotebookOutput.class);
         } else {
@@ -117,12 +128,52 @@ public class DefaultNotebookService extends AbstractService implements
     }
 
     @Override
-    public Object displayAsLatex(String content) {
+    public Object latex(String content) {
         if (converService.supports(content, LatexNotebookOutput.class)) {
             return converService.convert(content, LatexNotebookOutput.class);
         } else {
             return content;
         }
+    }
+
+    @Override
+    public Object table(List<Map> table) {
+
+        String htmlString = "<table>";
+
+        List<String> headers = new ArrayList<>(table.get(0).keySet());
+
+        // Set column headers
+        htmlString += "<tr>";
+        for (String header : headers) {
+            htmlString += "<th>";
+            htmlString += header;
+            htmlString += "</th>";
+        }
+        htmlString += "</tr>";
+
+        // Append the rows
+        for (int i = 0; i < table.size(); i++) {
+            htmlString += "<tr>";
+            for (String header : headers) {
+                htmlString += "<td>";
+                htmlString += table.get(i).getOrDefault(header, "");
+                htmlString += "</td>";
+            }
+            htmlString += "</tr>";
+        }
+
+        htmlString += "</table>";
+
+        return new HTMLNotebookOutput(HTMLNotebookOutput.getMimeType(), htmlString);
+    }
+
+    // TODO : those methods are using the net.imagej namespace.
+    // Also would it be possible to create a converter for this ?
+    // With RandomAccessibleInterval[] or List<RandomAccessibleInterval> as a type ?
+    public Object tiles(final int[] gridLayout, final RandomAccessibleInterval... images) {
+        RandomAccessibleInterval rai = ijNotebookService.mosaic(gridLayout, images);
+        return converService.convert(rai, NotebookOutput.class);
     }
 
 }

@@ -31,7 +31,7 @@ public class TestAnnotations {
 
     public static void main(final String[] args) throws ScriptException {
         ImageJ ij = Main.launch(args);
-
+        
         String code = "#@LogService log\n#@ImageJ ij\nprint('log')\nprint('jjjj')";
         final Reader input = new StringReader(code);
 

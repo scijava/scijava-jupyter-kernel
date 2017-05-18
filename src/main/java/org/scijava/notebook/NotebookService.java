@@ -29,6 +29,8 @@
  */
 package org.scijava.notebook;
 
+import java.util.List;
+import java.util.Map;
 import org.scijava.service.SciJavaService;
 
 /**
@@ -43,9 +45,11 @@ public interface NotebookService extends SciJavaService {
 
     public Object displayMimetype(String mimetype, String content);
     
-    public Object displayAsHTML(String content);
+    public Object html(String content);
     
-    public Object displayAsMarkdown(String content);
+    public Object markdown(String content);
     
-    public Object displayAsLatex(String content);
+    public Object latex(String content);
+    
+    public Object table(List<Map> table);
 }
