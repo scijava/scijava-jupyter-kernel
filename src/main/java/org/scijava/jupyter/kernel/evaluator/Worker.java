@@ -111,6 +111,22 @@ public class Worker implements Runnable {
             try {
                 returnValue = scriptEngine.eval(info.getReader());
                 returnValue = scriptLanguage.decode(returnValue);
+
+                // Populate output annotation parameters
+                for (final ModuleItem<?> item : info.outputs()) {
+                    final String name = item.getName();
+                    final Object value;
+                    if ("result".equals(name) && info.isReturnValueAppended()) {
+                        // NB: This is the special implicit return value output!
+                        value = returnValue;
+                    } else {
+                        value = scriptEngine.get(name);
+                    }
+                    final Object decoded = scriptLanguage.decode(value);
+                    final Object typed = convertService.convert(decoded, item.getType());
+                    module.setOutput(name, typed);
+                }
+
                 this.seo.finished(returnValue);
                 this.syncBindings(scriptEngine, scriptLanguage);
             } catch (Throwable e) {
@@ -124,21 +140,6 @@ public class Worker implements Runnable {
                 } else {
                     this.seo.error(e.getMessage());
                 }
-            }
-
-            // Populate output annotation parameters
-            for (final ModuleItem<?> item : info.outputs()) {
-                final String name = item.getName();
-                final Object value;
-                if ("result".equals(name) && info.isReturnValueAppended()) {
-                    // NB: This is the special implicit return value output!
-                    value = returnValue;
-                } else {
-                    value = scriptEngine.get(name);
-                }
-                final Object decoded = scriptLanguage.decode(value);
-                final Object typed = convertService.convert(decoded, item.getType());
-                module.setOutput(name, typed);
             }
 
         } catch (ModuleException ex) {
