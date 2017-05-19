@@ -24,7 +24,7 @@ import com.twosigma.beaker.jvm.object.SimpleEvaluationObject;
 
 import java.io.Reader;
 import java.io.StringReader;
-import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Map;
 
@@ -34,21 +34,15 @@ import javax.script.ScriptEngine;
 
 import org.scijava.Context;
 import org.scijava.convert.ConvertService;
-import org.scijava.event.EventService;
 import org.scijava.log.LogService;
-import org.scijava.module.ModuleException;
-import org.scijava.module.ModuleItem;
-import org.scijava.module.event.ModulePostprocessEvent;
-import org.scijava.module.event.ModulePreprocessEvent;
-import org.scijava.module.process.ModulePostprocessor;
-import org.scijava.module.process.ModulePreprocessor;
-import org.scijava.module.process.PostprocessorPlugin;
+import org.scijava.module.ModuleRunner;
 import org.scijava.module.process.PreprocessorPlugin;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.PluginService;
 import org.scijava.script.ScriptInfo;
 import org.scijava.script.ScriptLanguage;
 import org.scijava.script.ScriptModule;
+import org.scijava.util.ClassUtils;
 
 public class Worker implements Runnable {
 
@@ -60,9 +54,6 @@ public class Worker implements Runnable {
 
     @Parameter
     private PluginService pluginService;
-
-    @Parameter
-    private EventService eventService;
 
     @Parameter
     private ConvertService convertService;
@@ -93,90 +84,44 @@ public class Worker implements Runnable {
         ScriptEngine scriptEngine = this.scriptEngines.get(this.languageName);
 
         final Reader input = new StringReader(this.code);
-        ScriptInfo info = new ScriptInfo(context, "dummy.py", input);
+        final ScriptInfo info = new ScriptInfo(context, "dummy.py", input);
         this.seo.setOutputHandler();
 
         try {
-
-            ScriptModule module = info.createModule();
+            // create the ScriptModule instance
+            final ScriptModule module = info.createModule();
             context.inject(module);
             module.setLanguage(scriptLanguage);
 
-            // Populate input annotation parameters
-            this.preProcess(module);
-            for (final ModuleItem<?> item : info.inputs()) {
-                final String name = item.getName();
-                scriptEngine.put(name, module.getInput(name));
-            }
+            // HACK: Inject our cached script engine instance, rather
+            // than letting the ScriptModule instance create its own.
+            final Field f = ClassUtils.getField(ScriptModule.class, "scriptEngine");
+            ClassUtils.setValue(f, module, scriptEngine);
 
-            // Execute the code
-            Object returnValue = null;
-            try {
-                returnValue = scriptEngine.eval(info.getReader());
-                returnValue = scriptLanguage.decode(returnValue);
-                this.seo.finished(returnValue);
-                this.syncBindings(scriptEngine, scriptLanguage);
-            } catch (Throwable e) {
+            // execute the code
+            // NB: We do preprocessing, but not postprocessing, so
+            // that the outputs do not get displayed by any rogue UI.
+            // We will handle it ourselves here in the notebook!
+            final List<PreprocessorPlugin> pre = pluginService.createInstancesOfType(PreprocessorPlugin.class);
+            final ModuleRunner runner = new ModuleRunner(context, module, pre, null);
+            runner.run();
 
-                if (e instanceof InvocationTargetException) {
-                    e = ((InvocationTargetException) e).getTargetException();
-                }
+            final Object returnValue = module.getOutput(ScriptModule.RETURN_VALUE);
+            this.seo.finished(returnValue == null ? "null" : returnValue);
 
-                if (e instanceof InterruptedException || e instanceof InvocationTargetException || e instanceof ThreadDeath) {
-                    this.seo.error("Excecution canceled.");
-                } else {
-                    this.seo.error(e.getMessage());
-                }
-            }
-
-            // Populate output annotation parameters
-            for (final ModuleItem<?> item : info.outputs()) {
-                final String name = item.getName();
-                final Object value;
-                if ("result".equals(name) && info.isReturnValueAppended()) {
-                    // NB: This is the special implicit return value output!
-                    value = returnValue;
-                } else {
-                    value = scriptEngine.get(name);
-                }
-                final Object decoded = scriptLanguage.decode(value);
-                final Object typed = convertService.convert(decoded, item.getType());
-                module.setOutput(name, typed);
-            }
-            this.postProcess(module);
-
-        } catch (ModuleException ex) {
+            this.syncBindings(scriptEngine, scriptLanguage);
+        }
+        catch (final ThreadDeath ex) {
+            seo.error("Execution canceled");
             log.error(ex);
+        }
+        catch (final Throwable t) {
+            seo.error(t.getMessage());
+            log.error(t);
         }
 
         this.seo.clrOutputHandler();
         this.seo.executeCodeCallback();
-    }
-
-    public ModulePreprocessor preProcess(ScriptModule module) {
-        List<? extends PreprocessorPlugin> pre = pluginService.createInstancesOfType(PreprocessorPlugin.class);
-
-        for (final ModulePreprocessor p : pre) {
-            p.process(module);
-            if (eventService != null) {
-                eventService.publish(new ModulePreprocessEvent(module, p));
-            }
-            if (p.isCanceled()) {
-                return p;
-            }
-        }
-        return null;
-    }
-
-    public void postProcess(ScriptModule module) {
-        List<? extends PostprocessorPlugin> post = pluginService.createInstancesOfType(PostprocessorPlugin.class);
-
-        for (final ModulePostprocessor p : post) {
-            p.process(module);
-            if (eventService != null) {
-                eventService.publish(new ModulePostprocessEvent(module, p));
-            }
-        }
     }
 
     private void syncBindings(ScriptEngine scriptEngine, ScriptLanguage scriptLanguage) {
