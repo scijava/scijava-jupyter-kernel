@@ -84,6 +84,7 @@
 		<license.copyrightOwners>Hadrien Mary</license.copyrightOwners>
 		<netbeans.hint.license>apache20</netbeans.hint.license>
 		<commons-lang3.version>3.5</commons-lang3.version>
+                <scijava-common.version>2.63.0-SNAPSHOT</scijava-common.version>
 	</properties>
 
 	<repositories>

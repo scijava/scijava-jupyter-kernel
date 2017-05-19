@@ -38,6 +38,8 @@ import javax.script.ScriptEngine;
 import org.scijava.Context;
 import org.scijava.log.LogService;
 import org.scijava.plugin.Parameter;
+import org.scijava.script.AutoCompleter;
+import org.scijava.script.AutoCompletionResult;
 import org.scijava.script.ScriptLanguage;
 import org.scijava.script.ScriptService;
 import org.scijava.thread.ThreadService;
@@ -64,6 +66,7 @@ public class ScijavaEvaluator implements Evaluator {
 
     private final Map<String, ScriptEngine> scriptEngines;
     private final Map<String, ScriptLanguage> scriptLanguages;
+    private final Map<String, AutoCompleter> completers;
     private String languageName;
 
     protected String shellId;
@@ -77,6 +80,8 @@ public class ScijavaEvaluator implements Evaluator {
 
         this.scriptEngines = new HashMap<>();
         this.scriptLanguages = new HashMap<>();
+        
+        this.completers = new HashMap<>();
 
         this.languageName = DEFAULT_LANGUAGE;
     }
@@ -87,12 +92,19 @@ public class ScijavaEvaluator implements Evaluator {
     }
 
     @Override
-    public AutocompleteResult autocomplete(String code, int i) {
-        List<String> matches = new ArrayList<>();
-        matches.add("Autocompletion does not work yet.");
-        int startIndex = 0;
-        AutocompleteResult ac = new AutocompleteResult(matches, startIndex);
-        return ac;
+    public AutocompleteResult autocomplete(String code, int index) {
+        
+        // TODO: we need to find a way the language related to the current cell.
+        // For now, we are just using the last used language.
+        AutoCompleter completer = this.completers.get(this.languageName);
+        ScriptEngine scriptEngine = this.scriptEngines.get(this.languageName);
+
+        AutoCompletionResult result = completer.autocomplete(code, index, scriptEngine);
+
+        List<String> matches = (List<String>) result.getMatches();
+        int startIndex = (int) result.getStartIndex();
+
+        return new AutocompleteResult(matches, startIndex);
     }
 
     @Override
@@ -145,6 +157,9 @@ public class ScijavaEvaluator implements Evaluator {
 
             ScriptEngine engine = this.scriptLanguages.get(langName).getScriptEngine();
             this.scriptEngines.put(langName, engine);
+            
+            AutoCompleter completer = scriptLanguage.getAutoCompleter();
+            this.completers.put(languageName, completer);
 
             // Not implemented yet
             //engine.setBindings(this.bindings, ScriptContext.ENGINE_SCOPE);
