@@ -38,11 +38,8 @@ import org.scijava.event.EventService;
 import org.scijava.log.LogService;
 import org.scijava.module.ModuleException;
 import org.scijava.module.ModuleItem;
-import org.scijava.module.event.ModulePostprocessEvent;
 import org.scijava.module.event.ModulePreprocessEvent;
-import org.scijava.module.process.ModulePostprocessor;
 import org.scijava.module.process.ModulePreprocessor;
-import org.scijava.module.process.PostprocessorPlugin;
 import org.scijava.module.process.PreprocessorPlugin;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.PluginService;
@@ -143,7 +140,6 @@ public class Worker implements Runnable {
                 final Object typed = convertService.convert(decoded, item.getType());
                 module.setOutput(name, typed);
             }
-            this.postProcess(module);
 
         } catch (ModuleException ex) {
             log.error(ex);
@@ -166,17 +162,6 @@ public class Worker implements Runnable {
             }
         }
         return null;
-    }
-
-    public void postProcess(ScriptModule module) {
-        List<? extends PostprocessorPlugin> post = pluginService.createInstancesOfType(PostprocessorPlugin.class);
-
-        for (final ModulePostprocessor p : post) {
-            p.process(module);
-            if (eventService != null) {
-                eventService.publish(new ModulePostprocessEvent(module, p));
-            }
-        }
     }
 
     private void syncBindings(ScriptEngine scriptEngine, ScriptLanguage scriptLanguage) {
