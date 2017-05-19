@@ -25,6 +25,7 @@ import com.twosigma.beaker.jvm.object.SimpleEvaluationObject;
 import java.io.Reader;
 import java.io.StringReader;
 import java.lang.reflect.Field;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -38,6 +39,7 @@ import org.scijava.log.LogService;
 import org.scijava.module.ModuleRunner;
 import org.scijava.module.process.PostprocessorPlugin;
 import org.scijava.module.process.PreprocessorPlugin;
+import org.scijava.notebook.converter.output.NotebookOutput;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.PluginService;
 import org.scijava.script.ScriptInfo;
@@ -105,8 +107,17 @@ public class Worker implements Runnable {
             final ModuleRunner runner = new ModuleRunner(context, module, pre, post);
             runner.run();
 
-            final Object returnValue = module.getOutput(ScriptModule.RETURN_VALUE);
-            this.seo.finished(returnValue == null ? "null" : returnValue);
+            // accumulate the outputs into an ordered map
+            final Map<String, Object> outputTable = new LinkedHashMap<>();
+            info.outputs().forEach(output -> {
+                final String name = output.getName();
+                final Object value = output.getValue(module);
+                outputTable.put(name, value);
+            });
+
+            // convert result into a notebook-friendly form
+            final NotebookOutput notebookOutput = convertService.convert(outputTable, NotebookOutput.class);
+            this.seo.finished(notebookOutput);
 
             this.syncBindings(scriptEngine, scriptLanguage);
         }
