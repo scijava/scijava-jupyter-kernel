@@ -42,7 +42,10 @@ public class StringToHTMLNotebookConverter
 
     @Override
     public HTMLNotebookOutput convert(Object object) {
-        return new HTMLNotebookOutput(StringEscapeUtils.escapeHtml4((String) object));
+        final String escaped = StringEscapeUtils.escapeHtml4((String) object);
+        // Add in <wbr> tags before @, ., $, _, and #
+        final String wordBreaks = escaped.replaceAll("([@.$_#])", "<wbr>$1");
+        return new HTMLNotebookOutput(wordBreaks);
     }
 
 }
