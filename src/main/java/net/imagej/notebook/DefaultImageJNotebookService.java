@@ -20,12 +20,7 @@
 
 package net.imagej.notebook;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Base64;
-
-import javax.imageio.ImageIO;
 
 import net.imagej.display.ColorTables;
 import net.imagej.ops.OpService;
@@ -51,6 +46,7 @@ import net.imglib2.view.IntervalView;
 import net.imglib2.view.MixedTransformView;
 
 import org.scijava.log.LogService;
+import org.scijava.notebook.converter.NotebookConverters;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 import org.scijava.service.AbstractService;
@@ -117,13 +113,7 @@ public class DefaultImageJNotebookService extends AbstractService implements
         proj.map();
 
         // Convert to PNG
-        final ByteArrayOutputStream os = new ByteArrayOutputStream();
-        try {
-            ImageIO.write(target.image(), "PNG", os);
-        } catch (IOException ex) {
-            log.error(ex);
-        }
-        return Base64.getEncoder().encodeToString(os.toByteArray());
+        return NotebookConverters.toPNG(target.image());
 
     }
 
