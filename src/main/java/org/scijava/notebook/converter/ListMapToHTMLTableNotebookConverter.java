@@ -24,7 +24,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import org.scijava.Priority;
 import org.scijava.convert.Converter;
 import org.scijava.notebook.converter.output.HTMLTableNotebookOutput;
 import org.scijava.plugin.Plugin;
@@ -39,7 +38,7 @@ import org.scijava.plugin.Plugin;
  * @param <K> data type of keys
  * @param <V> data type of values
  */
-@Plugin(type = Converter.class, priority = Priority.LOW_PRIORITY)
+@Plugin(type = Converter.class)
 public class ListMapToHTMLTableNotebookConverter<K, V> extends
     HTMLNotebookOutputConverter<List<Map<K, V>>, HTMLTableNotebookOutput>
 {

@@ -23,14 +23,14 @@ import java.io.IOException;
 import java.util.Base64;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import org.knowm.xchart.BitmapEncoder;
 import org.knowm.xchart.internal.chartpart.Chart;
-import org.scijava.Priority;
 import org.scijava.convert.Converter;
 import org.scijava.notebook.converter.output.PNGImageNotebookOutput;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Converter.class, priority = Priority.LOW_PRIORITY)
+@Plugin(type = Converter.class)
 public class ChartToPNGNotebookConverter
 		extends NotebookOutputConverter<Chart, PNGImageNotebookOutput> {
 

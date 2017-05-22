@@ -22,7 +22,6 @@ package org.scijava.notebook.converter;
 
 import java.util.Map;
 
-import org.scijava.Priority;
 import org.scijava.convert.ConvertService;
 import org.scijava.convert.Converter;
 import org.scijava.notebook.converter.output.HTMLTableNotebookOutput;
@@ -38,7 +37,7 @@ import org.scijava.plugin.Plugin;
  * @param <K> data type used for the key
  * @param <V> data type used for the values
  */
-@Plugin(type = Converter.class, priority = Priority.LOW_PRIORITY)
+@Plugin(type = Converter.class)
 public class MapToHTMLTableNotebookConverter<K, V> extends
     HTMLNotebookOutputConverter<Map<K, V>, HTMLTableNotebookOutput>
 {
