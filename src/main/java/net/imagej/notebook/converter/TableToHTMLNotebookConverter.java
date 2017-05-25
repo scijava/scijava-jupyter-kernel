@@ -25,6 +25,7 @@ import net.imagej.table.Table;
 
 import org.scijava.convert.Converter;
 import org.scijava.notebook.converter.HTMLNotebookOutputConverter;
+import org.scijava.notebook.converter.HTMLTableBuilder;
 import org.scijava.notebook.converter.output.HTMLTableNotebookOutput;
 import org.scijava.plugin.Plugin;
 
@@ -49,32 +50,32 @@ public class TableToHTMLNotebookConverter<C extends Column<? extends T>, T>
 
         @SuppressWarnings("unchecked")
         final Table<C, T> table = (Table<C, T>) object;
+        boolean rowLabels = false;
 
-        String htmlString = "<table>";
+        // Start table and add extra heading column in case there's row headings
+        String htmlTable = HTMLTableBuilder.startTable();
+        htmlTable += HTMLTableBuilder.appendRowLabelHeading();
 
-        // Set column headers
-        htmlString += "<tr>";
+        // Add headings
         for (int i = 0; i < table.getColumnCount(); i++) {
-            htmlString += "<th>";
-            htmlString += table.getColumnHeader(i);
-            htmlString += "</th>";
+            htmlTable += HTMLTableBuilder.appendHeadings(asHTML(table
+                .getColumnHeader(i)), i == table.getColumnCount() - 1);
         }
-        htmlString += "</tr>";
 
-        // Append the rows
+        // Add data
         for (int i = 0; i < table.getRowCount(); i++) {
-            htmlString += "<tr>";
+            if (table.getRowHeader(i) != null) rowLabels = true;
+            htmlTable += HTMLTableBuilder.appendRowLabelData(table.getRowHeader(
+                i));
             for (int j = 0; j < table.getColumnCount(); j++) {
-                htmlString += "<td>";
-                htmlString += asHTML(table.get(j, i));
-                htmlString += "</td>";
+                htmlTable += HTMLTableBuilder.appendData(asHTML(table.get(j,
+                    i)), false, j == table.getColumnCount());
             }
-            htmlString += "</tr>";
         }
+        htmlTable += HTMLTableBuilder.endTable();
 
-        htmlString += "</table>";
-
-        return new HTMLTableNotebookOutput(htmlString);
+        return new HTMLTableNotebookOutput(HTMLTableBuilder.getTableStyle(
+            rowLabels) + htmlTable);
     }
 
 }
