@@ -20,17 +20,18 @@
 
 package org.scijava.notebook.converter;
 
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.scijava.convert.Converter;
 import org.scijava.notebook.converter.output.HTMLNotebookOutput;
 import org.scijava.plugin.Plugin;
 
 @Plugin(type = Converter.class)
-public class NumberToHTMLNotebookConverter
-        extends NotebookOutputConverter<Number, HTMLNotebookOutput> {
+public class ObjectToHTMLNotebookConverter
+        extends NotebookOutputConverter<Object, HTMLNotebookOutput> {
 
     @Override
-    public Class<Number> getInputType() {
-        return Number.class;
+    public Class<Object> getInputType() {
+        return Object.class;
     }
 
     @Override
@@ -40,7 +41,10 @@ public class NumberToHTMLNotebookConverter
 
     @Override
     public HTMLNotebookOutput convert(Object object) {
-        return new HTMLNotebookOutput(object.toString());
+        final String escaped = StringEscapeUtils.escapeHtml4(object.toString());
+        // Add in <wbr> tags before @, ., $, _, and #
+        final String wordBreaks = escaped.replaceAll("([@.$_#])", "<wbr>$1");
+        return new HTMLNotebookOutput(wordBreaks);
     }
 
 }
