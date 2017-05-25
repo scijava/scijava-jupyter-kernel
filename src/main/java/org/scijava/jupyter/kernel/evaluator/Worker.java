@@ -36,6 +36,7 @@ import org.scijava.Context;
 import org.scijava.convert.ConvertService;
 import org.scijava.log.LogService;
 import org.scijava.module.ModuleRunner;
+import org.scijava.module.process.PostprocessorPlugin;
 import org.scijava.module.process.PreprocessorPlugin;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.PluginService;
@@ -99,11 +100,9 @@ public class Worker implements Runnable {
             ClassUtils.setValue(f, module, scriptEngine);
 
             // execute the code
-            // NB: We do preprocessing, but not postprocessing, so
-            // that the outputs do not get displayed by any rogue UI.
-            // We will handle it ourselves here in the notebook!
             final List<PreprocessorPlugin> pre = pluginService.createInstancesOfType(PreprocessorPlugin.class);
-            final ModuleRunner runner = new ModuleRunner(context, module, pre, null);
+            final List<PostprocessorPlugin> post = pluginService.createInstancesOfType(PostprocessorPlugin.class);
+            final ModuleRunner runner = new ModuleRunner(context, module, pre, post);
             runner.run();
 
             final Object returnValue = module.getOutput(ScriptModule.RETURN_VALUE);
