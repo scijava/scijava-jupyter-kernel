@@ -119,19 +119,24 @@ public class Worker implements Runnable {
             });
 
             // convert result into a notebook-friendly form
-            final NotebookOutput notebookOutput;
-            if (outputTable.size() == 0) {
-                this.seo.finished(null);
-            }
-            else if (outputTable.size() == 1) {
-                notebookOutput = convertService.convert(outputTable.values()
-                    .toArray()[0], NotebookOutput.class);
-                this.seo.finished(notebookOutput);
-            }
-            else {
-                notebookOutput = convertService.convert(outputTable,
-                    NotebookOutput.class);
-                this.seo.finished(notebookOutput);
+            Object output = null;
+            try {
+                if(outputTable.size() == 0){
+                    output = "No Outputs";
+                } else if(outputTable.size() == 1) {
+                    output = convertService.convert(outputTable.values()
+                        .toArray()[0], NotebookOutput.class);
+                } else {
+                    output = convertService.convert(outputTable,
+                        NotebookOutput.class);
+                }
+            } catch(Exception e) {
+                e.printStackTrace();
+                output = "[ERROR]";
+            } finally {
+                if(output == null )
+                    this.seo.finished("[ERROR] No suitable converter found");
+                else this.seo.finished(output);
             }
 
             this.syncBindings(scriptEngine, scriptLanguage);
