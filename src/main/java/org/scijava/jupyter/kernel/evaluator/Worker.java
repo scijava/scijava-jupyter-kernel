@@ -36,6 +36,7 @@ import javax.script.ScriptEngine;
 import org.scijava.Context;
 import org.scijava.convert.ConvertService;
 import org.scijava.log.LogService;
+import org.scijava.module.ModuleException;
 import org.scijava.module.ModuleRunner;
 import org.scijava.module.process.PostprocessorPlugin;
 import org.scijava.module.process.PreprocessorPlugin;
@@ -112,12 +113,26 @@ public class Worker implements Runnable {
             info.outputs().forEach(output -> {
                 final String name = output.getName();
                 final Object value = output.getValue(module);
-                outputTable.put(name, value);
+                               if(value != null) {
+                                       outputTable.put(name, value);
+                               }
             });
 
             // convert result into a notebook-friendly form
-            final NotebookOutput notebookOutput = convertService.convert(outputTable, NotebookOutput.class);
-            this.seo.finished(notebookOutput);
+            final NotebookOutput notebookOutput;
+            if (outputTable.size() == 0) {
+                this.seo.finished(null);
+            }
+            else if (outputTable.size() == 1) {
+                notebookOutput = convertService.convert(outputTable.values()
+                    .toArray()[0], NotebookOutput.class);
+                this.seo.finished(notebookOutput);
+            }
+            else {
+                notebookOutput = convertService.convert(outputTable,
+                    NotebookOutput.class);
+                this.seo.finished(notebookOutput);
+            }
 
             this.syncBindings(scriptEngine, scriptLanguage);
         }
@@ -125,7 +140,7 @@ public class Worker implements Runnable {
             seo.error("Execution canceled");
             log.error(ex);
         }
-        catch (final Throwable t) {
+        catch (final ModuleException t) {
             seo.error(t.getMessage());
             log.error(t);
         }
