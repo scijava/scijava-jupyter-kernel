@@ -67,9 +67,10 @@ public class MapToHTMLTableNotebookConverter<K, V> extends
 
         // Append the rows
         for (final K key : table.keySet()) {
-            htmlTable += HTMLTableBuilder.appendData(asHTML(key), true, false);
-            htmlTable += HTMLTableBuilder.appendData(asHTML(table.get(key)),
-                false, true);
+            final String k = (key != null) ? asHTML(key) : "";
+            final String v = (key != null) ? asHTML(table.get(key)) : "";
+            htmlTable += HTMLTableBuilder.appendData(k, true, false);
+            htmlTable += HTMLTableBuilder.appendData(v, false, true);
         }
         htmlTable += HTMLTableBuilder.endTable();
 
