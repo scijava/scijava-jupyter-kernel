@@ -26,7 +26,10 @@ import com.twosigma.jupyter.KernelSocketsFactoryImpl;
 import com.twosigma.jupyter.handler.KernelHandler;
 import com.twosigma.jupyter.message.Message;
 
+import net.imagej.table.process.ResultsPostprocessor;
+
 import org.scijava.Context;
+import org.scijava.display.DisplayPostprocessor;
 import org.scijava.jupyter.kernel.comm.ScijavaCommOpenHandler;
 import org.scijava.jupyter.kernel.configuration.ScijavaKernelConfigurationFile;
 import org.scijava.jupyter.kernel.evaluator.ScijavaEvaluator;
@@ -34,6 +37,9 @@ import org.scijava.jupyter.kernel.handler.ScijavaKernelInfoHandler;
 import org.scijava.jupyter.service.JupyterService;
 import org.scijava.log.LogService;
 import org.scijava.plugin.Parameter;
+import org.scijava.plugin.PluginInfo;
+import org.scijava.plugin.PluginService;
+import org.scijava.plugin.SciJavaPlugin;
 
 /**
  *
@@ -96,11 +102,19 @@ public class ScijavaKernel extends Kernel {
     }
 
     public static void main(String... args) {
-        Context context = new Context();
-        
+        final Context context = new Context();
+
+        // Remove the Display and Results post-processors to prevent output
+        // windows from being displayed
+        final PluginService pluginService = context.service(PluginService.class);
+        final PluginInfo<SciJavaPlugin> display = pluginService.getPlugin(DisplayPostprocessor.class);
+        final PluginInfo<SciJavaPlugin> results = pluginService.getPlugin(ResultsPostprocessor.class);
+        pluginService.removePlugin(display);
+        pluginService.removePlugin(results);
+
         JupyterService jupyter = context.service(JupyterService.class);
         jupyter.runKernel(args);
-        
+
         context.dispose();
     }
 }
