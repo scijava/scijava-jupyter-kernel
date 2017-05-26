@@ -25,14 +25,13 @@ import net.imagej.notebook.ImageJNotebookService.ValueScaling;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.type.numeric.RealType;
 
-import org.scijava.Priority;
 import org.scijava.convert.Converter;
 import org.scijava.notebook.converter.NotebookOutputConverter;
 import org.scijava.notebook.converter.output.PNGImageNotebookOutput;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Converter.class, priority = Priority.LOW_PRIORITY)
+@Plugin(type = Converter.class)
 public class RAIToPNGNotebookConverter<T extends RealType<T>>
         extends NotebookOutputConverter<RandomAccessibleInterval<T>, PNGImageNotebookOutput> {
 

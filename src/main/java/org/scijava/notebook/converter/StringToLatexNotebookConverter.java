@@ -20,12 +20,11 @@
 
 package org.scijava.notebook.converter;
 
-import org.scijava.Priority;
 import org.scijava.convert.Converter;
 import org.scijava.notebook.converter.output.LatexNotebookOutput;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Converter.class, priority = Priority.LOW_PRIORITY)
+@Plugin(type = Converter.class)
 public class StringToLatexNotebookConverter
         extends NotebookOutputConverter<String, LatexNotebookOutput> {
 

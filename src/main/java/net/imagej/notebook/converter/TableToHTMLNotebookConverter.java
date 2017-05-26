@@ -7,9 +7,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -20,57 +20,62 @@
 
 package net.imagej.notebook.converter;
 
+import net.imagej.table.Column;
 import net.imagej.table.Table;
-import org.scijava.Priority;
+
 import org.scijava.convert.Converter;
-import org.scijava.notebook.converter.NotebookOutputConverter;
-import org.scijava.notebook.converter.output.HTMLNotebookOutput;
+import org.scijava.notebook.converter.HTMLNotebookOutputConverter;
+import org.scijava.notebook.converter.HTMLTableBuilder;
+import org.scijava.notebook.converter.output.HTMLTableNotebookOutput;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Converter.class, priority = Priority.LOW_PRIORITY)
-public class TableToHTMLNotebookConverter<O extends Table>
-        extends NotebookOutputConverter<O, HTMLNotebookOutput> {
+@Plugin(type = Converter.class)
+public class TableToHTMLNotebookConverter<C extends Column<? extends T>, T>
+    extends HTMLNotebookOutputConverter<Table<C, T>, HTMLTableNotebookOutput>
+{
 
     @Override
-    public Class getInputType() {
-        return Table.class;
+    @SuppressWarnings({ "rawtypes", "unchecked" })
+    public Class<Table<C, T>> getInputType() {
+        return (Class) Table.class;
     }
 
     @Override
-    public Class getOutputType() {
-        return HTMLNotebookOutput.class;
+    public Class<HTMLTableNotebookOutput> getOutputType() {
+        return HTMLTableNotebookOutput.class;
     }
 
     @Override
-    public HTMLNotebookOutput convert(Object object) {
+    public HTMLTableNotebookOutput convert(final Object object) {
 
-        Table table = (Table) object;
+        @SuppressWarnings("unchecked")
+        final Table<C, T> table = (Table<C, T>) object;
+        boolean rowLabels = false;
 
-        String htmlString = "<table>";
+        // Start table and add extra heading column in case there's row headings
+        String htmlTable = HTMLTableBuilder.startTable();
+        htmlTable += HTMLTableBuilder.appendRowLabelHeading();
 
-        // Set column headers
-        htmlString += "<tr>";
+        // Add headings
         for (int i = 0; i < table.getColumnCount(); i++) {
-            htmlString += "<th>";
-            htmlString += table.getColumnHeader(i);
-            htmlString += "</th>";
+            htmlTable += HTMLTableBuilder.appendHeadings(asHTML(table
+                .getColumnHeader(i)), i == table.getColumnCount() - 1);
         }
-        htmlString += "</tr>";
 
-        // Append the rows
+        // Add data
         for (int i = 0; i < table.getRowCount(); i++) {
-            htmlString += "<tr>";
+            if (table.getRowHeader(i) != null) rowLabels = true;
+            htmlTable += HTMLTableBuilder.appendRowLabelData(table.getRowHeader(
+                i));
             for (int j = 0; j < table.getColumnCount(); j++) {
-                htmlString += "<td>";
-                htmlString += table.get(j, i);
-                htmlString += "</td>";
+                htmlTable += HTMLTableBuilder.appendData(asHTML(table.get(j,
+                    i)), false, j == table.getColumnCount());
             }
-            htmlString += "</tr>";
         }
+        htmlTable += HTMLTableBuilder.endTable();
 
-        htmlString += "</table>";
-
-        return new HTMLNotebookOutput(htmlString);
+        return new HTMLTableNotebookOutput(HTMLTableBuilder.getTableStyle(
+            rowLabels) + htmlTable);
     }
 
 }

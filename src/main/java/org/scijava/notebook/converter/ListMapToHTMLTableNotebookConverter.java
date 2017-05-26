@@ -7,9 +7,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -20,26 +20,23 @@
 
 package org.scijava.notebook.converter;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import org.scijava.Priority;
 import org.scijava.convert.Converter;
 import org.scijava.notebook.converter.output.HTMLTableNotebookOutput;
 import org.scijava.plugin.Plugin;
 
 /**
  * Converts a {@code List<Map<K,V>>} in to an HTML table. The first {@code Map}
- * in the list's keys will be used as the headers for this table and dictate
- * the number of columns the table has.
+ * in the list's keys will be used as the headers for this table and dictate the
+ * number of columns the table has.
  *
  * @author Alison Walter
- *
  * @param <K> data type of keys
  * @param <V> data type of values
  */
-@Plugin(type = Converter.class, priority = Priority.LOW_PRIORITY)
+@Plugin(type = Converter.class)
 public class ListMapToHTMLTableNotebookConverter<K, V> extends
     HTMLNotebookOutputConverter<List<Map<K, V>>, HTMLTableNotebookOutput>
 {
@@ -60,47 +57,31 @@ public class ListMapToHTMLTableNotebookConverter<K, V> extends
         @SuppressWarnings("unchecked")
         final List<Map<K, V>> table = (List<Map<K, V>>) object;
 
-        // Style for the HTML table
-        final String style = "<style>" +
-            "table.converted {color: #333; font-family: Helvetica, Arial, sans-serif; border-collapse: collapse; border-spacing: 0;}" +
-            "table.converted td, table.converted th {border: 1px solid #C9C7C7;}" +
-            "table.converted th {background: #626262; color: #FFFFFF; font-weight: bold; text-align: left;}" +
-            "table.converted td {text-align: left;}" +
-            "table.converted tr:nth-child(even) {background: #F3F3F3;}" +
-            "table.converted tr:nth-child(odd) {background: #FFFFFF;}" +
-            "table.converted tbody tr:hover {background: #BDF4B5;}" +
-            "</style>";
+        String htmlTable = HTMLTableBuilder.startTable();
+        final Object[] headers = table.get(0).keySet().toArray();
+        final int numCols = headers.length;
 
-        String htmlString = "<table class=\"converted\"><thead>";
-
-        final List<?> headers = new ArrayList<>(table.get(0).keySet());
-
-        // Set column headers
-        htmlString += "<tr>";
-        for (final Object header : headers) {
-            htmlString += "<th>";
-            htmlString += asHTML(header);
-            htmlString += "</th>";
+        // Add column headers
+        for (int i = 0; i < numCols; i++) {
+            htmlTable += HTMLTableBuilder.appendHeadings(asHTML(headers[i]),
+                i == numCols - 1);
         }
-        htmlString += "</tr></thead><tbody>";
 
         // Append the rows
         for (int i = 0; i < table.size(); i++) {
-            htmlString += "<tr>";
-            for (final Object header : headers) {
-                htmlString += "<td>";
+            for (int j = 0; j < numCols; j++) {
                 final Map<?, ?> row = table.get(i);
-                if (row.containsKey(header)) htmlString += asHTML(row.get(header));
-                htmlString += "</td>";
+                if (row.containsKey(headers[j])) htmlTable += HTMLTableBuilder
+                    .appendData(asHTML(row.get(headers[j])), j == 0,
+                        j == numCols - 1);
+                else htmlTable += HTMLTableBuilder.appendData("&nbsp;", j == 0,
+                    j == numCols - 1);
             }
-            htmlString += "</tr>";
         }
+        htmlTable += HTMLTableBuilder.endTable();
 
-        htmlString += "</tbody></table>";
-
-        final String styledTable = style + htmlString;
-
-        return new HTMLTableNotebookOutput(styledTable);
+        return new HTMLTableNotebookOutput(HTMLTableBuilder.getTableStyle(
+            false) + htmlTable);
     }
 
 }

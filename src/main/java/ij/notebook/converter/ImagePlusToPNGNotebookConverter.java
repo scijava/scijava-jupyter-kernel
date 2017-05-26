@@ -18,29 +18,33 @@
  * #L%
  */
 
-package net.imagej.notebook.converter;
-
-import net.imagej.Dataset;
-import net.imagej.axis.Axes;
-import net.imagej.notebook.ImageJNotebookService;
-import net.imglib2.img.Img;
+package ij.notebook.converter;
 
 import org.scijava.convert.Converter;
+import org.scijava.log.LogService;
+import org.scijava.notebook.converter.NotebookConverters;
 import org.scijava.notebook.converter.NotebookOutputConverter;
 import org.scijava.notebook.converter.output.PNGImageNotebookOutput;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Converter.class)
-public class DatasetToPNGNotebookConverter
-        extends NotebookOutputConverter<Dataset, PNGImageNotebookOutput> {
+import ij.ImagePlus;
 
+/**
+ * Converts an {@link ImagePlus} to a PNG.
+ *
+ * @author Alison Walter
+ */
+@Plugin(type = Converter.class)
+public class ImagePlusToPNGNotebookConverter extends
+    NotebookOutputConverter<ImagePlus, PNGImageNotebookOutput>
+{
     @Parameter
-    private ImageJNotebookService ijnb;
+    private LogService log;
 
     @Override
-    public Class<Dataset> getInputType() {
-        return Dataset.class;
+    public Class<ImagePlus> getInputType() {
+        return ImagePlus.class;
     }
 
     @Override
@@ -49,17 +53,9 @@ public class DatasetToPNGNotebookConverter
     }
 
     @Override
-    public PNGImageNotebookOutput convert(Object object) {
-
-        Dataset source = (Dataset) object;
-
-        String base64Image = (String) ijnb.RAIToPNG((Img) source, //
-                source.dimensionIndex(Axes.X),
-                source.dimensionIndex(Axes.Y),
-                source.dimensionIndex(Axes.CHANNEL),
-                ImageJNotebookService.ValueScaling.AUTO);
-
+    public PNGImageNotebookOutput convert(final Object object) {
+        final ImagePlus imgPlus = (ImagePlus) object;
+        final String base64Image = NotebookConverters.toPNG(imgPlus.getBufferedImage());
         return new PNGImageNotebookOutput(base64Image);
     }
-
 }
