@@ -20,9 +20,11 @@
 
 package org.scijava.notebook.converter;
 
+import java.lang.reflect.Type;
 import java.util.List;
 import java.util.Map;
 
+import org.scijava.convert.ConversionRequest;
 import org.scijava.convert.Converter;
 import org.scijava.notebook.converter.output.HTMLTableNotebookOutput;
 import org.scijava.plugin.Plugin;
@@ -50,6 +52,38 @@ public class ListMapToHTMLTableNotebookConverter<K, V> extends
     @Override
     public Class<HTMLTableNotebookOutput> getOutputType() {
         return HTMLTableNotebookOutput.class;
+    }
+
+    @Override
+    public boolean canConvert(final ConversionRequest request) {
+        final Object src = request.sourceObject();
+        if (src != null && src instanceof List && ((List<?>) src).get(
+            0) instanceof Map)
+        {
+            return super.canConvert(request);
+        }
+        return false;
+
+    }
+
+    @Override
+    public boolean canConvert(final Object src, final Type dest) {
+        if (src == null) return false;
+        if (src instanceof List && ((List<?>)src).get(0) instanceof Map) {
+            final Class<?> srcClass = src.getClass();
+            return super.canConvert(srcClass, dest);
+        }
+        return false;
+    }
+
+    @Override
+    public boolean canConvert(final Object src, final Class<?> dest) {
+        if (src == null) return false;
+        if (src instanceof List && ((List<?>)src).get(0) instanceof Map) {
+            final Class<?> srcClass = src.getClass();
+            return super.canConvert(srcClass, dest);
+        }
+        return false;
     }
 
     @Override
