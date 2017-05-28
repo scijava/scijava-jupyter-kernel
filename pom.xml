@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.scijava</groupId>
 		<artifactId>pom-scijava</artifactId>
-		<version>14.0.0</version>
+		<version>16.1.0</version>
 	</parent>
 
 	<artifactId>scijava-jupyter-kernel</artifactId>
@@ -83,8 +83,6 @@
 		<license.licenseName>apache_v2</license.licenseName>
 		<license.copyrightOwners>Hadrien Mary</license.copyrightOwners>
 		<netbeans.hint.license>apache20</netbeans.hint.license>
-		<commons-lang3.version>3.5</commons-lang3.version>
-		<scijava-common.version>2.63.0</scijava-common.version>
 	</properties>
 
 	<repositories>
@@ -108,7 +106,6 @@
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-lang3</artifactId>
-			<version>${commons-lang3.version}</version>
 		</dependency>
 
 		<!-- Used to parse command line parameters -->
