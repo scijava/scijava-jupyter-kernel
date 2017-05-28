@@ -30,22 +30,18 @@ import org.scijava.notebook.converter.output.HTMLTableNotebookOutput;
 import org.scijava.plugin.Plugin;
 
 /**
- * Converts a {@code List<Map<K,V>>} in to an HTML table. The first {@code Map}
- * in the list's keys will be used as the headers for this table and dictate the
- * number of columns the table has.
+ * Converts a {@code List<?>} to an html table.
  *
  * @author Alison Walter
- * @param <K> data type of keys
- * @param <V> data type of values
  */
 @Plugin(type = Converter.class)
-public class ListMapToHTMLTableNotebookConverter<K, V> extends
-    HTMLNotebookOutputConverter<List<Map<K, V>>, HTMLTableNotebookOutput>
+public class ListToHTMLTableNotebookConverter extends
+    HTMLNotebookOutputConverter<List<?>, HTMLTableNotebookOutput>
 {
 
     @Override
     @SuppressWarnings({ "rawtypes", "unchecked" })
-    public Class<List<Map<K, V>>> getInputType() {
+    public Class<List<?>> getInputType() {
         return (Class) List.class;
     }
 
@@ -57,8 +53,8 @@ public class ListMapToHTMLTableNotebookConverter<K, V> extends
     @Override
     public boolean canConvert(final ConversionRequest request) {
         final Object src = request.sourceObject();
-        if (src != null && src instanceof List && ((List<?>) src).get(
-            0) instanceof Map)
+        if (src != null && src instanceof List && !(((List<?>) src).get(
+            0) instanceof Map))
         {
             return super.canConvert(request);
         }
@@ -69,7 +65,7 @@ public class ListMapToHTMLTableNotebookConverter<K, V> extends
     @Override
     public boolean canConvert(final Object src, final Type dest) {
         if (src == null) return false;
-        if (src instanceof List && ((List<?>)src).get(0) instanceof Map) {
+        if (src instanceof List && !(((List<?>) src).get(0) instanceof Map)) {
             final Class<?> srcClass = src.getClass();
             return super.canConvert(srcClass, dest);
         }
@@ -79,7 +75,7 @@ public class ListMapToHTMLTableNotebookConverter<K, V> extends
     @Override
     public boolean canConvert(final Object src, final Class<?> dest) {
         if (src == null) return false;
-        if (src instanceof List && ((List<?>)src).get(0) instanceof Map) {
+        if (src instanceof List && !(((List<?>) src).get(0) instanceof Map)) {
             final Class<?> srcClass = src.getClass();
             return super.canConvert(srcClass, dest);
         }
@@ -88,29 +84,15 @@ public class ListMapToHTMLTableNotebookConverter<K, V> extends
 
     @Override
     public HTMLTableNotebookOutput convert(final Object object) {
-        @SuppressWarnings("unchecked")
-        final List<Map<K, V>> table = (List<Map<K, V>>) object;
+        final List<?> list = (List<?>) object;
 
-        String htmlTable = HTMLTableBuilder.startTable();
-        final Object[] headers = table.get(0).keySet().toArray();
-        final int numCols = headers.length;
-
-        // Add column headers
-        for (int i = 0; i < numCols; i++) {
-            htmlTable += HTMLTableBuilder.appendHeadings(asHTML(headers[i]),
-                i == numCols - 1);
-        }
+        String htmlTable = "<table class=\"converted\"><tbody>";
 
         // Append the rows
-        for (int i = 0; i < table.size(); i++) {
-            for (int j = 0; j < numCols; j++) {
-                final Map<?, ?> row = table.get(i);
-                if (row.containsKey(headers[j])) htmlTable += HTMLTableBuilder
-                    .appendData(asHTML(row.get(headers[j])), j == 0,
-                        j == numCols - 1);
-                else htmlTable += HTMLTableBuilder.appendData("&nbsp;", j == 0,
-                    j == numCols - 1);
-            }
+        for (int i = 0; i < list.size(); i++) {
+            final String data = list.get(i) == null ? "&nbsp;" : asHTML(list
+                .get(i));
+            htmlTable += HTMLTableBuilder.appendData(data, true, true);
         }
         htmlTable += HTMLTableBuilder.endTable();
 
