@@ -39,7 +39,8 @@ public abstract class HTMLNotebookOutputConverter<I, O extends HTMLNotebookOutpu
 
     /** Gets an HTML string representing the given object. */
     protected String asHTML(final Object o) {
-        return convertService.convert(o, HTMLFriendlyNotebookOutput.class).toHTML();
+        final HTMLFriendlyNotebookOutput converted = convertService.convert(o, HTMLFriendlyNotebookOutput.class);
+        return converted == null ? "&lt;none&gt;" : converted.toHTML();
     }
 
 }
