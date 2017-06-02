@@ -12,7 +12,7 @@ unzip fiji-linux64.zip > /dev/null 2>&1
 # Install the package
 
 cd $TRAVIS_BUILD_DIR/
-mvn install -Pimagej --settings ".ci/test_settings.xml"
+mvn install -Pimagej --settings ".travis/test_settings.xml"
 
 # Install python
 
