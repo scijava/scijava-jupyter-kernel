@@ -1,4 +1,13 @@
 <settings>
+  <profiles>
+      <profile>
+          <id>imagej</id>
+          <properties>
+              <enforcer.skip>true</enforcer.skip>
+          </properties>
+
+      </profile>
+  </profiles>
   <servers>
     <server>
       <id>imagej.releases</id>
