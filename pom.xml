@@ -13,7 +13,7 @@
 
 	<name>scijava-jupyter-kernel</name>
 	<description>SciJava polyglot kernel for Jupyter.</description>
-	<url>https://github.com/hadim/scijava-jupyter-kernel</url>
+	<url>https://github.com/scijava/scijava-jupyter-kernel</url>
 	<inceptionYear>2017</inceptionYear>
 	<organization>
 		<name>SciJava</name>
@@ -64,18 +64,18 @@
 	</mailingLists>
 
 	<scm>
-		<connection>scm:git:git://github.com/hadim/scijava-jupyter-kernel</connection>
-		<developerConnection>scm:git:git@github.com:hadim/scijava-jupyter-kernel</developerConnection>
+		<connection>scm:git:git://github.com/scijava/scijava-jupyter-kernel</connection>
+		<developerConnection>scm:git:git@github.com:scijava/scijava-jupyter-kernel</developerConnection>
 		<tag>HEAD</tag>
-		<url>https://github.com/hadim/scijava-jupyter-kernel</url>
+		<url>https://github.com/scijava/scijava-jupyter-kernel</url>
 	</scm>
 	<issueManagement>
 		<system>GitHub Issues</system>
-		<url>https://github.com/hadim/scijava-jupyter-kernel/issues</url>
+		<url>https://github.com/scijava/scijava-jupyter-kernel/issues</url>
 	</issueManagement>
 	<ciManagement>
 		<system>Travis CI</system>
-		<url>https://travis-ci.org/hadim/scijava-jupyter-kernel</url>
+		<url>https://travis-ci.org/scijava/scijava-jupyter-kernel</url>
 	</ciManagement>
 
 	<properties>
