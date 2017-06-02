@@ -51,8 +51,6 @@ jupyter lab
 
 ## Installation - With Fiji integration
 
-**Warning : Installation via Fiji is currently not available**
-
 - [Download](https://imagej.net/Fiji/Downloads) the last Fiji release.
 - Add the *Scijava Jupyter Kernel* update site in Fiji:
     - Click [Help ▶ Update...](https://imagej.net/Update_Sites).
