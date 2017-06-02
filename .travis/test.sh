@@ -1,6 +1,18 @@
 #!/bin/bash
 set -ex
 
+# Install Fiji
+
+mkdir -p $IJ_PATH/
+cd $HOME/
+wget --no-check-certificate https://downloads.imagej.net/fiji/latest/fiji-linux64.zip
+unzip fiji-linux64.zip > /dev/null 2>&1
+
+
+# Install the package
+
+cd $TRAVIS_BUILD_DIR/
+mvn install -Pimagej --settings ".ci/test_settings.xml"
 
 # Install python
 
@@ -32,5 +44,3 @@ jupyter kernelspec list
 
 # Now run the test notebook
 #jupyter nbconvert --execute --ExecutePreprocessor.timeout="60" --ExecutePreprocessor.kernel_name="scijava" "$TRAVIS_BUILD_DIR/notebooks/Test.ipynb"
-
-
