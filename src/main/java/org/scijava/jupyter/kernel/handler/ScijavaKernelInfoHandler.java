@@ -75,7 +75,7 @@ public class ScijavaKernelInfoHandler extends KernelHandler<Message> {
 
         List<String> helpLinks = new ArrayList<>();
         helpLinks.add("https://imagej.net/Jupyter");
-        helpLinks.add("https://github.com/hadim/scijava-jupyter-kernel");
+        helpLinks.add("https://github.com/scijava/scijava-jupyter-kernel");
         map.put("help_links", (Serializable) helpLinks);
 
         reply.setContent(map);
