@@ -1,6 +1,6 @@
 # scijava-jupyter-kernel
-[![Travis branch](https://img.shields.io/travis/hadim/scijava-jupyter-kernel/master.svg?style=flat-square)](https://travis-ci.org/hadim/scijava-jupyter-kernel)
-[![License](https://img.shields.io/github/license/hadim/scijava-jupyter-kernel.svg?style=flat-square)](https://github.com/hadim/scijava-jupyter-kernel/blob/master/LICENSE)
+[![Travis branch](https://img.shields.io/travis/scijava/scijava-jupyter-kernel/master.svg?style=flat-square)](https://travis-ci.org/scijava/scijava-jupyter-kernel)
+[![License](https://img.shields.io/github/license/scijava/scijava-jupyter-kernel.svg?style=flat-square)](https://github.com/scijava/scijava-jupyter-kernel/blob/master/LICENSE)
 [![Anaconda-Server Badge](https://anaconda.org/conda-forge/scijava-jupyter-kernel/badges/version.svg)](https://anaconda.org/conda-forge/scijava-jupyter-kernel)
 [![Anaconda-Server Badge](https://anaconda.org/conda-forge/scijava-jupyter-kernel/badges/downloads.svg)](https://anaconda.org/conda-forge/scijava-jupyter-kernel)
 
@@ -71,7 +71,7 @@ jupyter lab
 
 ## Development
 
-- [CI with Travis](https://travis-ci.org/hadim/scijava-jupyter-kernel) makes sure the project builds without errors for each new commit.
+- [CI with Travis](https://travis-ci.org/scijava/scijava-jupyter-kernel) makes sure the project builds without errors for each new commit.
 - A [test notebook](./notebooks/Test.ipynb) is executed during CI with [nbconvert](http://nbconvert.readthedocs.io/en/latest/execute_api.html).
 - A [Conda package](https://github.com/conda-forge/scijava-jupyter-kernel-feedstock) is built for each new release.
 
