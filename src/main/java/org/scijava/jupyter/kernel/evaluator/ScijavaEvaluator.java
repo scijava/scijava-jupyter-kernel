@@ -26,9 +26,11 @@ import com.twosigma.jupyter.KernelParameters;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.script.Bindings;
 import javax.script.ScriptContext;
@@ -93,6 +95,10 @@ public class ScijavaEvaluator implements Evaluator {
     @Override
     public AutocompleteResult autocomplete(String code, int index) {
 
+	// Get only the line corresponding to the index.
+	List<String> lines = Arrays.asList(code.substring(0, index).split("\n"));
+	String line = lines.get(lines.size() - 1);
+		
 	// TODO: we need to find a way the language related to the current cell.
 	// For now, we are just using the last used language.
 	AutoCompleter completer = this.completers.get(this.languageName);
@@ -101,17 +107,26 @@ public class ScijavaEvaluator implements Evaluator {
 	List<String> matches;
 	int startIndex;
 	if (completer != null) {
-	    AutoCompletionResult result = completer.autocomplete(code, index, scriptEngine);
+	    AutoCompletionResult result = completer.autocomplete(line, index, scriptEngine);
 
 	    matches = (List<String>) result.getMatches();
-	    startIndex = (int) result.getStartIndex();
+	    startIndex = index;
 
 	} else {
 	    matches = new ArrayList<>();
 	    startIndex = 0;
 	}
+	
+	// Reconstruct each matches with the correct index
+	List<String> newMatches = new ArrayList<>();
+	String newLine;
+	for (String match: matches) {
+		lines.set(lines.size() - 1, match);
+		newLine = lines.stream().collect(Collectors.joining("\n"));
+		newMatches.add(newLine.substring(startIndex, newLine.length()));
+	}
 
-	return new AutocompleteResult(matches, startIndex);
+	return new AutocompleteResult(newMatches, startIndex);
     }
 
     @Override
