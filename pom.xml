@@ -9,7 +9,7 @@
 	</parent>
 
 	<artifactId>scijava-jupyter-kernel</artifactId>
-	<version>0.5.1-SNAPSHOT</version>
+	<version>0.5.1</version>
 
 	<name>scijava-jupyter-kernel</name>
 	<description>SciJava polyglot kernel for Jupyter.</description>
