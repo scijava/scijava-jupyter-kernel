@@ -29,9 +29,6 @@ conda config --add channels conda-forge
 
 # Create an isolated environment called `java_env` and install the kernel
 conda create --name java_env scijava-jupyter-kernel
-
-# Install the `java_env` environment
-source install java_env
 ```
 
 - Usage :
