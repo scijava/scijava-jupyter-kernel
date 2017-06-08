@@ -35,7 +35,7 @@ conda create --name java_env scijava-jupyter-kernel
 
 ```bash
 # Activate the `java_env` environment
-source install java_env
+source activate java_env
 
 # Check the kernel has been installed
 jupyter kernelspec list
