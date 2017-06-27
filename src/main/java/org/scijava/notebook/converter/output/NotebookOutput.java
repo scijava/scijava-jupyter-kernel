@@ -20,7 +20,8 @@
 
 package org.scijava.notebook.converter.output;
 
-import com.twosigma.beaker.mimetype.MIMEContainer;
+import com.twosigma.beakerx.mimetype.MIMEContainer;
+
 
 /**
  *
