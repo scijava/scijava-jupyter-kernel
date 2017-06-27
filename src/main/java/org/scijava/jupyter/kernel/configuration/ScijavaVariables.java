@@ -20,7 +20,8 @@
 
 package org.scijava.jupyter.kernel.configuration;
 
-import com.twosigma.beaker.DefaultJVMVariables;
+import com.twosigma.beakerx.DefaultJVMVariables;
+
 
 /**
  *

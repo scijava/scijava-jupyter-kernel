@@ -20,7 +20,7 @@
 
 package org.scijava.notebook.converter.output;
 
-import com.twosigma.beaker.mimetype.MIMEContainer;
+import com.twosigma.beakerx.mimetype.MIMEContainer;
 
 /**
  * Base type for {@link NotebookOutput}s which produce HTML content.

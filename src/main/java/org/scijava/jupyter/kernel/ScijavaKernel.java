@@ -20,11 +20,11 @@
 
 package org.scijava.jupyter.kernel;
 
-import com.twosigma.beaker.jupyter.handler.CommOpenHandler;
-import com.twosigma.jupyter.Kernel;
-import com.twosigma.jupyter.KernelSocketsFactoryImpl;
-import com.twosigma.jupyter.handler.KernelHandler;
-import com.twosigma.jupyter.message.Message;
+import com.twosigma.beakerx.handler.KernelHandler;
+import com.twosigma.beakerx.kernel.Kernel;
+import com.twosigma.beakerx.kernel.KernelSocketsFactory;
+import com.twosigma.beakerx.kernel.handler.CommOpenHandler;
+import com.twosigma.beakerx.message.Message;
 
 import net.imagej.table.process.ResultsPostprocessor;
 
@@ -57,7 +57,7 @@ public class ScijavaKernel extends Kernel {
     private final ScijavaEvaluator evaluator;
 
     public ScijavaKernel(final Context context, final String id, final ScijavaEvaluator evaluator,
-            ScijavaKernelConfigurationFile config, KernelSocketsFactoryImpl kernelSocketsFactory) {
+            ScijavaKernelConfigurationFile config, KernelSocketsFactory kernelSocketsFactory) {
 
         super(id, evaluator, kernelSocketsFactory);
         this.context = context;

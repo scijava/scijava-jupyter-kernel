@@ -20,8 +20,7 @@
 
 package org.scijava.notebook;
 
-import com.twosigma.beaker.mimetype.MIMEContainer;
-
+import com.twosigma.beakerx.mimetype.MIMEContainer;
 import java.util.Arrays;
 
 import net.imagej.notebook.ImageJNotebookService;

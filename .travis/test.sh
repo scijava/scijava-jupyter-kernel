@@ -44,4 +44,4 @@ $IJ_LAUNCHER --ij2 --headless --run $JAVA_COMMAND_CLASS "logLevel=\"info\",pytho
 jupyter kernelspec list
 
 # Now run the test notebook
-jupyter nbconvert --execute --ExecutePreprocessor.timeout="60" --ExecutePreprocessor.kernel_name="scijava" "$TRAVIS_BUILD_DIR/notebooks/Test.ipynb"
+#jupyter nbconvert --execute --ExecutePreprocessor.timeout="60" --ExecutePreprocessor.kernel_name="scijava" "$TRAVIS_BUILD_DIR/notebooks/Test.ipynb"

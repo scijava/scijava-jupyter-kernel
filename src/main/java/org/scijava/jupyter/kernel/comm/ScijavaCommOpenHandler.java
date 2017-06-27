@@ -17,17 +17,16 @@
  * limitations under the License.
  * #L%
  */
-
 package org.scijava.jupyter.kernel.comm;
 
-import com.twosigma.beaker.jupyter.comm.KernelControlCommandListHandler;
-import com.twosigma.beaker.jupyter.comm.KernelControlInterrupt;
-import com.twosigma.beaker.jupyter.comm.KernelControlSetShellHandler;
-import com.twosigma.beaker.jupyter.comm.TargetNamesEnum;
-import com.twosigma.beaker.jupyter.handler.CommOpenHandler;
-import com.twosigma.jupyter.KernelFunctionality;
-import com.twosigma.jupyter.handler.Handler;
-import com.twosigma.jupyter.message.Message;
+import com.twosigma.beakerx.handler.Handler;
+import com.twosigma.beakerx.kernel.KernelFunctionality;
+import com.twosigma.beakerx.kernel.comm.KernelControlCommandListHandler;
+import com.twosigma.beakerx.kernel.comm.KernelControlInterrupt;
+import com.twosigma.beakerx.kernel.comm.KernelControlSetShellHandler;
+import com.twosigma.beakerx.kernel.comm.TargetNamesEnum;
+import com.twosigma.beakerx.kernel.handler.CommOpenHandler;
+import com.twosigma.beakerx.message.Message;
 
 /**
  *
@@ -35,23 +34,23 @@ import com.twosigma.jupyter.message.Message;
  */
 public class ScijavaCommOpenHandler extends CommOpenHandler {
 
-    private final Handler<?>[] KERNEL_CONTROL_CHANNEL_HANDLERS = {
-        new KernelControlSetShellHandler(kernel),
-        new ScijavaCommKernelControlSetShellHandler(kernel),
-        new KernelControlInterrupt(kernel),
-        new KernelControlCommandListHandler(kernel)
-    };
+	private final Handler<?>[] KERNEL_CONTROL_CHANNEL_HANDLERS = {
+		new KernelControlSetShellHandler(kernel),
+		new ScijavaCommKernelControlSetShellHandler(kernel),
+		new KernelControlInterrupt(kernel),
+		new KernelControlCommandListHandler(kernel)
+	};
 
-    public ScijavaCommOpenHandler(KernelFunctionality kernel) {
-        super(kernel);
-    }
+	public ScijavaCommOpenHandler(KernelFunctionality kernel) {
+		super(kernel);
+	}
 
-    @Override
-    public Handler<Message>[] getKernelControlChanelHandlers(String targetName) {
-        if (TargetNamesEnum.KERNEL_CONTROL_CHANNEL.getTargetName().equalsIgnoreCase(targetName)) {
-            return (Handler<Message>[]) KERNEL_CONTROL_CHANNEL_HANDLERS;
-        }
-        return (Handler<Message>[]) new Handler<?>[0];
-    }
+	@Override
+	public Handler<Message>[] getKernelControlChanelHandlers(String targetName) {
+		if (TargetNamesEnum.KERNEL_CONTROL_CHANNEL.getTargetName().equalsIgnoreCase(targetName)) {
+			return (Handler<Message>[]) KERNEL_CONTROL_CHANNEL_HANDLERS;
+		}
+		return (Handler<Message>[]) new Handler<?>[0];
+	}
 
 }

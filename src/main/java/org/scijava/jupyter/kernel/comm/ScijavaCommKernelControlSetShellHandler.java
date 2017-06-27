@@ -17,12 +17,10 @@
  * limitations under the License.
  * #L%
  */
-
 package org.scijava.jupyter.kernel.comm;
 
-import com.twosigma.beaker.jupyter.comm.KernelControlGetDefaultShellHandler;
-import com.twosigma.jupyter.KernelFunctionality;
-
+import com.twosigma.beakerx.kernel.KernelFunctionality;
+import com.twosigma.beakerx.kernel.comm.KernelControlGetDefaultShellHandler;
 import org.scijava.jupyter.kernel.configuration.ScijavaVariables;
 
 /**
@@ -31,20 +29,20 @@ import org.scijava.jupyter.kernel.configuration.ScijavaVariables;
  */
 public class ScijavaCommKernelControlSetShellHandler extends KernelControlGetDefaultShellHandler {
 
-    protected ScijavaVariables var = new ScijavaVariables();
+	protected ScijavaVariables var = new ScijavaVariables();
 
-    public ScijavaCommKernelControlSetShellHandler(KernelFunctionality kernel) {
-        super(kernel);
-    }
+	public ScijavaCommKernelControlSetShellHandler(KernelFunctionality kernel) {
+		super(kernel);
+	}
 
-    @Override
-    public String[] getDefaultImports() {
-        return var.getImportsAsArray();
-    }
+	@Override
+	public String[] getDefaultImports() {
+		return var.getImportsAsArray();
+	}
 
-    @Override
-    public String[] getDefaultClassPath() {
-        return var.getClassPathAsArray();
-    }
+	@Override
+	public String[] getDefaultClassPath() {
+		return var.getClassPathAsArray();
+	}
 
 }

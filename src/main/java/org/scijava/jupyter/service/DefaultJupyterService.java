@@ -20,11 +20,10 @@
 
 package org.scijava.jupyter.service;
 
-import static com.twosigma.beaker.jupyter.Utils.uuid;
 
-import com.twosigma.jupyter.KernelRunner;
-import com.twosigma.jupyter.KernelSocketsFactoryImpl;
-
+import com.twosigma.beakerx.kernel.KernelRunner;
+import com.twosigma.beakerx.kernel.KernelSocketsFactoryImpl;
+import static com.twosigma.beakerx.kernel.Utils.uuid;
 import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;

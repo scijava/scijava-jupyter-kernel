@@ -20,10 +20,11 @@
 
 package org.scijava.jupyter.kernel.configuration;
 
-import com.twosigma.jupyter.Config;
-import com.twosigma.jupyter.ConfigurationFile;
-import com.twosigma.jupyter.message.MessageSerializer;
 
+
+import com.twosigma.beakerx.kernel.Config;
+import com.twosigma.beakerx.kernel.ConfigurationFile;
+import com.twosigma.beakerx.message.MessageSerializer;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
