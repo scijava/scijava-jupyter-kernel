@@ -17,10 +17,7 @@
  * limitations under the License.
  * #L%
  */
-
 package org.scijava.notebook.converter.output;
-
-import com.twosigma.beakerx.mimetype.MIMEContainer;
 
 /**
  *
@@ -29,7 +26,7 @@ import com.twosigma.beakerx.mimetype.MIMEContainer;
 public class MarkdownNotebookOutput extends NotebookOutput {
 
     public MarkdownNotebookOutput(String content) {
-        super(MIMEContainer.MIME.TEXT_MARKDOWN, content);
+	super("text/markdown", content);
     }
 
 }

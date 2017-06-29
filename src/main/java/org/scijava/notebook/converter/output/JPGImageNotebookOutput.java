@@ -20,8 +20,6 @@
 
 package org.scijava.notebook.converter.output;
 
-import com.twosigma.beakerx.mimetype.MIMEContainer;
-
 /**
  *
  * @author Hadrien Mary
@@ -29,7 +27,7 @@ import com.twosigma.beakerx.mimetype.MIMEContainer;
 public class JPGImageNotebookOutput extends ImageNotebookOutput {
 
     public JPGImageNotebookOutput(String content) {
-        super(MIMEContainer.MIME.IMAGE_JPEG, content);
+        super("text/jpeg", content);
     }
 
 }

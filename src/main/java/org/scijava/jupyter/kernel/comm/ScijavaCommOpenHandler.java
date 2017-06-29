@@ -21,9 +21,9 @@ package org.scijava.jupyter.kernel.comm;
 
 import com.twosigma.beakerx.handler.Handler;
 import com.twosigma.beakerx.kernel.KernelFunctionality;
+import com.twosigma.beakerx.kernel.comm.GetCodeCellsHandler;
 import com.twosigma.beakerx.kernel.comm.KernelControlCommandListHandler;
 import com.twosigma.beakerx.kernel.comm.KernelControlInterrupt;
-import com.twosigma.beakerx.kernel.comm.KernelControlSetShellHandler;
 import com.twosigma.beakerx.kernel.comm.TargetNamesEnum;
 import com.twosigma.beakerx.kernel.handler.CommOpenHandler;
 import com.twosigma.beakerx.message.Message;
@@ -34,23 +34,26 @@ import com.twosigma.beakerx.message.Message;
  */
 public class ScijavaCommOpenHandler extends CommOpenHandler {
 
-	private final Handler<?>[] KERNEL_CONTROL_CHANNEL_HANDLERS = {
-		new KernelControlSetShellHandler(kernel),
-		new ScijavaCommKernelControlSetShellHandler(kernel),
-		new KernelControlInterrupt(kernel),
-		new KernelControlCommandListHandler(kernel)
-	};
+    private final Handler<?>[] KERNEL_CONTROL_CHANNEL_HANDLERS = {
+	new KernelControlInterrupt(kernel),
+	new KernelControlCommandListHandler(kernel)};
 
-	public ScijavaCommOpenHandler(KernelFunctionality kernel) {
-		super(kernel);
-	}
+    private final Handler<?>[] KERNEL_GET_CODECELLS_CHANNEL_HANDLER = {
+	new GetCodeCellsHandler(kernel)};
 
-	@Override
-	public Handler<Message>[] getKernelControlChanelHandlers(String targetName) {
-		if (TargetNamesEnum.KERNEL_CONTROL_CHANNEL.getTargetName().equalsIgnoreCase(targetName)) {
-			return (Handler<Message>[]) KERNEL_CONTROL_CHANNEL_HANDLERS;
-		}
-		return (Handler<Message>[]) new Handler<?>[0];
+    public ScijavaCommOpenHandler(KernelFunctionality kernel) {
+	super(kernel);
+    }
+
+    @Override
+    public Handler<Message>[] getKernelControlChanelHandlers(String targetName) {
+	if (TargetNamesEnum.KERNEL_CONTROL_CHANNEL.getTargetName().equalsIgnoreCase(targetName)) {
+	    return (Handler<Message>[]) KERNEL_CONTROL_CHANNEL_HANDLERS;
+	} else if (TargetNamesEnum.BEAKER_GETCODECELLS.getTargetName().equalsIgnoreCase(targetName)) {
+	    return (Handler<Message>[]) KERNEL_GET_CODECELLS_CHANNEL_HANDLER;
+	} else {
+	    return (Handler<Message>[]) new Handler<?>[0];
 	}
+    }
 
 }
