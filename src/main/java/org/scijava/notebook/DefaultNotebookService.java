@@ -17,11 +17,9 @@
  * limitations under the License.
  * #L%
  */
-
 package org.scijava.notebook;
 
 import com.twosigma.beakerx.mimetype.MIMEContainer;
-import java.util.Arrays;
 
 import net.imagej.notebook.ImageJNotebookService;
 import net.imglib2.RandomAccessibleInterval;
@@ -42,7 +40,7 @@ import org.scijava.service.Service;
  */
 @Plugin(type = Service.class)
 public class DefaultNotebookService extends AbstractService implements
-        NotebookService {
+	NotebookService {
 
     @Parameter
     private LogService log;
@@ -55,35 +53,24 @@ public class DefaultNotebookService extends AbstractService implements
 
     @Override
     public Object display(final Object object,
-        final Class<? extends NotebookOutput> outputType)
-    {
-        if (convertService.supports(object, outputType)) {
-            return convertService.convert(object, outputType);
-        }
-        return object;
+	    final Class<? extends NotebookOutput> outputType) {
+	if (convertService.supports(object, outputType)) {
+	    return convertService.convert(object, outputType);
+	}
+	return object;
     }
 
     @Override
     public Object displayMimetype(String mimetype, String content) {
-
-        MIMEContainer.MIME mimeTypeObj = Arrays.asList(MIMEContainer.MIME.values()).stream().
-                filter(m -> m.getMime().equals(mimetype)).
-                findFirst().orElse(null);
-
-        if (mimeTypeObj == null) {
-            log.warn("The mimetype '" + mimetype + "' is not supported");
-            return content;
-        }
-        return new MIMEContainer(mimeTypeObj, content);
-
+	return new MIMEContainer(mimetype, content);
     }
 
     // TODO : those methods are using the net.imagej namespace.
     // Also would it be possible to create a converter for this ?
     // With RandomAccessibleInterval[] or List<RandomAccessibleInterval> as a type ?
     public Object tiles(final int[] gridLayout, final RandomAccessibleInterval... images) {
-        RandomAccessibleInterval rai = ijNotebookService.mosaic(gridLayout, images);
-        return convertService.convert(rai, NotebookOutput.class);
+	RandomAccessibleInterval rai = ijNotebookService.mosaic(gridLayout, images);
+	return convertService.convert(rai, NotebookOutput.class);
     }
 
 }

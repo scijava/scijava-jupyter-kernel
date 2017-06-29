@@ -17,11 +17,7 @@
  * limitations under the License.
  * #L%
  */
-
 package org.scijava.notebook.converter.output;
-
-import com.twosigma.beakerx.mimetype.MIMEContainer;
-
 
 /**
  *
@@ -30,7 +26,7 @@ import com.twosigma.beakerx.mimetype.MIMEContainer;
 public class PNGImageNotebookOutput extends ImageNotebookOutput {
 
     public PNGImageNotebookOutput(String content) {
-        super(MIMEContainer.MIME.IMAGE_PNG, content);
+	super("image/png", content);
     }
 
 }

@@ -29,7 +29,7 @@ import com.twosigma.beakerx.mimetype.MIMEContainer;
  */
 public abstract class NotebookOutput extends MIMEContainer {
 
-    public NotebookOutput(MIME mimeTypeObj, String content) {
+    public NotebookOutput(String mimeTypeObj, String content) {
         super(mimeTypeObj, content);
     }
 

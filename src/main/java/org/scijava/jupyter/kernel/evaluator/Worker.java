@@ -17,10 +17,10 @@
  * limitations under the License.
  * #L%
  */
-
 package org.scijava.jupyter.kernel.evaluator;
 
 import com.twosigma.beakerx.jvm.object.SimpleEvaluationObject;
+import com.twosigma.beakerx.mimetype.MIMEContainer;
 import java.io.Reader;
 import java.io.StringReader;
 import java.lang.reflect.Field;
@@ -69,99 +69,105 @@ public class Worker implements Runnable {
     String code = null;
 
     Worker(Context context, Map<String, ScriptEngine> scriptEngines, Map<String, ScriptLanguage> scriptLanguages) {
-        context.inject(this);
-        this.scriptEngines = scriptEngines;
-        this.scriptLanguages = scriptLanguages;
+	context.inject(this);
+	this.scriptEngines = scriptEngines;
+	this.scriptLanguages = scriptLanguages;
     }
 
     public void setup(SimpleEvaluationObject seo, String code, String languageName) {
-        this.seo = seo;
-        this.code = code;
-        this.languageName = languageName;
+	this.seo = seo;
+	this.code = code;
+	this.languageName = languageName;
     }
 
     @Override
     public void run() {
 
-        ScriptLanguage scriptLanguage = this.scriptLanguages.get(this.languageName);
-        ScriptEngine scriptEngine = this.scriptEngines.get(this.languageName);
+	ScriptLanguage scriptLanguage = this.scriptLanguages.get(this.languageName);
+	ScriptEngine scriptEngine = this.scriptEngines.get(this.languageName);
 
-        final Reader input = new StringReader(this.code);
-        final ScriptInfo info = new ScriptInfo(context, "dummy.py", input);
-        this.seo.setOutputHandler();
+	final Reader input = new StringReader(this.code);
+	final ScriptInfo info = new ScriptInfo(context, "dummy.py", input);
+	this.seo.setOutputHandler();
 
-        try {
-            // create the ScriptModule instance
-            final ScriptModule module = info.createModule();
-            context.inject(module);
-            module.setLanguage(scriptLanguage);
+	try {
+	    // create the ScriptModule instance
+	    final ScriptModule module = info.createModule();
+	    context.inject(module);
+	    module.setLanguage(scriptLanguage);
 
-            // HACK: Inject our cached script engine instance, rather
-            // than letting the ScriptModule instance create its own.
-            final Field f = ClassUtils.getField(ScriptModule.class, "scriptEngine");
-            ClassUtils.setValue(f, module, scriptEngine);
+	    // HACK: Inject our cached script engine instance, rather
+	    // than letting the ScriptModule instance create its own.
+	    final Field f = ClassUtils.getField(ScriptModule.class, "scriptEngine");
+	    ClassUtils.setValue(f, module, scriptEngine);
 
-            // execute the code
-            final List<PreprocessorPlugin> pre = pluginService.createInstancesOfType(PreprocessorPlugin.class);
-            final List<PostprocessorPlugin> post = pluginService.createInstancesOfType(PostprocessorPlugin.class);
-            final ModuleRunner runner = new ModuleRunner(context, module, pre, post);
-            runner.run();
+	    // execute the code
+	    final List<PreprocessorPlugin> pre = pluginService.createInstancesOfType(PreprocessorPlugin.class);
+	    final List<PostprocessorPlugin> post = pluginService.createInstancesOfType(PostprocessorPlugin.class);
+	    final ModuleRunner runner = new ModuleRunner(context, module, pre, post);
+	    runner.run();
 
-            // accumulate the outputs into an ordered map
-            final Map<String, Object> outputTable = new LinkedHashMap<>();
-            info.outputs().forEach(output -> {
-                final String name = output.getName();
-                final Object value = output.getValue(module);
-                               if(value != null) {
-                                       outputTable.put(name, value);
-                               }
-            });
+	    // accumulate the outputs into an ordered map
+	    final Map<String, Object> outputTable = new LinkedHashMap<>();
+	    info.outputs().forEach(output -> {
+		final String name = output.getName();
+		final Object value = output.getValue(module);
+		if (value != null) {
+		    outputTable.put(name, value);
+		}
+	    });
 
-            // convert result into a notebook-friendly form
-            Object output = null;
-            try {
-                if(outputTable.size() == 0){
-                    output = "No Outputs";
-                } else if(outputTable.size() == 1) {
-                    output = convertService.convert(outputTable.values()
-                        .toArray()[0], NotebookOutput.class);
-                } else {
-                    output = convertService.convert(outputTable,
-                        NotebookOutput.class);
-                }
-            } catch(Exception e) {
-                e.printStackTrace();
-                output = "[ERROR]";
-            } finally {
-                if(output == null )
-                    this.seo.finished("[ERROR] No suitable converter found");
-                else this.seo.finished(output);
-            }
+	    // convert result into a notebook-friendly form
+	    Object output = null;
+	    try {
+		if (outputTable.size() == 0) {
+		    output = null;
+		    
+		} else if (outputTable.size() == 1) {
+		    output = convertService.convert(outputTable.values()
+			    .toArray()[0], NotebookOutput.class);
+		    if (output == null) {
+			log.warn("[WARNING] No suitable converter found");
+			output = outputTable.values().toArray()[0];
+		    }
+		    
+		} else {
+		    output = convertService.convert(outputTable,
+			    NotebookOutput.class);
+		    if (output == null) {
+			log.warn("[WARNING] No suitable converter found");
+			output = outputTable;
+		    }
+		}
+	    } catch (Exception e) {
+		e.printStackTrace();
+		output = "[ERROR]";
+	    } finally {
+		this.seo.finished(output);
+	    }
 
-            this.syncBindings(scriptEngine, scriptLanguage);
-        }
-        catch (final ThreadDeath ex) {
-            seo.error("Execution canceled");
-            log.error(ex);
-        }
-        catch (final ModuleException t) {
-            seo.error(t.getMessage());
-            log.error(t);
-        }
+	    this.syncBindings(scriptEngine, scriptLanguage);
+	} catch (final ThreadDeath ex) {
+	    seo.error("Execution canceled");
+	    log.error(ex);
+	} catch (final ModuleException t) {
+	    seo.error(t.getMessage());
+	    log.error(t);
+	}
 
-        this.seo.clrOutputHandler();
-        this.seo.executeCodeCallback();
+	this.seo.clrOutputHandler();
+	this.seo.executeCodeCallback();
     }
 
     private void syncBindings(ScriptEngine scriptEngine, ScriptLanguage scriptLanguage) {
 
-        Bindings currentBindings = scriptEngine.getBindings(ScriptContext.ENGINE_SCOPE);
-        this.scriptEngines.forEach((String name, ScriptEngine engine) -> {
-            Bindings bindings = engine.getBindings(ScriptContext.ENGINE_SCOPE);
-            currentBindings.keySet().forEach((String key) -> {
-                bindings.put(key, scriptLanguage.decode(currentBindings.get(key)));
-            });
-        });
+	Bindings currentBindings = scriptEngine.getBindings(ScriptContext.ENGINE_SCOPE);
+	this.scriptEngines.forEach((String name, ScriptEngine engine) -> {
+	    Bindings bindings = engine.getBindings(ScriptContext.ENGINE_SCOPE);
+	    currentBindings.keySet().forEach((String key) -> {
+		bindings.put(key, scriptLanguage.decode(currentBindings.get(key)));
+	    });
+	});
 
     }
 

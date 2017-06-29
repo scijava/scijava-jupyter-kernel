@@ -20,8 +20,6 @@
 
 package org.scijava.notebook.converter.output;
 
-import com.twosigma.beakerx.mimetype.MIMEContainer;
-
 /**
  * Base type for {@link NotebookOutput}s which produce HTML content.
  *
@@ -30,7 +28,7 @@ import com.twosigma.beakerx.mimetype.MIMEContainer;
 public class HTMLNotebookOutput extends HTMLFriendlyNotebookOutput {
 
     public HTMLNotebookOutput(String content) {
-        super(MIMEContainer.MIME.TEXT_HTML, content);
+        super("text/html", content);
     }
 
     @Override

@@ -17,10 +17,7 @@
  * limitations under the License.
  * #L%
  */
-
 package org.scijava.notebook.converter.output;
-
-import com.twosigma.beakerx.mimetype.MIMEContainer;
 
 /**
  *
@@ -29,7 +26,7 @@ import com.twosigma.beakerx.mimetype.MIMEContainer;
 public class LatexNotebookOutput extends NotebookOutput {
 
     public LatexNotebookOutput(String content) {
-        super(MIMEContainer.MIME.TEXT_LATEX, content);
+	super("text/latex", content);
     }
 
 }

@@ -17,10 +17,7 @@
  * limitations under the License.
  * #L%
  */
-
 package org.scijava.notebook.converter.output;
-
-import com.twosigma.beakerx.mimetype.MIMEContainer;
 
 /**
  *
@@ -29,7 +26,7 @@ import com.twosigma.beakerx.mimetype.MIMEContainer;
 public class JSONNotebookOutput extends NotebookOutput {
 
     public JSONNotebookOutput(String content) {
-        super(MIMEContainer.MIME.TEXT_PLAIN, content);
+	super("application/json", content);
     }
 
 }

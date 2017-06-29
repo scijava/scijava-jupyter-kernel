@@ -17,32 +17,16 @@
  * limitations under the License.
  * #L%
  */
-package org.scijava.jupyter.kernel.comm;
-
-import com.twosigma.beakerx.kernel.KernelFunctionality;
-import com.twosigma.beakerx.kernel.comm.KernelControlGetDefaultShellHandler;
-import org.scijava.jupyter.kernel.configuration.ScijavaVariables;
+package org.scijava.notebook.converter.output;
 
 /**
  *
  * @author Hadrien Mary
  */
-public class ScijavaCommKernelControlSetShellHandler extends KernelControlGetDefaultShellHandler {
+public class MIMEOutput extends NotebookOutput {
 
-	protected ScijavaVariables var = new ScijavaVariables();
-
-	public ScijavaCommKernelControlSetShellHandler(KernelFunctionality kernel) {
-		super(kernel);
-	}
-
-	@Override
-	public String[] getDefaultImports() {
-		return var.getImportsAsArray();
-	}
-
-	@Override
-	public String[] getDefaultClassPath() {
-		return var.getClassPathAsArray();
-	}
+    public MIMEOutput(String mimetype, String content) {
+	super(mimetype, content);
+    }
 
 }
