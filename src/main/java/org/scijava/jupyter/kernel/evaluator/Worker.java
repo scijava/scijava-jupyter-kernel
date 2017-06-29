@@ -20,6 +20,7 @@
 package org.scijava.jupyter.kernel.evaluator;
 
 import com.twosigma.beakerx.jvm.object.SimpleEvaluationObject;
+import com.twosigma.beakerx.mimetype.MIMEContainer;
 import java.io.Reader;
 import java.io.StringReader;
 import java.lang.reflect.Field;
