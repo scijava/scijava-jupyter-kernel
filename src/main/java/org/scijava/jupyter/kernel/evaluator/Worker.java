@@ -122,15 +122,17 @@ public class Worker implements Runnable {
 	    try {
 		if (outputTable.size() == 0) {
 		    output = null;
-		    
+
 		} else if (outputTable.size() == 1) {
-		    output = convertService.convert(outputTable.values()
-			    .toArray()[0], NotebookOutput.class);
-		    if (output == null) {
-			log.warn("[WARNING] No suitable converter found");
-			output = outputTable.values().toArray()[0];
+		    output = outputTable.values().toArray()[0];
+		    if (!(output instanceof MIMEContainer)) {
+			output = convertService.convert(output, NotebookOutput.class);
+			if (output == null) {
+			    log.warn("[WARNING] No suitable converter found");
+			    output = outputTable.values().toArray()[0];
+			}
 		    }
-		    
+
 		} else {
 		    output = convertService.convert(outputTable,
 			    NotebookOutput.class);
