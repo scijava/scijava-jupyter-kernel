@@ -31,19 +31,6 @@ import org.scijava.service.SciJavaService;
  */
 public interface JupyterService extends SciJavaService {
 
-    /* Install kernel */
-    void installKernel(String... args);
-
-    void installKernel(String logLevel, String pythonBinaryPath);
-
-    void installKernel(String logLevel, Path pythonBinaryPath);
-
-    void installKernel(String logLevel, File pythonBinaryPath);
-
-    void installKernel(String logLevel, String pythonBinaryPath, String classpath, String javaBinaryPath);
-
-    void installKernel(String logLevel, File pythonBinaryPath, String classpath, String javaBinaryPath);
-
     /* Run kernel */
     void runKernel(String... args);
 

@@ -18,7 +18,7 @@ The kernel has been originally created to work with ImageJ. See [here](https://i
 
 A documentation is available as a series of notebooks [here](./notebooks/Welcome.ipynb).
 
-## Installation - Standalone
+## Installation
 
 - Install [Anaconda](https://www.continuum.io/downloads)
 - Install `scijava-jupyter-kernel` with :
@@ -47,25 +47,7 @@ jupyter notebook
 jupyter lab
 ```
 
-*Note : It is suggested to install the kernel in an isolated Conda environment (not in the root environment).*
-
-## Installation - With Fiji integration
-
-- [Download](https://imagej.net/Fiji/Downloads) the last Fiji release.
-- Add the *Scijava Jupyter Kernel* update site in Fiji:
-    - Click [Help ▶ Update...](https://imagej.net/Update_Sites).
-    - Click `Manage update sites`.
-    - Select the *Scijava Jupyter Kernel* checkbox (see also [List of update sites](https://imagej.net/List_of_update_sites)).
-    - Click `Apply changes` and restart Fiji.
-
-- Launch `Analyze > Jupyter Kernel > Install Scijava Kernel`.
-- Set the path to your Python binary.
-- Choose a log level.
-
-- Check the kernel has been installed with : `jupyter kernelspec list`.
-- Launch `jupyter notebook` or `jupyter lab` and **select the kernel you want in the kernel list**.
-
-![Scijava Jupyter Kernel Installation](teaser.gif)
+*Note : It is strongly suggested to install the kernel in an isolated Conda environment (not in the root environment).*
 
 ## Development
 
