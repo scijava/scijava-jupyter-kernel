@@ -37,6 +37,7 @@ import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import org.scijava.Context;
 import org.scijava.command.CommandService;
+import org.scijava.jupyter.commands.InstallScijavaKernel;
 import org.scijava.jupyter.kernel.ScijavaKernel;
 import org.scijava.jupyter.kernel.configuration.ScijavaKernelConfigurationFile;
 import org.scijava.jupyter.kernel.evaluator.ScijavaEvaluator;
@@ -61,6 +62,48 @@ public class DefaultJupyterService extends AbstractService implements JupyterSer
 
     @Parameter
     private transient CommandService command;
+
+    /* Install kernel */
+    @Override
+    public void installKernel(String... args) {
+        Map<String, Object> parameters = parseArgumentsInstall(args);
+        // TODO : Ensure parameters contains the appropriate keys.
+
+        installKernel((String) parameters.get("logLevel"),
+                (String) parameters.get("pythonBinaryPath"),
+                (String) parameters.get("classpath"),
+                (String) parameters.get("javaBinaryPath"));
+    }
+
+    @Override
+    public void installKernel(String logLevel, String pythonBinaryPath) {
+        installKernel(logLevel, Paths.get(pythonBinaryPath));
+    }
+
+    @Override
+    public void installKernel(String logLevel, Path pythonBinaryPath) {
+        installKernel(logLevel, pythonBinaryPath.toFile());
+    }
+
+    @Override
+    public void installKernel(String logLevel, File pythonBinaryPath) {
+        installKernel(logLevel, pythonBinaryPath, null, null);
+    }
+
+    @Override
+    public void installKernel(String logLevel, String pythonBinaryPath, String classpath, String javaBinaryPath) {
+        installKernel(logLevel, new File(pythonBinaryPath), classpath, javaBinaryPath);
+    }
+
+    @Override
+    public void installKernel(String logLevel, File pythonBinaryPath, String classpath, String javaBinaryPath) {
+        Map<String, Object> parameters = new HashMap<>();
+        parameters.put("logLevel", logLevel);
+        parameters.put("pythonBinaryPath", pythonBinaryPath);
+        parameters.put("classpath", classpath);
+        parameters.put("javaBinaryPath", new File(javaBinaryPath));
+        command.run(InstallScijavaKernel.class, true, parameters);
+    }
 
     /* Run kernel */
     @Override
@@ -120,6 +163,48 @@ public class DefaultJupyterService extends AbstractService implements JupyterSer
 
                 parameters.put("connectionFile", cmd.getOptionValue("connectionFile"));
                 parameters.put("logLevel", cmd.getOptionValue("verbose"));
+
+                return parameters;
+
+            } catch (ParseException ex) {
+                log.error("Error parsing arguments : " + ex.toString());
+            }
+        } else {
+            log.error("No parameters passed to the Scijava kernel.");
+        }
+        return null;
+    }
+
+    private Map<String, Object> parseArgumentsInstall(final String... args) {
+        if (args.length > 0) {
+            try {
+
+                Options options = new Options();
+                options.addOption("pythonBinaryPath", true, "Python Binary Path");
+                options.addOption("verbose", true, "Verbose Mode");
+                options.addOption("classpath", true, "Additional JAVA classpath ?");
+                options.addOption("javaBinaryPath", true, "Java Binary Path");
+
+                CommandLineParser parser = new DefaultParser();
+                CommandLine cmd = parser.parse(options, args);
+
+                Map<String, Object> parameters = new HashMap<>();
+
+                parameters.put("pythonBinaryPath", cmd.getOptionValue("pythonBinaryPath"));
+
+                parameters.put("logLevel", cmd.getOptionValue("verbose"));
+
+                if (cmd.getOptionValue("classpath") != null) {
+                    parameters.put("classpath", cmd.getOptionValue("classpath"));
+                } else {
+                    parameters.put("classpath", null);
+                }
+
+                if (cmd.getOptionValue("javaBinaryPath") != null) {
+                    parameters.put("javaBinaryPath", cmd.getOptionValue("javaBinaryPath"));
+                } else {
+                    parameters.put("javaBinaryPath", null);
+                }
 
                 return parameters;
 
