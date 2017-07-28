@@ -64,6 +64,11 @@ public class DefaultNotebookService extends AbstractService implements
     public Object displayMimetype(String mimetype, String content) {
 	return new MIMEContainer(mimetype, content);
     }
+    
+    @Override
+    public Object displayMimetype(String mimetype, Object content) {
+	return new MIMEContainer(mimetype, content);
+    }
 
     // TODO : those methods are using the net.imagej namespace.
     // Also would it be possible to create a converter for this ?

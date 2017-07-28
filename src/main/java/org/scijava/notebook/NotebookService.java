@@ -20,8 +20,6 @@
 
 package org.scijava.notebook;
 
-import java.util.List;
-import java.util.Map;
 
 import org.scijava.notebook.converter.output.HTMLNotebookOutput;
 import org.scijava.notebook.converter.output.HTMLTableNotebookOutput;
@@ -111,6 +109,8 @@ public interface NotebookService extends SciJavaService {
      * @return A result of the specified MIME type.
      */
     Object displayMimetype(String mimetype, String content);
+    
+    Object displayMimetype(String mimetype, Object content);
 
     default Object html(String content) {
         return display(content, HTMLNotebookOutput.class);
@@ -126,5 +126,13 @@ public interface NotebookService extends SciJavaService {
 
     default Object table(Object table) {
         return display(table, HTMLTableNotebookOutput.class);
+    }
+    
+    default Object vega(String content) {
+        return displayMimetype("application/vnd.vega.v2+json", content);
+    }
+    
+    default Object vegalite(String content) {
+        return display("application/vnd.vegalite.v1+json", HTMLTableNotebookOutput.class);
     }
 }
