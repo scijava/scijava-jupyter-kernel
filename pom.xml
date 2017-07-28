@@ -131,7 +131,7 @@
 		<dependency>
 			<groupId>com.github.twosigma.beakerx</groupId>
 			<artifactId>beaker-kernel-base</artifactId>
-			<version>d30a87d</version>
+			<version>2d1a1e2</version>
 		</dependency>
 
 		<!-- The package to convert images to PNG/JPEG -->

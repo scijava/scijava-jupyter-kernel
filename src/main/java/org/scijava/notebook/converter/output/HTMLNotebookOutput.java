@@ -33,7 +33,7 @@ public class HTMLNotebookOutput extends HTMLFriendlyNotebookOutput {
 
     @Override
     public String toHTML() {
-        return getCode();
+        return (String) getData();
     }
 
 }

@@ -28,6 +28,7 @@ import com.twosigma.beakerx.kernel.Imports;
 import com.twosigma.beakerx.kernel.KernelParameters;
 import com.twosigma.beakerx.kernel.PathToJar;
 import java.io.IOException;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -54,211 +55,218 @@ import org.scijava.thread.ThreadService;
  */
 public class ScijavaEvaluator implements Evaluator {
 
-	public static final String DEFAULT_LANGUAGE = "groovy";
+    public static final String DEFAULT_LANGUAGE = "groovy";
 
-	@Parameter
-	private LogService log;
+    @Parameter
+    private LogService log;
 
-	@Parameter
-	private transient ScriptService scriptService;
+    @Parameter
+    private transient ScriptService scriptService;
 
-	@Parameter
-	private ThreadService threadService;
+    @Parameter
+    private ThreadService threadService;
 
-	@Parameter
-	Context context;
+    @Parameter
+    Context context;
 
-	private final Map<String, ScriptEngine> scriptEngines;
-	private final Map<String, ScriptLanguage> scriptLanguages;
-	private final Map<String, AutoCompleter> completers;
-	private String languageName;
+    private final Map<String, ScriptEngine> scriptEngines;
+    private final Map<String, ScriptLanguage> scriptLanguages;
+    private final Map<String, AutoCompleter> completers;
+    private String languageName;
 
-	protected String shellId;
-	protected String sessionId;
+    protected String shellId;
+    protected String sessionId;
 
-	public ScijavaEvaluator(Context context, String shellId, String sessionId) {
-		context.inject(this);
+    public ScijavaEvaluator(Context context, String shellId, String sessionId) {
+        context.inject(this);
 
-		this.shellId = shellId;
-		this.sessionId = sessionId;
+        this.shellId = shellId;
+        this.sessionId = sessionId;
 
-		this.scriptEngines = new HashMap<>();
-		this.scriptLanguages = new HashMap<>();
+        this.scriptEngines = new HashMap<>();
+        this.scriptLanguages = new HashMap<>();
 
-		this.completers = new HashMap<>();
+        this.completers = new HashMap<>();
 
-		this.languageName = DEFAULT_LANGUAGE;
-	}
+        this.languageName = DEFAULT_LANGUAGE;
+    }
 
-	@Override
-	public void setShellOptions(KernelParameters kp) throws IOException {
-		log.debug("Set shell options : " + kp);
-	}
+    @Override
+    public void setShellOptions(KernelParameters kp) throws IOException {
+        log.debug("Set shell options : " + kp);
+    }
 
-	@Override
-	public AutocompleteResult autocomplete(String code, int index) {
+    @Override
+    public AutocompleteResult autocomplete(String code, int index) {
 
-		// Get only the line corresponding to the index.
-		List<String> lines = Arrays.asList(code.substring(0, index).split("\n"));
-		String line = lines.get(lines.size() - 1);
+        // Get only the line corresponding to the index.
+        List<String> lines = Arrays.asList(code.substring(0, index).split("\n"));
+        String line = lines.get(lines.size() - 1);
 
-		// TODO: we need to find a way the language related to the current cell.
-		// For now, we are just using the last used language.
-		AutoCompleter completer = this.completers.get(this.languageName);
-		ScriptEngine scriptEngine = this.scriptEngines.get(this.languageName);
+        // TODO: we need to find a way the language related to the current cell.
+        // For now, we are just using the last used language.
+        AutoCompleter completer = this.completers.get(this.languageName);
+        ScriptEngine scriptEngine = this.scriptEngines.get(this.languageName);
 
-		List<String> matches;
-		int startIndex;
-		if (completer != null) {
-			AutoCompletionResult result = completer.autocomplete(line, index, scriptEngine);
+        List<String> matches;
+        int startIndex;
+        if (completer != null) {
+            AutoCompletionResult result = completer.autocomplete(line, index, scriptEngine);
 
-			matches = (List<String>) result.getMatches();
-			startIndex = index;
+            matches = (List<String>) result.getMatches();
+            startIndex = index;
 
-		} else {
-			matches = new ArrayList<>();
-			startIndex = 0;
-		}
+        } else {
+            matches = new ArrayList<>();
+            startIndex = 0;
+        }
 
-		// Reconstruct each matches with the correct index
-		List<String> newMatches = new ArrayList<>();
-		String newLine;
-		for (String match : matches) {
-			lines.set(lines.size() - 1, match);
-			newLine = lines.stream().collect(Collectors.joining("\n"));
-			newMatches.add(newLine.substring(startIndex, newLine.length()));
-		}
+        // Reconstruct each matches with the correct index
+        List<String> newMatches = new ArrayList<>();
+        String newLine;
+        for (String match : matches) {
+            lines.set(lines.size() - 1, match);
+            newLine = lines.stream().collect(Collectors.joining("\n"));
+            newMatches.add(newLine.substring(startIndex, newLine.length()));
+        }
 
-		return new AutocompleteResult(newMatches, startIndex);
-	}
+        return new AutocompleteResult(newMatches, startIndex);
+    }
 
-	@Override
-	public void killAllThreads() {
-		log.debug("Kill All Threads");
-		// Ugly and not working :-(
-		System.exit(0);
-	}
+    @Override
+    public void killAllThreads() {
+        log.debug("Kill All Threads");
+        // Ugly and not working :-(
+        System.exit(0);
+    }
 
-	@Override
-	public void startWorker() {
-		// Nothing to do
-	}
+    @Override
+    public void evaluate(SimpleEvaluationObject seo, String code) {
 
-	@Override
-	public void evaluate(SimpleEvaluationObject seo, String code) {
+        code = this.setLanguage(code);
 
-		code = this.setLanguage(code);
+        Worker worker = new Worker(this.context, this.scriptEngines, this.scriptLanguages);
+        worker.setup(seo, code, this.languageName);
+        this.threadService.queue(getClass().getName(), worker);
+    }
 
-		Worker worker = new Worker(this.context, this.scriptEngines, this.scriptLanguages);
-		worker.setup(seo, code, this.languageName);
-		this.threadService.queue(getClass().getName(), worker);
-	}
+    @Override
+    public void exit() {
+        log.debug("Exiting DefaultEvaluator");
+        // Ugly and not working :-(
+        System.exit(0);
+    }
 
-	@Override
-	public void exit() {
-		log.debug("Exiting DefaultEvaluator");
-		// Ugly and not working :-(
-		System.exit(0);
-	}
+    private void addLanguage(String langName) {
 
-	private void addLanguage(String langName) {
+        if (scriptService.getLanguageByName(langName) == null) {
+            log.error("Script Language for '" + langName + "' not found.");
+            System.exit(1);
+        }
 
-		if (scriptService.getLanguageByName(langName) == null) {
-			log.error("Script Language for '" + langName + "' not found.");
-			System.exit(1);
-		}
+        if (!this.scriptLanguages.keySet().contains(langName)) {
 
-		if (!this.scriptLanguages.keySet().contains(langName)) {
+            Bindings bindings = null;
+            if (!this.scriptEngines.isEmpty()) {
+                String firstLanguage = this.scriptEngines.keySet().iterator().next();
+                bindings = this.scriptEngines.get(firstLanguage).getBindings(ScriptContext.ENGINE_SCOPE);
+            }
 
-			Bindings bindings = null;
-			if (!this.scriptEngines.isEmpty()) {
-				String firstLanguage = this.scriptEngines.keySet().iterator().next();
-				bindings = this.scriptEngines.get(firstLanguage).getBindings(ScriptContext.ENGINE_SCOPE);
-			}
+            log.info("Script Language for '" + langName + "' found.");
+            ScriptLanguage scriptLanguage = scriptService.getLanguageByName(langName);
+            this.scriptLanguages.put(langName, scriptLanguage);
 
-			log.info("Script Language for '" + langName + "' found.");
-			ScriptLanguage scriptLanguage = scriptService.getLanguageByName(langName);
-			this.scriptLanguages.put(langName, scriptLanguage);
+            ScriptEngine engine = this.scriptLanguages.get(langName).getScriptEngine();
+            this.scriptEngines.put(langName, engine);
 
-			ScriptEngine engine = this.scriptLanguages.get(langName).getScriptEngine();
-			this.scriptEngines.put(langName, engine);
+            AutoCompleter completer = scriptLanguage.getAutoCompleter();
+            this.completers.put(languageName, completer);
 
-			AutoCompleter completer = scriptLanguage.getAutoCompleter();
-			this.completers.put(languageName, completer);
+            // Not implemented yet
+            //engine.setBindings(this.bindings, ScriptContext.ENGINE_SCOPE);
+            if (bindings != null) {
+                this.initBindings(bindings, engine, scriptLanguage);
+            }
 
-			// Not implemented yet
-			//engine.setBindings(this.bindings, ScriptContext.ENGINE_SCOPE);
-			if (bindings != null) {
-				this.initBindings(bindings, engine, scriptLanguage);
-			}
+        }
 
-		}
+        log.debug("Script Language found for '" + langName + "'");
+    }
 
-		log.debug("Script Language found for '" + langName + "'");
-	}
+    private String setLanguage(String code) {
 
-	private String setLanguage(String code) {
+        if (code.startsWith("#!")) {
 
-		if (code.startsWith("#!")) {
+            // If code is composed of multiple lines
+            if (code.split("\n").length > 1) {
+                this.languageName = code.substring(2, code.indexOf("\n")).trim();
 
-			// If code is composed of multiple lines
-			if (code.split("\n").length > 1) {
-				this.languageName = code.substring(2, code.indexOf("\n")).trim();
+                // Return the code string without the first line
+                code = code.substring(code.indexOf("\n") + 1);
+            } // If only one line
+            else {
+                this.languageName = code.substring(2).trim();
 
-				// Return the code string without the first line
-				code = code.substring(code.indexOf("\n") + 1);
-			} // If only one line
-			else {
-				this.languageName = code.substring(2).trim();
+                code = "";
+            }
 
-				code = "";
-			}
+        }
 
-		}
+        this.addLanguage(this.languageName);
+        return code;
+    }
 
-		this.addLanguage(this.languageName);
-		return code;
-	}
+    private void initBindings(Bindings bindings, ScriptEngine scriptEngine, ScriptLanguage scriptLanguage) {
 
-	private void initBindings(Bindings bindings, ScriptEngine scriptEngine, ScriptLanguage scriptLanguage) {
+        Bindings currentBindings = scriptEngine.getBindings(ScriptContext.ENGINE_SCOPE);
+        bindings.keySet().forEach((String key) -> {
+            currentBindings.put(key, scriptLanguage.decode(bindings.get(key)));
+        });
 
-		Bindings currentBindings = scriptEngine.getBindings(ScriptContext.ENGINE_SCOPE);
-		bindings.keySet().forEach((String key) -> {
-			currentBindings.put(key, scriptLanguage.decode(bindings.get(key)));
-		});
+    }
 
-	}
+    @Override
+    public Classpath getClasspath() {
+        log.debug("addJarToClasspath()");
+        return null;
+    }
 
-	@Override
-	public void addJarToClasspath(PathToJar ptj) {
-		log.debug("addJarToClasspath()");
-	}
+    @Override
+    public Imports getImports() {
+        log.debug("addJarToClasspath()");
+        return null;
+    }
 
-	@Override
-	public Classpath getClasspath() {
-		log.debug("addJarToClasspath()");
-		return null;
-	}
+    @Override
+    public void addImport(ImportPath ip) {
+        log.debug("addJarToClasspath()");
+    }
 
-	@Override
-	public Imports getImports() {
-		log.debug("addJarToClasspath()");
-		return null;
-	}
+    @Override
+    public void resetEnvironment() {
+        log.debug("addJarToClasspath()");
+    }
 
-	@Override
-	public void addImport(ImportPath ip) {
-		log.debug("addJarToClasspath()");
-	}
+    @Override
+    public void removeImport(ImportPath ip) {
+        log.debug("addJarToClasspath()");
+    }
 
-	@Override
-	public void resetEnvironment() {
-		log.debug("addJarToClasspath()");
-	}
+    @Override
+    public void initKernel(KernelParameters kp) {
+        log.debug("initKernel()");
+    }
 
-	@Override
-	public void removeImport(ImportPath ip) {
-		log.debug("addJarToClasspath()");
-	}
+    @Override
+    public List<Path> addJarsToClasspath(List<PathToJar> list) {
+        log.debug("addJarsToClasspath()");
+        return null;
+    }
+
+    @Override
+    public boolean addJarToClasspath(PathToJar ptj) {
+        log.debug("addJarToClasspath()");
+        return true;
+    }
 
 }

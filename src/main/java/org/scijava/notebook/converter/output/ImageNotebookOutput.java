@@ -34,6 +34,6 @@ public abstract class ImageNotebookOutput extends HTMLFriendlyNotebookOutput {
     @Override
     public String toHTML() {
         final String mime = getMime().asString();
-        return "<img src=\"data:" + mime + ";base64, " + getCode() + "\" />";
+        return "<img src=\"data:" + mime + ";base64, " + getData() + "\" />";
     }
 }
