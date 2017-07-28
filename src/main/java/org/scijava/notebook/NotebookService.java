@@ -17,10 +17,9 @@
  * limitations under the License.
  * #L%
  */
-
 package org.scijava.notebook;
 
-
+import groovy.json.JsonSlurper;
 import org.scijava.notebook.converter.output.HTMLNotebookOutput;
 import org.scijava.notebook.converter.output.HTMLTableNotebookOutput;
 import org.scijava.notebook.converter.output.ImageNotebookOutput;
@@ -109,7 +108,7 @@ public interface NotebookService extends SciJavaService {
      * @return A result of the specified MIME type.
      */
     Object displayMimetype(String mimetype, String content);
-    
+
     Object displayMimetype(String mimetype, Object content);
 
     default Object html(String content) {
@@ -127,12 +126,16 @@ public interface NotebookService extends SciJavaService {
     default Object table(Object table) {
         return display(table, HTMLTableNotebookOutput.class);
     }
-    
+
     default Object vega(String content) {
-        return displayMimetype("application/vnd.vega.v2+json", content);
+        JsonSlurper jsonSlurper = new JsonSlurper();
+        Object json = jsonSlurper.parseText(content);
+        return displayMimetype("application/vnd.vega.v2+json", json);
     }
-    
+
     default Object vegalite(String content) {
-        return display("application/vnd.vegalite.v1+json", HTMLTableNotebookOutput.class);
+        JsonSlurper jsonSlurper = new JsonSlurper();
+        Object json = jsonSlurper.parseText(content);
+        return displayMimetype("application/vnd.vegalite.v1+json", json);
     }
 }
