@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.scijava.plot.spec;
+package org.scijava.plot.specification;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -23,15 +23,40 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * @author hadim
  */
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-public class VegaSelection {
-    
+public class VegaTransform {
+
     @JsonProperty
-    private String type;
-    
+    private String bin;
+
     @JsonProperty
-    private String one;
-    
+    private String field;
+
     @JsonProperty
-    private String resolve;
+    private String as;
+
+    public String getBin() {
+        return bin;
+    }
+
+    public void setBin(String bin) {
+        this.bin = bin;
+    }
+
+    public String getField() {
+        return field;
+    }
+
+    public void setField(String field) {
+        this.field = field;
+    }
+
+    public String getAs() {
+        return as;
+    }
+
+    public void setAs(String as) {
+        this.as = as;
+    }
+    
     
 }

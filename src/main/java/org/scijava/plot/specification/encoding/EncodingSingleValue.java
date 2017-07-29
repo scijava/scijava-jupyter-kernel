@@ -13,18 +13,35 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.scijava.plot.spec;
+package org.scijava.plot.specification.encoding;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonValue;
+import java.util.List;
 
 /**
  *
  * @author hadim
  */
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-public class VegaConfig {
+public class EncodingSingleValue {
+    
+    protected String value;
+    protected List<String> allowedValues;
+    
+    public EncodingSingleValue() {
+    }
 
-    @JsonProperty
-    private String background;
+    @JsonValue
+    public String getValue() {
+        return value;
+    }
+
+    public void setValue(String value) throws Exception {
+        if (!this.allowedValues.contains(value)) {
+            throw new Exception("'" + value + "' is not allowed. Please choose in this lis: " + this.allowedValues.toString());
+        }
+        this.value = value;
+    }
+    
 }

@@ -25,7 +25,7 @@ import org.scijava.Priority;
 import org.scijava.notebook.converter.*;
 import org.scijava.convert.Converter;
 import org.scijava.plot.PlotService;
-import org.scijava.plot.spec.VegaPlot;
+import org.scijava.plot.specification.VegaPlot;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 

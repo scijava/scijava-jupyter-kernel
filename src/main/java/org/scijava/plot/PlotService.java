@@ -15,8 +15,8 @@
  */
 package org.scijava.plot;
 
-import org.scijava.plot.spec.VegaPlot;
-import org.scijava.plot.spec.encoding.EncodingChannel;
+import org.scijava.plot.specification.VegaPlot;
+import org.scijava.plot.specification.encoding.EncodingChannel;
 import org.scijava.service.SciJavaService;
 
 /**

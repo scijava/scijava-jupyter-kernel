@@ -27,8 +27,8 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.scijava.plot.spec.VegaPlot;
-import org.scijava.plot.spec.encoding.EncodingChannel;
+import org.scijava.plot.specification.VegaPlot;
+import org.scijava.plot.specification.encoding.EncodingChannel;
 import org.scijava.plugin.Plugin;
 import org.scijava.service.AbstractService;
 import org.scijava.service.Service;

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.scijava.plot.spec.encoding;
+package org.scijava.plot.specification;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonValue;
@@ -24,24 +24,17 @@ import java.util.List;
  * @author hadim
  */
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-public class EncodingSingleValue {
-    
-    protected String value;
-    protected List<String> allowedValues;
-    
-    public EncodingSingleValue() {
-    }
+public class VegaTransforms {
+
+    private List<VegaTransform> transforms;
 
     @JsonValue
-    public String getValue() {
-        return value;
+    public List<VegaTransform> getTransforms() {
+        return transforms;
     }
 
-    public void setValue(String value) throws Exception {
-        if (!this.allowedValues.contains(value)) {
-            throw new Exception("'" + value + "' is not allowed. Please choose in this lis: " + this.allowedValues.toString());
-        }
-        this.value = value;
+    public void setTransforms(List<VegaTransform> transforms) {
+        this.transforms = transforms;
     }
-    
+
 }

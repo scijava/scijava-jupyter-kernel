@@ -13,22 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.scijava.plot.spec.encoding;
+package org.scijava.plot.specification;
 
-import java.util.Arrays;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  *
  * @author hadim
  */
-public class EncodingSort extends EncodingSingleValue {
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
+public class VegaConfig {
 
-    public EncodingSort() {
-        this.allowedValues = Arrays.asList("ascending", "descending");
-    }
-
-    public EncodingSort(String timeUnit) throws Exception {
-        this.setValue(timeUnit);
-    }
-
+    @JsonProperty
+    private String background;
 }

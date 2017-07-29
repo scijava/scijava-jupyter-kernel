@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.scijava.plot.spec;
+package org.scijava.plot.specification;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -24,8 +24,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import org.scijava.plot.spec.encoding.EncodingChannel;
-import org.scijava.plot.spec.encoding.VegaEncoding;
+import org.scijava.plot.specification.encoding.EncodingChannel;
+import org.scijava.plot.specification.encoding.VegaEncoding;
 
 /**
  * A plot represents a Vega-Lite visualization. It contains the top-level

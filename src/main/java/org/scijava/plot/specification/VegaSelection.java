@@ -13,28 +13,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.scijava.plot.spec;
+package org.scijava.plot.specification;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonValue;
-import java.util.List;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  *
  * @author hadim
  */
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-public class VegaTransforms {
-
-    private List<VegaTransform> transforms;
-
-    @JsonValue
-    public List<VegaTransform> getTransforms() {
-        return transforms;
-    }
-
-    public void setTransforms(List<VegaTransform> transforms) {
-        this.transforms = transforms;
-    }
-
+public class VegaSelection {
+    
+    @JsonProperty
+    private String type;
+    
+    @JsonProperty
+    private String one;
+    
+    @JsonProperty
+    private String resolve;
+    
 }
