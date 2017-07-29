@@ -19,22 +19,15 @@
  */
 package org.scijava.plot;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.scijava.notebook.*;
-import com.twosigma.beakerx.mimetype.MIMEContainer;
 import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import net.imagej.notebook.ImageJNotebookService;
-import net.imglib2.RandomAccessibleInterval;
-
-import org.scijava.convert.ConvertService;
-import org.scijava.log.LogService;
-import org.scijava.notebook.converter.output.NotebookOutput;
 import org.scijava.plot.spec.VegaPlot;
-import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 import org.scijava.service.AbstractService;
 import org.scijava.service.Service;
@@ -50,6 +43,11 @@ public class DefaultPlotService extends AbstractService implements
         PlotService {
 
     @Override
+    public VegaPlot newPlot() {
+        return new VegaPlot();
+    }
+    
+    @Override
     public void writeJson(VegaPlot plot, String filePath) {
         try {
             ObjectMapper mapper = new ObjectMapper();
@@ -57,6 +55,17 @@ public class DefaultPlotService extends AbstractService implements
         } catch (IOException ex) {
             Logger.getLogger(DefaultPlotService.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+    
+    @Override
+    public String toJson(VegaPlot plot) { 
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            return mapper.writeValueAsString(plot);
+        } catch (JsonProcessingException ex) {
+            Logger.getLogger(DefaultPlotService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
     }
 
     @Override
