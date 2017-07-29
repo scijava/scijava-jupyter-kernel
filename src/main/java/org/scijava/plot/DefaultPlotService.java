@@ -28,6 +28,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.scijava.plot.spec.VegaPlot;
+import org.scijava.plot.spec.encoding.EncodingChannel;
 import org.scijava.plugin.Plugin;
 import org.scijava.service.AbstractService;
 import org.scijava.service.Service;
@@ -45,6 +46,26 @@ public class DefaultPlotService extends AbstractService implements
     @Override
     public VegaPlot newPlot() {
         return new VegaPlot();
+    }
+    
+    @Override
+    public VegaPlot newPlot(String name) {
+        VegaPlot plot = new VegaPlot();
+        plot.setName(name);
+        return plot;
+    }
+    
+    @Override
+    public EncodingChannel newChannel() {
+        return new EncodingChannel();
+    }
+    
+    @Override
+    public EncodingChannel newChannel(String field, String type) {
+        EncodingChannel channel = new EncodingChannel();
+        channel.setField(field);
+        channel.setType(type);
+        return channel;
     }
     
     @Override

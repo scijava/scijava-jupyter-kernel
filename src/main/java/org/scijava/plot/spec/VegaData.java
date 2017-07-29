@@ -25,7 +25,7 @@ import java.util.Map;
  * @author hadim
  */
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-class VegaData {
+public class VegaData {
     
     @JsonProperty
     private List<Map<String, Object>> values;

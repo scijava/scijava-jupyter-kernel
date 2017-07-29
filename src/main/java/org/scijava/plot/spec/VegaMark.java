@@ -25,7 +25,7 @@ import java.util.List;
  * @author hadim
  */
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-class VegaMark {
+public class VegaMark {
 
     @JsonProperty
     private String type;

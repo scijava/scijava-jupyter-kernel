@@ -24,7 +24,7 @@ import java.util.List;
  * @author hadim
  */
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-class VegaTransforms {
+public class VegaTransforms {
 
     private List<VegaTransform> transforms;
 

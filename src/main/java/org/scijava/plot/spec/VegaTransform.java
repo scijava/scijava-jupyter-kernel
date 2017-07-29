@@ -23,7 +23,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * @author hadim
  */
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-class VegaTransform {
+public class VegaTransform {
 
     @JsonProperty
     private String bin;
