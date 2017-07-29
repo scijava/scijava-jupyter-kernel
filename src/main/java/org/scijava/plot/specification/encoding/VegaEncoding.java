@@ -62,9 +62,6 @@ public class VegaEncoding {
     private EncodingChannel detail;
 
     public EncodingChannel getX() {
-        if (x == null) {
-            this.x = new EncodingChannel();
-        }
         return x;
     }
 
@@ -73,9 +70,6 @@ public class VegaEncoding {
     }
 
     public EncodingChannel getY() {
-        if (y == null) {
-            this.y = new EncodingChannel();
-        }
         return y;
     }
 
@@ -84,9 +78,6 @@ public class VegaEncoding {
     }
 
     public EncodingChannel getRow() {
-        if (row == null) {
-            this.row = new EncodingChannel();
-        }
         return row;
     }
 
@@ -95,9 +86,6 @@ public class VegaEncoding {
     }
 
     public EncodingChannel getColumn() {
-        if (column == null) {
-            this.column = new EncodingChannel();
-        }
         return column;
     }
 
@@ -106,9 +94,6 @@ public class VegaEncoding {
     }
 
     public EncodingChannel getColor() {
-        if (color == null) {
-            this.color = new EncodingChannel();
-        }
         return color;
     }
 
@@ -117,9 +102,6 @@ public class VegaEncoding {
     }
 
     public EncodingChannel getOrder() {
-        if (order == null) {
-            this.order = new EncodingChannel();
-        }
         return order;
     }
 
@@ -128,9 +110,6 @@ public class VegaEncoding {
     }
 
     public EncodingChannel getShape() {
-        if (shape == null) {
-            this.shape = new EncodingChannel();
-        }
         return shape;
     }
 
@@ -139,9 +118,6 @@ public class VegaEncoding {
     }
 
     public EncodingChannel getSize() {
-        if (size == null) {
-            this.size = new EncodingChannel();
-        }
         return size;
     }
 
@@ -150,9 +126,6 @@ public class VegaEncoding {
     }
 
     public EncodingChannel getOpacity() {
-        if (opacity == null) {
-            this.opacity = new EncodingChannel();
-        }
         return opacity;
     }
 
@@ -161,9 +134,6 @@ public class VegaEncoding {
     }
 
     public EncodingChannel getText() {
-        if (tooltip == null) {
-            this.tooltip = new EncodingChannel();
-        }
         return tooltip;
     }
 
@@ -172,9 +142,6 @@ public class VegaEncoding {
     }
 
     public EncodingChannel getTooltip() {
-        if (tooltip == null) {
-            this.tooltip = new EncodingChannel();
-        }
         return tooltip;
     }
 
@@ -183,9 +150,6 @@ public class VegaEncoding {
     }
 
     public EncodingChannel getDetail() {
-        if (detail == null) {
-            this.detail = new EncodingChannel();
-        }
         return detail;
     }
 
