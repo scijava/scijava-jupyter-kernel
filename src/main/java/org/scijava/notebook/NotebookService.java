@@ -126,6 +126,12 @@ public interface NotebookService extends SciJavaService {
     default Object table(Object table) {
         return display(table, HTMLTableNotebookOutput.class);
     }
+    
+    default Object json(String content) {
+        JsonSlurper jsonSlurper = new JsonSlurper();
+        Object json = jsonSlurper.parseText(content);
+        return displayMimetype("application/json", json);
+    }
 
     default Object vega(String content) {
         return vega3(content);
