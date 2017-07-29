@@ -59,11 +59,11 @@ public class EncodingChannel {
 
     // TODO
     @JsonProperty
-    private boolean axis = true;
+    private Boolean axis;
 
     // TODO
     @JsonProperty
-    private boolean legend = false;
+    private Boolean legend;
 
     private final List<String> allowedType = Arrays.asList(
             "quantitative",
@@ -156,19 +156,19 @@ public class EncodingChannel {
         this.scale = scale;
     }
 
-    public boolean isAxis() {
+    public Boolean getAxis() {
         return axis;
     }
 
-    public void setAxis(boolean axis) {
+    public void setAxis(Boolean axis) {
         this.axis = axis;
     }
 
-    public boolean isLegend() {
+    public Boolean getLegend() {
         return legend;
     }
 
-    public void setLegend(boolean legend) {
+    public void setLegend(Boolean legend) {
         this.legend = legend;
     }
 }

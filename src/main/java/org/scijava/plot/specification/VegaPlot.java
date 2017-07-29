@@ -45,10 +45,10 @@ public class VegaPlot {
     private String background;
 
     @JsonProperty
-    private int padding;
+    private Integer padding;
 
     @JsonProperty
-    private boolean autoResize;
+    private Boolean autoResize;
 
     @JsonProperty
     private VegaConfig config;
@@ -60,10 +60,10 @@ public class VegaPlot {
     private String description;
 
     @JsonProperty
-    private int width;
+    private Integer width;
 
     @JsonProperty
-    private int height;
+    private Integer height;
 
     @JsonProperty
     private VegaData data;
@@ -81,10 +81,7 @@ public class VegaPlot {
     private VegaEncoding encoding;
 
     public VegaPlot() {
-        this.config = new VegaConfig();
         this.data = new VegaData();
-        this.transform = new VegaTransforms();
-        this.selection = new VegaSelection();
         this.mark = new VegaMark();
         this.encoding = new VegaEncoding();
     }
@@ -97,7 +94,7 @@ public class VegaPlot {
         this.background = background;
     }
 
-    public int getPadding() {
+    public Integer getPadding() {
         return padding;
     }
 
@@ -105,11 +102,11 @@ public class VegaPlot {
         this.padding = padding;
     }
 
-    public boolean isAutoResize() {
+    public Boolean getAutoResize() {
         return autoResize;
     }
 
-    public void setAutoResize(boolean autoResize) {
+    public void setAutoResize(Boolean autoResize) {
         this.autoResize = autoResize;
     }
 
@@ -137,19 +134,19 @@ public class VegaPlot {
         this.description = description;
     }
 
-    public int getWidth() {
+    public Integer getWidth() {
         return width;
     }
 
-    public void setWidth(int width) {
+    public void setWidth(Integer width) {
         this.width = width;
     }
 
-    public int getHeight() {
+    public Integer getHeight() {
         return height;
     }
 
-    public void setHeight(int height) {
+    public void setHeight(Integer height) {
         this.height = height;
     }
 
@@ -196,41 +193,68 @@ public class VegaPlot {
     public static void main(String args[]) throws IOException {
 
         VegaPlot plot = new VegaPlot();
-        
+
         plot.setDescription("A simple bar chart with embedded data.");
-        
+
         plot.getMark().setType("bar");
-        
+
         EncodingChannel x = new EncodingChannel();
         x.setField("a");
         x.setType("ordinal");
         plot.getEncoding().setX(x);
-        
+
         EncodingChannel y = new EncodingChannel();
         y.setField("b");
         y.setType("quantitative");
         plot.getEncoding().setY(y);
-        
+
         List<Map<String, Object>> data = new ArrayList<>();
         Map<String, Object> datum;
-        
-        datum = new HashMap<>(); datum.put("a", "A"); datum.put("b", 28); data.add(datum);
-        datum = new HashMap<>(); datum.put("a", "B"); datum.put("b", 55); data.add(datum);
-        datum = new HashMap<>(); datum.put("a", "C"); datum.put("b", 43); data.add(datum);
-        datum = new HashMap<>(); datum.put("a", "D"); datum.put("b", 91); data.add(datum);
-        datum = new HashMap<>(); datum.put("a", "E"); datum.put("b", 81); data.add(datum);
-        datum = new HashMap<>(); datum.put("a", "F"); datum.put("b", 53); data.add(datum);
-        datum = new HashMap<>(); datum.put("a", "G"); datum.put("b", 19); data.add(datum);
-        datum = new HashMap<>(); datum.put("a", "H"); datum.put("b", 87); data.add(datum);
-        datum = new HashMap<>(); datum.put("a", "I"); datum.put("b", 52); data.add(datum);
-        
+
+        datum = new HashMap<>();
+        datum.put("a", "A");
+        datum.put("b", 28);
+        data.add(datum);
+        datum = new HashMap<>();
+        datum.put("a", "B");
+        datum.put("b", 55);
+        data.add(datum);
+        datum = new HashMap<>();
+        datum.put("a", "C");
+        datum.put("b", 43);
+        data.add(datum);
+        datum = new HashMap<>();
+        datum.put("a", "D");
+        datum.put("b", 91);
+        data.add(datum);
+        datum = new HashMap<>();
+        datum.put("a", "E");
+        datum.put("b", 81);
+        data.add(datum);
+        datum = new HashMap<>();
+        datum.put("a", "F");
+        datum.put("b", 53);
+        data.add(datum);
+        datum = new HashMap<>();
+        datum.put("a", "G");
+        datum.put("b", 19);
+        data.add(datum);
+        datum = new HashMap<>();
+        datum.put("a", "H");
+        datum.put("b", 87);
+        data.add(datum);
+        datum = new HashMap<>();
+        datum.put("a", "I");
+        datum.put("b", 52);
+        data.add(datum);
+
         plot.getData().setValues(data);
 
         ObjectMapper mapper = new ObjectMapper();
         mapper.writeValue(new File("/home/hadim/outputfile.json"), plot);
 
         plot = mapper.readValue(new File("/home/hadim/outputfile.json"), VegaPlot.class);
-        
+
         System.out.println(mapper.writeValueAsString(plot));
 
     }

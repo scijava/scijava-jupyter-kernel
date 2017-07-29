@@ -34,7 +34,7 @@ public class VegaMark {
     private String role;
 
     @JsonProperty
-    private boolean filled = true;
+    private Boolean filled;
 
     @JsonProperty
     private String orient;
@@ -82,11 +82,11 @@ public class VegaMark {
         this.role = role;
     }
 
-    public boolean isFilled() {
+    public Boolean getFilled() {
         return filled;
     }
 
-    public void setFilled(boolean filled) {
+    public void setFilled(Boolean filled) {
         this.filled = filled;
     }
 
