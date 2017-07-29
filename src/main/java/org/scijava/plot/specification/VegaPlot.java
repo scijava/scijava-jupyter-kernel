@@ -38,7 +38,7 @@ public class VegaPlot {
 
     public static String SCHEMA = "https://vega.github.io/schema/vega-lite/v2.json";
 
-    @JsonProperty
+    @JsonProperty("$schema")
     private String schema = SCHEMA;
 
     @JsonProperty
