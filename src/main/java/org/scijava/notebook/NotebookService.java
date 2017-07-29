@@ -128,14 +128,34 @@ public interface NotebookService extends SciJavaService {
     }
 
     default Object vega(String content) {
+        return vega3(content);
+    }
+    
+    default Object vega2(String content) {
         JsonSlurper jsonSlurper = new JsonSlurper();
         Object json = jsonSlurper.parseText(content);
         return displayMimetype("application/vnd.vega.v2+json", json);
     }
+    
+    default Object vega3(String content) {
+        JsonSlurper jsonSlurper = new JsonSlurper();
+        Object json = jsonSlurper.parseText(content);
+        return displayMimetype("application/vnd.vega.v3+json", json);
+    }
 
     default Object vegalite(String content) {
+        return vegalite2(content);
+    }
+    
+    default Object vegalite1(String content) {
         JsonSlurper jsonSlurper = new JsonSlurper();
         Object json = jsonSlurper.parseText(content);
         return displayMimetype("application/vnd.vegalite.v1+json", json);
+    }
+    
+    default Object vegalite2(String content) {
+        JsonSlurper jsonSlurper = new JsonSlurper();
+        Object json = jsonSlurper.parseText(content);
+        return displayMimetype("application/vnd.vegalite.v2+json", json);
     }
 }
