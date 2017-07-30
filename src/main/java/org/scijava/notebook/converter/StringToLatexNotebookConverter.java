@@ -25,22 +25,21 @@ import org.scijava.notebook.converter.output.LatexNotebookOutput;
 import org.scijava.plugin.Plugin;
 
 @Plugin(type = Converter.class)
-public class StringToLatexNotebookConverter
-        extends NotebookOutputConverter<String, LatexNotebookOutput> {
+public class StringToLatexNotebookConverter extends NotebookOutputConverter<String, LatexNotebookOutput> {
 
-    @Override
-    public Class<String> getInputType() {
-        return String.class;
-    }
+	@Override
+	public Class<String> getInputType() {
+		return String.class;
+	}
 
-    @Override
-    public Class<LatexNotebookOutput> getOutputType() {
-        return LatexNotebookOutput.class;
-    }
+	@Override
+	public Class<LatexNotebookOutput> getOutputType() {
+		return LatexNotebookOutput.class;
+	}
 
-    @Override
-    public LatexNotebookOutput convert(Object object) {
-        return new LatexNotebookOutput((String) object);
-    }
+	@Override
+	public LatexNotebookOutput convert(Object object) {
+		return new LatexNotebookOutput((String) object);
+	}
 
 }

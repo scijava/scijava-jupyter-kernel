@@ -39,43 +39,41 @@ import org.scijava.service.Service;
  * @author Hadrien Mary
  */
 @Plugin(type = Service.class)
-public class DefaultNotebookService extends AbstractService implements
-	NotebookService {
+public class DefaultNotebookService extends AbstractService implements NotebookService {
 
-    @Parameter
-    private LogService log;
+	@Parameter
+	private LogService log;
 
-    @Parameter
-    private ConvertService convertService;
+	@Parameter
+	private ConvertService convertService;
 
-    @Parameter
-    private ImageJNotebookService ijNotebookService;
+	@Parameter
+	private ImageJNotebookService ijNotebookService;
 
-    @Override
-    public Object display(final Object object,
-	    final Class<? extends NotebookOutput> outputType) {
-	if (convertService.supports(object, outputType)) {
-	    return convertService.convert(object, outputType);
+	@Override
+	public Object display(final Object object, final Class<? extends NotebookOutput> outputType) {
+		if (convertService.supports(object, outputType)) {
+			return convertService.convert(object, outputType);
+		}
+		return object;
 	}
-	return object;
-    }
 
-    @Override
-    public Object displayMimetype(String mimetype, String content) {
-	return new MIMEContainer(mimetype, content);
-    }
-    
-    @Override
-    public Object displayMimetype(String mimetype, Object content) {
-	return new MIMEContainer(mimetype, content);
-    }
+	@Override
+	public Object displayMimetype(String mimetype, String content) {
+		return new MIMEContainer(mimetype, content);
+	}
 
-    // TODO : those methods are using the net.imagej namespace.
-    // Also would it be possible to create a converter for this ?
-    // With RandomAccessibleInterval[] or List<RandomAccessibleInterval> as a type ?
-    public Object tiles(final int[] gridLayout, final RandomAccessibleInterval... images) {
-	RandomAccessibleInterval rai = ijNotebookService.mosaic(gridLayout, images);
-	return convertService.convert(rai, NotebookOutput.class);
-    }
+	@Override
+	public Object displayMimetype(String mimetype, Object content) {
+		return new MIMEContainer(mimetype, content);
+	}
+
+	// TODO : those methods are using the net.imagej namespace.
+	// Also would it be possible to create a converter for this ?
+	// With RandomAccessibleInterval[] or List<RandomAccessibleInterval> as a type ?
+	public Object tiles(final int[] gridLayout, final RandomAccessibleInterval... images) {
+		RandomAccessibleInterval rai = ijNotebookService.mosaic(gridLayout, images);
+		return convertService.convert(rai, NotebookOutput.class);
+	}
 
 }

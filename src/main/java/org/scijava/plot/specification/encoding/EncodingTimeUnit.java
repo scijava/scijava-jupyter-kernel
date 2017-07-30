@@ -23,12 +23,18 @@ import java.util.Arrays;
  */
 public class EncodingTimeUnit extends EncodingSingleValue {
 
-    public EncodingTimeUnit() {
-        this.allowedValues = Arrays.asList("year", "yearmonth", "yearmonthday", "yearmonthdate", "yearday", "yeardate", "yearmonthdayhours", "yearmonthdayhoursminutes", "utcyear", "utcyearmonth", "utcyearmonthday", "utcyearmonthdate", "utcyearday", "utcyeardate", "utcyearmonthdayhours", "utcyearmonthdayhoursminutes", "month", "day", "date", "hours", "minutes", "seconds", "milliseconds", "hoursminutes", "hoursminutesseconds", "minutesseconds", "secondsmilliseconds", "utcmonth", "utcday", "utcdate", "utchours", "utcminutes", "utcseconds", "utcmilliseconds", "utchoursminutes", "utchoursminutesseconds", "utcminutesseconds", "utcsecondsmilliseconds");
-    }
+	public EncodingTimeUnit() {
+		this.allowedValues = Arrays.asList("year", "yearmonth", "yearmonthday", "yearmonthdate", "yearday", "yeardate",
+				"yearmonthdayhours", "yearmonthdayhoursminutes", "utcyear", "utcyearmonth", "utcyearmonthday",
+				"utcyearmonthdate", "utcyearday", "utcyeardate", "utcyearmonthdayhours", "utcyearmonthdayhoursminutes",
+				"month", "day", "date", "hours", "minutes", "seconds", "milliseconds", "hoursminutes",
+				"hoursminutesseconds", "minutesseconds", "secondsmilliseconds", "utcmonth", "utcday", "utcdate",
+				"utchours", "utcminutes", "utcseconds", "utcmilliseconds", "utchoursminutes", "utchoursminutesseconds",
+				"utcminutesseconds", "utcsecondsmilliseconds");
+	}
 
-    public EncodingTimeUnit(String timeUnit) throws Exception {
-        this.setValue(timeUnit);
-    }
+	public EncodingTimeUnit(String timeUnit) throws Exception {
+		this.setValue(timeUnit);
+	}
 
 }

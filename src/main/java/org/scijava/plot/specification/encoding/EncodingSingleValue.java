@@ -17,6 +17,7 @@ package org.scijava.plot.specification.encoding;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonValue;
+
 import java.util.List;
 
 /**
@@ -25,23 +26,24 @@ import java.util.List;
  */
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class EncodingSingleValue {
-    
-    protected String value;
-    protected List<String> allowedValues;
-    
-    public EncodingSingleValue() {
-    }
 
-    @JsonValue
-    public String getValue() {
-        return value;
-    }
+	protected String value;
+	protected List<String> allowedValues;
 
-    public void setValue(String value) throws Exception {
-        if (!this.allowedValues.contains(value)) {
-            throw new Exception("'" + value + "' is not allowed. Please choose in this lis: " + this.allowedValues.toString());
-        }
-        this.value = value;
-    }
-    
+	public EncodingSingleValue() {
+	}
+
+	@JsonValue
+	public String getValue() {
+		return value;
+	}
+
+	public void setValue(String value) throws Exception {
+		if (!this.allowedValues.contains(value)) {
+			throw new Exception(
+					"'" + value + "' is not allowed. Please choose in this lis: " + this.allowedValues.toString());
+		}
+		this.value = value;
+	}
+
 }

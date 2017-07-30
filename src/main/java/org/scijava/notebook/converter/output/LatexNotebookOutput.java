@@ -25,8 +25,8 @@ package org.scijava.notebook.converter.output;
  */
 public class LatexNotebookOutput extends NotebookOutput {
 
-    public LatexNotebookOutput(String content) {
-	super("text/latex", content);
-    }
+	public LatexNotebookOutput(String content) {
+		super("text/latex", content);
+	}
 
 }

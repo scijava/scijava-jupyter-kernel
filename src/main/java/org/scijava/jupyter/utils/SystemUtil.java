@@ -37,51 +37,54 @@ import org.scijava.log.LogService;
  */
 public class SystemUtil {
 
-    public static String getJavaBinary() {
-        String jvm_location;
-        if (System.getProperty("os.name").startsWith("Win")) {
-            jvm_location = System.getProperties().getProperty("java.home") + File.separator + "bin" + File.separator + "java.exe";
-        } else {
-            jvm_location = System.getProperties().getProperty("java.home") + File.separator + "bin" + File.separator + "java";
-        }
-        return jvm_location;
-    }
+	public static String getJavaBinary() {
+		String jvm_location;
+		if (System.getProperty("os.name").startsWith("Win")) {
+			jvm_location = System.getProperties().getProperty("java.home") + File.separator + "bin" + File.separator
+					+ "java.exe";
+		} else {
+			jvm_location = System.getProperties().getProperty("java.home") + File.separator + "bin" + File.separator
+					+ "java";
+		}
+		return jvm_location;
+	}
 
-    public static String getImageJClassPaths() {
-        String classPaths = "";
+	public static String getImageJClassPaths() {
+		String classPaths = "";
 
-        if (System.getProperty("imagej.dir") != null) {
+		if (System.getProperty("imagej.dir") != null) {
 
-            String classPathSeparator = SystemUtil.getClassPathSeparator();
-            classPaths += Paths.get(System.getProperty("imagej.dir"), "jars") + FileSystems.getDefault().getSeparator() + "*" + classPathSeparator;
-            classPaths += Paths.get(System.getProperty("imagej.dir"), "jars", "bio-formats") + FileSystems.getDefault().getSeparator() + "*" + classPathSeparator;
-            classPaths += Paths.get(System.getProperty("imagej.dir"), "plugins") + FileSystems.getDefault().getSeparator() + "*" + classPathSeparator;
-        }
+			String classPathSeparator = SystemUtil.getClassPathSeparator();
+			classPaths += Paths.get(System.getProperty("imagej.dir"), "jars") + FileSystems.getDefault().getSeparator()
+					+ "*" + classPathSeparator;
+			classPaths += Paths.get(System.getProperty("imagej.dir"), "jars", "bio-formats")
+					+ FileSystems.getDefault().getSeparator() + "*" + classPathSeparator;
+			classPaths += Paths.get(System.getProperty("imagej.dir"), "plugins")
+					+ FileSystems.getDefault().getSeparator() + "*" + classPathSeparator;
+		}
 
-        return classPaths;
-    }
+		return classPaths;
+	}
 
-    public static void deleteFolderRecursively(Path rootPath, LogService log) {
-        if (rootPath.toFile().exists()) {
-            try {
-                Files.walk(rootPath, FileVisitOption.FOLLOW_LINKS)
-                        .sorted(Comparator.reverseOrder())
-                        .map(Path::toFile)
-                        .forEach(File::delete);
-            } catch (IOException ex) {
-                log.error(ex);
-            }
-        }
-    }
+	public static void deleteFolderRecursively(Path rootPath, LogService log) {
+		if (rootPath.toFile().exists()) {
+			try {
+				Files.walk(rootPath, FileVisitOption.FOLLOW_LINKS).sorted(Comparator.reverseOrder()).map(Path::toFile)
+						.forEach(File::delete);
+			} catch (IOException ex) {
+				log.error(ex);
+			}
+		}
+	}
 
-    public static String getClassPathSeparator() {
-        String classPathSeparator;
-        if (System.getProperty("os.name").toLowerCase().contains("windows")) {
-            classPathSeparator = ";";
-        } else {
-            classPathSeparator = ":";
-        }
-        return classPathSeparator;
-    }
+	public static String getClassPathSeparator() {
+		String classPathSeparator;
+		if (System.getProperty("os.name").toLowerCase().contains("windows")) {
+			classPathSeparator = ";";
+		} else {
+			classPathSeparator = ":";
+		}
+		return classPathSeparator;
+	}
 
 }

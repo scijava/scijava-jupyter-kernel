@@ -37,47 +37,47 @@ import org.scijava.log.LogService;
  */
 public class ProcessUtil {
 
-    public static Map<String, String> executePythonCode(File pythonBinaryPath, String sourceCode, LogService log) {
+	public static Map<String, String> executePythonCode(File pythonBinaryPath, String sourceCode, LogService log) {
 
-        Map<String, String> results = null;
+		Map<String, String> results = null;
 
-        try {
-            File tempFile = File.createTempFile("scijava-script", ".py");
-            Files.write(tempFile.toPath(), sourceCode.getBytes());
+		try {
+			File tempFile = File.createTempFile("scijava-script", ".py");
+			Files.write(tempFile.toPath(), sourceCode.getBytes());
 
-            String[] cmd = new String[]{pythonBinaryPath.toString(), tempFile.toString()};
+			String[] cmd = new String[] { pythonBinaryPath.toString(), tempFile.toString() };
 
-            results = ProcessUtil.executeProcess(cmd, log);
-        } catch (IOException ex) {
-            log.error(ex);
-        }
+			results = ProcessUtil.executeProcess(cmd, log);
+		} catch (IOException ex) {
+			log.error(ex);
+		}
 
-        return results;
-    }
+		return results;
+	}
 
-    public static Map<String, String> executeProcess(String[] cmd, LogService log) {
+	public static Map<String, String> executeProcess(String[] cmd, LogService log) {
 
-        Map<String, String> results = new HashMap<>();
+		Map<String, String> results = new HashMap<>();
 
-        try {
+		try {
 
-            Process proc = Runtime.getRuntime().exec(cmd);
-            proc.waitFor();
+			Process proc = Runtime.getRuntime().exec(cmd);
+			proc.waitFor();
 
-            BufferedReader outputStream = new BufferedReader(new InputStreamReader(proc.getInputStream()));
-            String output = outputStream.lines().collect(Collectors.joining("\n"));
+			BufferedReader outputStream = new BufferedReader(new InputStreamReader(proc.getInputStream()));
+			String output = outputStream.lines().collect(Collectors.joining("\n"));
 
-            BufferedReader errorStream = new BufferedReader(new InputStreamReader(proc.getErrorStream()));
-            String error = errorStream.lines().collect(Collectors.joining("\n"));
+			BufferedReader errorStream = new BufferedReader(new InputStreamReader(proc.getErrorStream()));
+			String error = errorStream.lines().collect(Collectors.joining("\n"));
 
-            results.put("output", output);
-            results.put("error", error);
+			results.put("output", output);
+			results.put("error", error);
 
-        } catch (IOException | InterruptedException ex) {
-            log.error(ex);
-        }
+		} catch (IOException | InterruptedException ex) {
+			log.error(ex);
+		}
 
-        return results;
-    }
+		return results;
+	}
 
 }

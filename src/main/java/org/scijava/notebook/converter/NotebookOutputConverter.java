@@ -29,27 +29,25 @@ import org.scijava.plugin.Parameter;
  *
  * @author Hadrien Mary
  */
-public abstract class NotebookOutputConverter<I, O extends NotebookOutput>
-        extends AbstractConverter<I, O> {
+public abstract class NotebookOutputConverter<I, O extends NotebookOutput> extends AbstractConverter<I, O> {
 
-    @Parameter
-    private LogService log;
+	@Parameter
+	private LogService log;
 
-    @Override
-    public <T> T convert(final Object src, final Class<T> dest) {
-        if (src == null) {
-            throw new IllegalArgumentException("Null input");
-        }
+	@Override
+	public <T> T convert(final Object src, final Class<T> dest) {
+		if (src == null) {
+			throw new IllegalArgumentException("Null input");
+		}
 
-        if (!this.getInputType().isInstance(src)) {
-            throw new IllegalArgumentException("Expected input of type "
-                    + getInputType().getSimpleName() + ", but got "
-                    + src.getClass().getSimpleName());
-        }
+		if (!this.getInputType().isInstance(src)) {
+			throw new IllegalArgumentException("Expected input of type " + getInputType().getSimpleName() + ", but got "
+					+ src.getClass().getSimpleName());
+		}
 
-        return (T) this.convert(src);
-    }
+		return (T) this.convert(src);
+	}
 
-    public abstract O convert(Object object);
+	public abstract O convert(Object object);
 
 }

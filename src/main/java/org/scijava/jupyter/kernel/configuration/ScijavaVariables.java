@@ -22,15 +22,14 @@ package org.scijava.jupyter.kernel.configuration;
 
 import com.twosigma.beakerx.DefaultJVMVariables;
 
-
 /**
  *
  * @author Hadrien Mary
  */
 public class ScijavaVariables extends DefaultJVMVariables {
 
-    public ScijavaVariables() {
+	public ScijavaVariables() {
 
-    }
+	}
 
 }

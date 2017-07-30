@@ -33,25 +33,25 @@ import org.scijava.script.ScriptService;
  */
 public class TestScriptEngine {
 
-    public static void main(String[] args) throws ScriptException {
-        // Only for testing purpose
+	public static void main(String[] args) throws ScriptException {
+		// Only for testing purpose
 
-        Context context = new Context();
-        ScriptService scriptService = context.getService(ScriptService.class);
-        ScriptLanguage scriptLanguage = scriptService.getLanguageByName("python");
-        ScriptEngine engine = scriptLanguage.getScriptEngine();
+		Context context = new Context();
+		ScriptService scriptService = context.getService(ScriptService.class);
+		ScriptLanguage scriptLanguage = scriptService.getLanguageByName("python");
+		ScriptEngine engine = scriptLanguage.getScriptEngine();
 
-        Object result = engine.eval("p=999\n555");
-        System.out.println(result);
+		Object result = engine.eval("p=999\n555");
+		System.out.println(result);
 
-        scriptService = context.getService(ScriptService.class);
-        scriptLanguage = scriptService.getLanguageByName("python");
-        engine = scriptLanguage.getScriptEngine();
-        
-        result = engine.eval("555");
-        System.out.println(result);
+		scriptService = context.getService(ScriptService.class);
+		scriptLanguage = scriptService.getLanguageByName("python");
+		engine = scriptLanguage.getScriptEngine();
 
-        context.dispose();
-    }
+		result = engine.eval("555");
+		System.out.println(result);
+
+		context.dispose();
+	}
 
 }

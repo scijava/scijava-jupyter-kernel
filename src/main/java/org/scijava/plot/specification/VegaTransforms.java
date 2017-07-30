@@ -17,6 +17,7 @@ package org.scijava.plot.specification;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonValue;
+
 import java.util.List;
 
 /**
@@ -26,15 +27,15 @@ import java.util.List;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class VegaTransforms {
 
-    private List<VegaTransform> transforms;
+	private List<VegaTransform> transforms;
 
-    @JsonValue
-    public List<VegaTransform> getTransforms() {
-        return transforms;
-    }
+	@JsonValue
+	public List<VegaTransform> getTransforms() {
+		return transforms;
+	}
 
-    public void setTransforms(List<VegaTransform> transforms) {
-        this.transforms = transforms;
-    }
+	public void setTransforms(List<VegaTransform> transforms) {
+		this.transforms = transforms;
+	}
 
 }

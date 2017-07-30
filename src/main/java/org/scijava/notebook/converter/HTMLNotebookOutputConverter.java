@@ -31,16 +31,15 @@ import org.scijava.plugin.Parameter;
  * @author Curtis Rueden
  */
 public abstract class HTMLNotebookOutputConverter<I, O extends HTMLNotebookOutput>
-    extends NotebookOutputConverter<I, O>
-{
+		extends NotebookOutputConverter<I, O> {
 
-    @Parameter
-    private ConvertService convertService;
+	@Parameter
+	private ConvertService convertService;
 
-    /** Gets an HTML string representing the given object. */
-    protected String asHTML(final Object o) {
-        final HTMLFriendlyNotebookOutput converted = convertService.convert(o, HTMLFriendlyNotebookOutput.class);
-        return converted == null ? "&lt;none&gt;" : converted.toHTML();
-    }
+	/** Gets an HTML string representing the given object. */
+	protected String asHTML(final Object o) {
+		final HTMLFriendlyNotebookOutput converted = convertService.convert(o, HTMLFriendlyNotebookOutput.class);
+		return converted == null ? "&lt;none&gt;" : converted.toHTML();
+	}
 
 }

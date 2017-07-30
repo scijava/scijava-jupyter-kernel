@@ -30,48 +30,48 @@ import org.scijava.jupyter.kernel.evaluator.ScijavaEvaluator;
  */
 public class JupyterUtil {
 
-    public static String createKernelJSON(String classpath, String logLevel) {
-        return createKernelJSON(classpath, logLevel, null);
-    }
+	public static String createKernelJSON(String classpath, String logLevel) {
+		return createKernelJSON(classpath, logLevel, null);
+	}
 
-    @SuppressWarnings("unchecked")
-    public static String createKernelJSON(String classpath, String logLevel, String javaBinaryPath) {
-        JSONObject root = new JSONObject();
-        root.put("language", ScijavaEvaluator.DEFAULT_LANGUAGE);
-        root.put("display_name", "SciJava");
+	@SuppressWarnings("unchecked")
+	public static String createKernelJSON(String classpath, String logLevel, String javaBinaryPath) {
+		JSONObject root = new JSONObject();
+		root.put("language", ScijavaEvaluator.DEFAULT_LANGUAGE);
+		root.put("display_name", "SciJava");
 
-        JSONArray argv = new JSONArray();
+		JSONArray argv = new JSONArray();
 
-        if (javaBinaryPath == null) {
-            argv.add(SystemUtil.getJavaBinary());
-        } else {
-            argv.add(javaBinaryPath);
-        }
+		if (javaBinaryPath == null) {
+			argv.add(SystemUtil.getJavaBinary());
+		} else {
+			argv.add(javaBinaryPath);
+		}
 
-        argv.add("-classpath");
+		argv.add("-classpath");
 
-        String finalClasspath = "";
-        finalClasspath += SystemUtil.getImageJClassPaths();
-        
-        String classPathSeparator = SystemUtil.getClassPathSeparator();
-        
-        if (classpath != null) {
-            if (finalClasspath.length() > 0) {
-                finalClasspath += classPathSeparator + classpath;
-            } else {
-                finalClasspath += classpath;
-            }
+		String finalClasspath = "";
+		finalClasspath += SystemUtil.getImageJClassPaths();
 
-        }
-        argv.add(finalClasspath);
+		String classPathSeparator = SystemUtil.getClassPathSeparator();
 
-        argv.add("org.scijava.jupyter.kernel.ScijavaKernel");
-        argv.add("-verbose");
-        argv.add(logLevel);
-        argv.add("-connectionFile");
-        argv.add("{connection_file}");
-        root.put("argv", argv);
+		if (classpath != null) {
+			if (finalClasspath.length() > 0) {
+				finalClasspath += classPathSeparator + classpath;
+			} else {
+				finalClasspath += classpath;
+			}
 
-        return root.toJSONString();
-    }
+		}
+		argv.add(finalClasspath);
+
+		argv.add("org.scijava.jupyter.kernel.ScijavaKernel");
+		argv.add("-verbose");
+		argv.add(logLevel);
+		argv.add("-connectionFile");
+		argv.add("{connection_file}");
+		root.put("argv", argv);
+
+		return root.toJSONString();
+	}
 }

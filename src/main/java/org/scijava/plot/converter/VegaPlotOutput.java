@@ -15,7 +15,6 @@
  */
 package org.scijava.plot.converter;
 
-import groovy.json.JsonSlurper;
 import org.scijava.notebook.converter.output.NotebookOutput;
 
 /**
@@ -24,8 +23,8 @@ import org.scijava.notebook.converter.output.NotebookOutput;
  */
 public class VegaPlotOutput extends NotebookOutput {
 
-    public VegaPlotOutput(Object json) {
-        super("application/vnd.vegalite.v2+json", json);
-    }
+	public VegaPlotOutput(Object json) {
+		super("application/vnd.vegalite.v2+json", json);
+	}
 
 }

@@ -20,10 +20,11 @@
 
 package org.scijava.jupyter.service;
 
+import static com.twosigma.beakerx.kernel.Utils.uuid;
 
 import com.twosigma.beakerx.kernel.KernelRunner;
 import com.twosigma.beakerx.kernel.KernelSocketsFactoryImpl;
-import static com.twosigma.beakerx.kernel.Utils.uuid;
+
 import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -54,167 +55,163 @@ import org.scijava.service.Service;
 @Plugin(type = Service.class)
 public class DefaultJupyterService extends AbstractService implements JupyterService {
 
-    @Parameter
-    private transient LogService log;
+	@Parameter
+	private transient LogService log;
 
-    @Parameter
-    private transient Context context;
+	@Parameter
+	private transient Context context;
 
-    @Parameter
-    private transient CommandService command;
+	@Parameter
+	private transient CommandService command;
 
-    /* Install kernel */
-    @Override
-    public void installKernel(String... args) {
-        Map<String, Object> parameters = parseArgumentsInstall(args);
-        // TODO : Ensure parameters contains the appropriate keys.
+	/* Install kernel */
+	@Override
+	public void installKernel(String... args) {
+		Map<String, Object> parameters = parseArgumentsInstall(args);
+		// TODO : Ensure parameters contains the appropriate keys.
 
-        installKernel((String) parameters.get("logLevel"),
-                (String) parameters.get("pythonBinaryPath"),
-                (String) parameters.get("classpath"),
-                (String) parameters.get("javaBinaryPath"));
-    }
+		installKernel((String) parameters.get("logLevel"), (String) parameters.get("pythonBinaryPath"),
+				(String) parameters.get("classpath"), (String) parameters.get("javaBinaryPath"));
+	}
 
-    @Override
-    public void installKernel(String logLevel, String pythonBinaryPath) {
-        installKernel(logLevel, Paths.get(pythonBinaryPath));
-    }
+	@Override
+	public void installKernel(String logLevel, String pythonBinaryPath) {
+		installKernel(logLevel, Paths.get(pythonBinaryPath));
+	}
 
-    @Override
-    public void installKernel(String logLevel, Path pythonBinaryPath) {
-        installKernel(logLevel, pythonBinaryPath.toFile());
-    }
+	@Override
+	public void installKernel(String logLevel, Path pythonBinaryPath) {
+		installKernel(logLevel, pythonBinaryPath.toFile());
+	}
 
-    @Override
-    public void installKernel(String logLevel, File pythonBinaryPath) {
-        installKernel(logLevel, pythonBinaryPath, null, null);
-    }
+	@Override
+	public void installKernel(String logLevel, File pythonBinaryPath) {
+		installKernel(logLevel, pythonBinaryPath, null, null);
+	}
 
-    @Override
-    public void installKernel(String logLevel, String pythonBinaryPath, String classpath, String javaBinaryPath) {
-        installKernel(logLevel, new File(pythonBinaryPath), classpath, javaBinaryPath);
-    }
+	@Override
+	public void installKernel(String logLevel, String pythonBinaryPath, String classpath, String javaBinaryPath) {
+		installKernel(logLevel, new File(pythonBinaryPath), classpath, javaBinaryPath);
+	}
 
-    @Override
-    public void installKernel(String logLevel, File pythonBinaryPath, String classpath, String javaBinaryPath) {
-        Map<String, Object> parameters = new HashMap<>();
-        parameters.put("logLevel", logLevel);
-        parameters.put("pythonBinaryPath", pythonBinaryPath);
-        parameters.put("classpath", classpath);
-        parameters.put("javaBinaryPath", new File(javaBinaryPath));
-        command.run(InstallScijavaKernel.class, true, parameters);
-    }
+	@Override
+	public void installKernel(String logLevel, File pythonBinaryPath, String classpath, String javaBinaryPath) {
+		Map<String, Object> parameters = new HashMap<>();
+		parameters.put("logLevel", logLevel);
+		parameters.put("pythonBinaryPath", pythonBinaryPath);
+		parameters.put("classpath", classpath);
+		parameters.put("javaBinaryPath", new File(javaBinaryPath));
+		command.run(InstallScijavaKernel.class, true, parameters);
+	}
 
-    /* Run kernel */
-    @Override
-    public void runKernel(String... args) {
-        Map<String, Object> parameters = parseArgumentsRun(args);
-        // TODO : Ensure parameters contains the appropriate keys.
+	/* Run kernel */
+	@Override
+	public void runKernel(String... args) {
+		Map<String, Object> parameters = parseArgumentsRun(args);
+		// TODO : Ensure parameters contains the appropriate keys.
 
-        runKernel((String) parameters.get("logLevel"),
-                (String) parameters.get("connectionFile"));
-    }
+		runKernel((String) parameters.get("logLevel"), (String) parameters.get("connectionFile"));
+	}
 
-    @Override
-    public void runKernel(String logLevel, String connectionFile) {
-        runKernel(logLevel, Paths.get(connectionFile));
-    }
+	@Override
+	public void runKernel(String logLevel, String connectionFile) {
+		runKernel(logLevel, Paths.get(connectionFile));
+	}
 
-    @Override
-    public void runKernel(String logLevel, File connectionFile) {
-        runKernel(logLevel, connectionFile.toPath());
-    }
+	@Override
+	public void runKernel(String logLevel, File connectionFile) {
+		runKernel(logLevel, connectionFile.toPath());
+	}
 
-    @Override
-    public void runKernel(String logLevel, Path connectionFile) {
+	@Override
+	public void runKernel(String logLevel, Path connectionFile) {
 
-        KernelRunner.run(() -> {
-            String id = uuid();
+		KernelRunner.run(() -> {
+			String id = uuid();
 
-            // Setup configuration
-            ScijavaKernelConfigurationFile config = new ScijavaKernelConfigurationFile(this.context,
-                    logLevel,
-                    connectionFile);
+			// Setup configuration
+			ScijavaKernelConfigurationFile config = new ScijavaKernelConfigurationFile(this.context, logLevel,
+					connectionFile);
 
-            // Setup the socket
-            KernelSocketsFactoryImpl kernelSocketsFactory = new KernelSocketsFactoryImpl(config);
+			// Setup the socket
+			KernelSocketsFactoryImpl kernelSocketsFactory = new KernelSocketsFactoryImpl(config);
 
-            // Setup the evaluator
-            ScijavaEvaluator evaluator = new ScijavaEvaluator(context, id, id);
+			// Setup the evaluator
+			ScijavaEvaluator evaluator = new ScijavaEvaluator(context, id, id);
 
-            // Launch the kernel
-            return new ScijavaKernel(context, id, evaluator, config, kernelSocketsFactory);
-        });
-    }
+			// Launch the kernel
+			return new ScijavaKernel(context, id, evaluator, config, kernelSocketsFactory);
+		});
+	}
 
-    /* Helpers private method */
-    private Map<String, Object> parseArgumentsRun(final String... args) {
-        if (args.length > 0) {
-            try {
+	/* Helpers private method */
+	private Map<String, Object> parseArgumentsRun(final String... args) {
+		if (args.length > 0) {
+			try {
 
-                Options options = new Options();
-                options.addOption("connectionFile", true, "Connection File Path");
-                options.addOption("verbose", true, "Verbose Mode");
+				Options options = new Options();
+				options.addOption("connectionFile", true, "Connection File Path");
+				options.addOption("verbose", true, "Verbose Mode");
 
-                CommandLineParser parser = new DefaultParser();
-                CommandLine cmd = parser.parse(options, args);
+				CommandLineParser parser = new DefaultParser();
+				CommandLine cmd = parser.parse(options, args);
 
-                Map<String, Object> parameters = new HashMap<>();
+				Map<String, Object> parameters = new HashMap<>();
 
-                parameters.put("connectionFile", cmd.getOptionValue("connectionFile"));
-                parameters.put("logLevel", cmd.getOptionValue("verbose"));
+				parameters.put("connectionFile", cmd.getOptionValue("connectionFile"));
+				parameters.put("logLevel", cmd.getOptionValue("verbose"));
 
-                return parameters;
+				return parameters;
 
-            } catch (ParseException ex) {
-                log.error("Error parsing arguments : " + ex.toString());
-            }
-        } else {
-            log.error("No parameters passed to the Scijava kernel.");
-        }
-        return null;
-    }
+			} catch (ParseException ex) {
+				log.error("Error parsing arguments : " + ex.toString());
+			}
+		} else {
+			log.error("No parameters passed to the Scijava kernel.");
+		}
+		return null;
+	}
 
-    private Map<String, Object> parseArgumentsInstall(final String... args) {
-        if (args.length > 0) {
-            try {
+	private Map<String, Object> parseArgumentsInstall(final String... args) {
+		if (args.length > 0) {
+			try {
 
-                Options options = new Options();
-                options.addOption("pythonBinaryPath", true, "Python Binary Path");
-                options.addOption("verbose", true, "Verbose Mode");
-                options.addOption("classpath", true, "Additional JAVA classpath ?");
-                options.addOption("javaBinaryPath", true, "Java Binary Path");
+				Options options = new Options();
+				options.addOption("pythonBinaryPath", true, "Python Binary Path");
+				options.addOption("verbose", true, "Verbose Mode");
+				options.addOption("classpath", true, "Additional JAVA classpath ?");
+				options.addOption("javaBinaryPath", true, "Java Binary Path");
 
-                CommandLineParser parser = new DefaultParser();
-                CommandLine cmd = parser.parse(options, args);
+				CommandLineParser parser = new DefaultParser();
+				CommandLine cmd = parser.parse(options, args);
 
-                Map<String, Object> parameters = new HashMap<>();
+				Map<String, Object> parameters = new HashMap<>();
 
-                parameters.put("pythonBinaryPath", cmd.getOptionValue("pythonBinaryPath"));
+				parameters.put("pythonBinaryPath", cmd.getOptionValue("pythonBinaryPath"));
 
-                parameters.put("logLevel", cmd.getOptionValue("verbose"));
+				parameters.put("logLevel", cmd.getOptionValue("verbose"));
 
-                if (cmd.getOptionValue("classpath") != null) {
-                    parameters.put("classpath", cmd.getOptionValue("classpath"));
-                } else {
-                    parameters.put("classpath", null);
-                }
+				if (cmd.getOptionValue("classpath") != null) {
+					parameters.put("classpath", cmd.getOptionValue("classpath"));
+				} else {
+					parameters.put("classpath", null);
+				}
 
-                if (cmd.getOptionValue("javaBinaryPath") != null) {
-                    parameters.put("javaBinaryPath", cmd.getOptionValue("javaBinaryPath"));
-                } else {
-                    parameters.put("javaBinaryPath", null);
-                }
+				if (cmd.getOptionValue("javaBinaryPath") != null) {
+					parameters.put("javaBinaryPath", cmd.getOptionValue("javaBinaryPath"));
+				} else {
+					parameters.put("javaBinaryPath", null);
+				}
 
-                return parameters;
+				return parameters;
 
-            } catch (ParseException ex) {
-                log.error("Error parsing arguments : " + ex.toString());
-            }
-        } else {
-            log.error("No parameters passed to the Scijava kernel.");
-        }
-        return null;
-    }
+			} catch (ParseException ex) {
+				log.error("Error parsing arguments : " + ex.toString());
+			}
+		} else {
+			log.error("No parameters passed to the Scijava kernel.");
+		}
+		return null;
+	}
 
 }

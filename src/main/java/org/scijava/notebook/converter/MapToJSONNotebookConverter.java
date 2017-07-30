@@ -27,23 +27,22 @@ import org.scijava.notebook.converter.output.JSONNotebookOutput;
 import org.scijava.plugin.Plugin;
 
 @Plugin(type = Converter.class)
-public class MapToJSONNotebookConverter<K, V>
-        extends NotebookOutputConverter<Map<K, V>, JSONNotebookOutput> {
+public class MapToJSONNotebookConverter<K, V> extends NotebookOutputConverter<Map<K, V>, JSONNotebookOutput> {
 
-    @Override
-    @SuppressWarnings({ "rawtypes", "unchecked" })
-    public Class<Map<K, V>> getInputType() {
-        return (Class) Map.class;
-    }
+	@Override
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public Class<Map<K, V>> getInputType() {
+		return (Class) Map.class;
+	}
 
-    @Override
-    public Class<JSONNotebookOutput> getOutputType() {
-        return JSONNotebookOutput.class;
-    }
+	@Override
+	public Class<JSONNotebookOutput> getOutputType() {
+		return JSONNotebookOutput.class;
+	}
 
-    @Override
-    public JSONNotebookOutput convert(Object object) {
-        return new JSONNotebookOutput(object.toString());
-    }
+	@Override
+	public JSONNotebookOutput convert(Object object) {
+		return new JSONNotebookOutput(object.toString());
+	}
 
 }

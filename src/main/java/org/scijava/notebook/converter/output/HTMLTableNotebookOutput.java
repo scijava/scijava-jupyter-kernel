@@ -27,8 +27,8 @@ package org.scijava.notebook.converter.output;
  */
 public class HTMLTableNotebookOutput extends HTMLNotebookOutput {
 
-    public HTMLTableNotebookOutput(String content) {
-        super(content);
-    }
+	public HTMLTableNotebookOutput(String content) {
+		super(content);
+	}
 
 }

@@ -29,20 +29,21 @@ import org.python.util.PythonInterpreter;
  */
 public class TestJython {
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String[] args) throws PyException {
+	/**
+	 * @param args
+	 *            the command line arguments
+	 */
+	public static void main(String[] args) throws PyException {
 
-        PythonInterpreter interp = new PythonInterpreter();
+		PythonInterpreter interp = new PythonInterpreter();
 
-        Object result = interp.eval(interp.compile("p=999\n555")).__tojava__(Object.class);
-        System.out.println(result);
+		Object result = interp.eval(interp.compile("p=999\n555")).__tojava__(Object.class);
+		System.out.println(result);
 
-        interp = new PythonInterpreter();
+		interp = new PythonInterpreter();
 
-        result = interp.eval(interp.compile("555")).__tojava__(Object.class);
-        System.out.println(result);
-        
-    }
+		result = interp.eval(interp.compile("555")).__tojava__(Object.class);
+		System.out.println(result);
+
+	}
 }

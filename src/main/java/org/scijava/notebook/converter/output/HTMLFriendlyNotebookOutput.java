@@ -27,10 +27,10 @@ package org.scijava.notebook.converter.output;
  */
 public abstract class HTMLFriendlyNotebookOutput extends NotebookOutput {
 
-    public HTMLFriendlyNotebookOutput(String mimeTypeObj, String content) {
-        super(mimeTypeObj, content);
-    }
+	public HTMLFriendlyNotebookOutput(String mimeTypeObj, String content) {
+		super(mimeTypeObj, content);
+	}
 
-    public abstract String toHTML();
+	public abstract String toHTML();
 
 }

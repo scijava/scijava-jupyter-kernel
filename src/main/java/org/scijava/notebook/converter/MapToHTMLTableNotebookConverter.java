@@ -33,49 +33,49 @@ import org.scijava.plugin.Plugin;
  * are Key and Value.
  *
  * @author Alison Walter
- * @param <K> data type used for the key
- * @param <V> data type used for the values
+ * @param <K>
+ *            data type used for the key
+ * @param <V>
+ *            data type used for the values
  */
 @Plugin(type = Converter.class)
-public class MapToHTMLTableNotebookConverter<K, V> extends
-    HTMLNotebookOutputConverter<Map<K, V>, HTMLTableNotebookOutput>
-{
+public class MapToHTMLTableNotebookConverter<K, V>
+		extends HTMLNotebookOutputConverter<Map<K, V>, HTMLTableNotebookOutput> {
 
-    @Parameter
-    private ConvertService convertService;
+	@Parameter
+	private ConvertService convertService;
 
-    @Override
-    @SuppressWarnings({ "rawtypes", "unchecked" })
-    public Class<Map<K, V>> getInputType() {
-        return (Class) Map.class;
-    }
+	@Override
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public Class<Map<K, V>> getInputType() {
+		return (Class) Map.class;
+	}
 
-    @Override
-    public Class<HTMLTableNotebookOutput> getOutputType() {
-        return HTMLTableNotebookOutput.class;
-    }
+	@Override
+	public Class<HTMLTableNotebookOutput> getOutputType() {
+		return HTMLTableNotebookOutput.class;
+	}
 
-    @Override
-    public HTMLTableNotebookOutput convert(final Object object) {
-        @SuppressWarnings("unchecked")
-        final Map<K, V> table = (Map<K, V>) object;
+	@Override
+	public HTMLTableNotebookOutput convert(final Object object) {
+		@SuppressWarnings("unchecked")
+		final Map<K, V> table = (Map<K, V>) object;
 
-        // Default headings for a map are Key and Value
-        String htmlTable = HTMLTableBuilder.startTable();
-        htmlTable += HTMLTableBuilder.appendHeadings("Key", false);
-        htmlTable += HTMLTableBuilder.appendHeadings("Value", true);
+		// Default headings for a map are Key and Value
+		String htmlTable = HTMLTableBuilder.startTable();
+		htmlTable += HTMLTableBuilder.appendHeadings("Key", false);
+		htmlTable += HTMLTableBuilder.appendHeadings("Value", true);
 
-        // Append the rows
-        for (final K key : table.keySet()) {
-            final String k = asHTML(key);
-            final String v = asHTML(table.get(key));
-            htmlTable += HTMLTableBuilder.appendData(k, true, false);
-            htmlTable += HTMLTableBuilder.appendData(v, false, true);
-        }
-        htmlTable += HTMLTableBuilder.endTable();
+		// Append the rows
+		for (final K key : table.keySet()) {
+			final String k = asHTML(key);
+			final String v = asHTML(table.get(key));
+			htmlTable += HTMLTableBuilder.appendData(k, true, false);
+			htmlTable += HTMLTableBuilder.appendData(v, false, true);
+		}
+		htmlTable += HTMLTableBuilder.endTable();
 
-        return new HTMLTableNotebookOutput(HTMLTableBuilder.getTableStyle(
-            false) + htmlTable);
-    }
+		return new HTMLTableNotebookOutput(HTMLTableBuilder.getTableStyle(false) + htmlTable);
+	}
 
 }

@@ -25,38 +25,37 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class VegaTransform {
 
-    @JsonProperty
-    private String bin;
+	@JsonProperty
+	private String bin;
 
-    @JsonProperty
-    private String field;
+	@JsonProperty
+	private String field;
 
-    @JsonProperty
-    private String as;
+	@JsonProperty
+	private String as;
 
-    public String getBin() {
-        return bin;
-    }
+	public String getBin() {
+		return bin;
+	}
 
-    public void setBin(String bin) {
-        this.bin = bin;
-    }
+	public void setBin(String bin) {
+		this.bin = bin;
+	}
 
-    public String getField() {
-        return field;
-    }
+	public String getField() {
+		return field;
+	}
 
-    public void setField(String field) {
-        this.field = field;
-    }
+	public void setField(String field) {
+		this.field = field;
+	}
 
-    public String getAs() {
-        return as;
-    }
+	public String getAs() {
+		return as;
+	}
 
-    public void setAs(String as) {
-        this.as = as;
-    }
-    
-    
+	public void setAs(String as) {
+		this.as = as;
+	}
+
 }

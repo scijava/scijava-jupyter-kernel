@@ -31,8 +31,7 @@ import org.scijava.notebook.converter.output.PNGImageNotebookOutput;
 import org.scijava.plugin.Plugin;
 
 @Plugin(type = Converter.class)
-public class ChartToPNGNotebookConverter
-		extends NotebookOutputConverter<Chart, PNGImageNotebookOutput> {
+public class ChartToPNGNotebookConverter extends NotebookOutputConverter<Chart, PNGImageNotebookOutput> {
 
 	@Override
 	public Class<Chart> getInputType() {

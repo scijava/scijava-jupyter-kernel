@@ -25,8 +25,8 @@ package org.scijava.notebook.converter.output;
  */
 public class PlainNotebookOutput extends NotebookOutput {
 
-    public PlainNotebookOutput(String content) {
-	super("text/plain", content);
-    }
+	public PlainNotebookOutput(String content) {
+		super("text/plain", content);
+	}
 
 }

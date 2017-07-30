@@ -25,6 +25,7 @@ import com.twosigma.beakerx.kernel.KernelParameters;
 import com.twosigma.beakerx.kernel.KernelSocketsFactory;
 import com.twosigma.beakerx.kernel.handler.CommOpenHandler;
 import com.twosigma.beakerx.message.Message;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -49,84 +50,84 @@ import org.scijava.plugin.SciJavaPlugin;
  */
 public class ScijavaKernel extends Kernel {
 
-    // Scijava context
-    Context context;
+	// Scijava context
+	Context context;
 
-    @Parameter
-    private transient LogService log;
+	@Parameter
+	private transient LogService log;
 
-    private final ScijavaKernelConfigurationFile config;
-    private final ScijavaEvaluator evaluator;
+	private final ScijavaKernelConfigurationFile config;
+	private final ScijavaEvaluator evaluator;
 
-    public ScijavaKernel(final Context context, final String id, final ScijavaEvaluator evaluator,
-	    ScijavaKernelConfigurationFile config, KernelSocketsFactory kernelSocketsFactory) {
+	public ScijavaKernel(final Context context, final String id, final ScijavaEvaluator evaluator,
+			ScijavaKernelConfigurationFile config, KernelSocketsFactory kernelSocketsFactory) {
 
-	super(id, evaluator, kernelSocketsFactory);
-	this.context = context;
-	this.context.inject(this);
-	this.config = config;
-	this.evaluator = evaluator;
-	
-	// Don't show output when it is null
-	Kernel.showNullExecutionResult = false;
+		super(id, evaluator, kernelSocketsFactory);
+		this.context = context;
+		this.context.inject(this);
+		this.config = config;
+		this.evaluator = evaluator;
 
-	this.setLogLevel(config.getLogLevel());
-	log.info("Log level used is : " + this.config.getLogLevel());
+		// Don't show output when it is null
+		Kernel.showNullExecutionResult = false;
 
-	log.info("Scijava Kernel is started and ready to use.");
-    }
+		this.setLogLevel(config.getLogLevel());
+		log.info("Log level used is : " + this.config.getLogLevel());
 
-    @Override
-    public CommOpenHandler getCommOpenHandler(Kernel kernel) {
-	return new ScijavaCommOpenHandler(kernel);
-    }
-
-    @Override
-    public KernelHandler<Message> getKernelInfoHandler(Kernel kernel) {
-	return new ScijavaKernelInfoHandler(kernel);
-    }
-
-    private void setLogLevel(String logLevel) {
-	switch (logLevel) {
-	    case "debug":
-		this.log.setLevel(LogService.DEBUG);
-		break;
-	    case "error":
-		this.log.setLevel(LogService.ERROR);
-		break;
-	    case "info":
-		this.log.setLevel(LogService.INFO);
-		break;
-	    case "none":
-		this.log.setLevel(LogService.NONE);
-		break;
-	    default:
-		this.log.setLevel(LogService.INFO);
-		break;
+		log.info("Scijava Kernel is started and ready to use.");
 	}
-    }
 
-    @Override
-    public KernelParameters getKernelParameters() {
-	Map<String, Object> kernelParameters = new HashMap<>();
-	return new KernelParameters(kernelParameters);
-    }
+	@Override
+	public CommOpenHandler getCommOpenHandler(Kernel kernel) {
+		return new ScijavaCommOpenHandler(kernel);
+	}
 
-    public static void main(String... args) {
-	final Context context = new Context();
+	@Override
+	public KernelHandler<Message> getKernelInfoHandler(Kernel kernel) {
+		return new ScijavaKernelInfoHandler(kernel);
+	}
 
-	// Remove the Display and Results post-processors to prevent output
-	// windows from being displayed
-	final PluginService pluginService = context.service(PluginService.class);
-	final PluginInfo<SciJavaPlugin> display = pluginService.getPlugin(DisplayPostprocessor.class);
-	final PluginInfo<SciJavaPlugin> results = pluginService.getPlugin(ResultsPostprocessor.class);
-	pluginService.removePlugin(display);
-	pluginService.removePlugin(results);
+	private void setLogLevel(String logLevel) {
+		switch (logLevel) {
+		case "debug":
+			this.log.setLevel(LogService.DEBUG);
+			break;
+		case "error":
+			this.log.setLevel(LogService.ERROR);
+			break;
+		case "info":
+			this.log.setLevel(LogService.INFO);
+			break;
+		case "none":
+			this.log.setLevel(LogService.NONE);
+			break;
+		default:
+			this.log.setLevel(LogService.INFO);
+			break;
+		}
+	}
 
-	JupyterService jupyter = context.service(JupyterService.class);
-	jupyter.runKernel(args);
+	@Override
+	public KernelParameters getKernelParameters() {
+		Map<String, Object> kernelParameters = new HashMap<>();
+		return new KernelParameters(kernelParameters);
+	}
 
-	context.dispose();
-    }
+	public static void main(String... args) {
+		final Context context = new Context();
+
+		// Remove the Display and Results post-processors to prevent output
+		// windows from being displayed
+		final PluginService pluginService = context.service(PluginService.class);
+		final PluginInfo<SciJavaPlugin> display = pluginService.getPlugin(DisplayPostprocessor.class);
+		final PluginInfo<SciJavaPlugin> results = pluginService.getPlugin(ResultsPostprocessor.class);
+		pluginService.removePlugin(display);
+		pluginService.removePlugin(results);
+
+		JupyterService jupyter = context.service(JupyterService.class);
+		jupyter.runKernel(args);
+
+		context.dispose();
+	}
 
 }

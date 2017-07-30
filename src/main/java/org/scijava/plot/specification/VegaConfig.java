@@ -25,6 +25,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class VegaConfig {
 
-    @JsonProperty
-    private String background;
+	@JsonProperty
+	private String background;
 }

@@ -34,26 +34,24 @@ import com.twosigma.beakerx.message.Message;
  */
 public class ScijavaCommOpenHandler extends CommOpenHandler {
 
-    private final Handler<?>[] KERNEL_CONTROL_CHANNEL_HANDLERS = {
-	new KernelControlInterrupt(kernel),
-	new KernelControlCommandListHandler(kernel)};
+	private final Handler<?>[] KERNEL_CONTROL_CHANNEL_HANDLERS = { new KernelControlInterrupt(kernel),
+			new KernelControlCommandListHandler(kernel) };
 
-    private final Handler<?>[] KERNEL_GET_CODECELLS_CHANNEL_HANDLER = {
-	new GetCodeCellsHandler(kernel)};
+	private final Handler<?>[] KERNEL_GET_CODECELLS_CHANNEL_HANDLER = { new GetCodeCellsHandler(kernel) };
 
-    public ScijavaCommOpenHandler(KernelFunctionality kernel) {
-	super(kernel);
-    }
-
-    @Override
-    public Handler<Message>[] getKernelControlChanelHandlers(String targetName) {
-	if (TargetNamesEnum.KERNEL_CONTROL_CHANNEL.getTargetName().equalsIgnoreCase(targetName)) {
-	    return (Handler<Message>[]) KERNEL_CONTROL_CHANNEL_HANDLERS;
-	} else if (TargetNamesEnum.BEAKER_GETCODECELLS.getTargetName().equalsIgnoreCase(targetName)) {
-	    return (Handler<Message>[]) KERNEL_GET_CODECELLS_CHANNEL_HANDLER;
-	} else {
-	    return (Handler<Message>[]) new Handler<?>[0];
+	public ScijavaCommOpenHandler(KernelFunctionality kernel) {
+		super(kernel);
 	}
-    }
+
+	@Override
+	public Handler<Message>[] getKernelControlChanelHandlers(String targetName) {
+		if (TargetNamesEnum.KERNEL_CONTROL_CHANNEL.getTargetName().equalsIgnoreCase(targetName)) {
+			return (Handler<Message>[]) KERNEL_CONTROL_CHANNEL_HANDLERS;
+		} else if (TargetNamesEnum.BEAKER_GETCODECELLS.getTargetName().equalsIgnoreCase(targetName)) {
+			return (Handler<Message>[]) KERNEL_GET_CODECELLS_CHANNEL_HANDLER;
+		} else {
+			return (Handler<Message>[]) new Handler<?>[0];
+		}
+	}
 
 }

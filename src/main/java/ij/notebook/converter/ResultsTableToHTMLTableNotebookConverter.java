@@ -37,27 +37,26 @@ import ij.measure.ResultsTable;
  * @author Alison Walter
  */
 @Plugin(type = Converter.class)
-public class ResultsTableToHTMLTableNotebookConverter extends
-    HTMLNotebookOutputConverter<ResultsTable, HTMLTableNotebookOutput>
-{
+public class ResultsTableToHTMLTableNotebookConverter
+		extends HTMLNotebookOutputConverter<ResultsTable, HTMLTableNotebookOutput> {
 
-    @Parameter
-    private ConvertService convertService;
+	@Parameter
+	private ConvertService convertService;
 
-    @Override
-    public Class<HTMLTableNotebookOutput> getOutputType() {
-        return HTMLTableNotebookOutput.class;
-    }
+	@Override
+	public Class<HTMLTableNotebookOutput> getOutputType() {
+		return HTMLTableNotebookOutput.class;
+	}
 
-    @Override
-    public Class<ResultsTable> getInputType() {
-        return ResultsTable.class;
-    }
+	@Override
+	public Class<ResultsTable> getInputType() {
+		return ResultsTable.class;
+	}
 
-    @Override
-    public HTMLTableNotebookOutput convert(final Object object) {
-        GenericTable t = convertService.convert((ResultsTable)object, GenericTable.class);
-        return convertService.convert(t, HTMLTableNotebookOutput.class);
-    }
+	@Override
+	public HTMLTableNotebookOutput convert(final Object object) {
+		GenericTable t = convertService.convert((ResultsTable) object, GenericTable.class);
+		return convertService.convert(t, HTMLTableNotebookOutput.class);
+	}
 
 }

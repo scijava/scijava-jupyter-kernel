@@ -35,69 +35,65 @@ import org.scijava.plugin.Plugin;
  * @author Alison Walter
  */
 @Plugin(type = Converter.class)
-public class ListToHTMLTableNotebookConverter extends
-    HTMLNotebookOutputConverter<List<?>, HTMLTableNotebookOutput>
-{
+public class ListToHTMLTableNotebookConverter extends HTMLNotebookOutputConverter<List<?>, HTMLTableNotebookOutput> {
 
-    @Override
-    @SuppressWarnings({ "rawtypes", "unchecked" })
-    public Class<List<?>> getInputType() {
-        return (Class) List.class;
-    }
+	@Override
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public Class<List<?>> getInputType() {
+		return (Class) List.class;
+	}
 
-    @Override
-    public Class<HTMLTableNotebookOutput> getOutputType() {
-        return HTMLTableNotebookOutput.class;
-    }
+	@Override
+	public Class<HTMLTableNotebookOutput> getOutputType() {
+		return HTMLTableNotebookOutput.class;
+	}
 
-    @Override
-    public boolean canConvert(final ConversionRequest request) {
-        final Object src = request.sourceObject();
-        if (src != null && src instanceof List && !(((List<?>) src).get(
-            0) instanceof Map))
-        {
-            return super.canConvert(request);
-        }
-        return false;
+	@Override
+	public boolean canConvert(final ConversionRequest request) {
+		final Object src = request.sourceObject();
+		if (src != null && src instanceof List && !(((List<?>) src).get(0) instanceof Map)) {
+			return super.canConvert(request);
+		}
+		return false;
 
-    }
+	}
 
-    @Override
-    public boolean canConvert(final Object src, final Type dest) {
-        if (src == null) return false;
-        if (src instanceof List && !(((List<?>) src).get(0) instanceof Map)) {
-            final Class<?> srcClass = src.getClass();
-            return super.canConvert(srcClass, dest);
-        }
-        return false;
-    }
+	@Override
+	public boolean canConvert(final Object src, final Type dest) {
+		if (src == null)
+			return false;
+		if (src instanceof List && !(((List<?>) src).get(0) instanceof Map)) {
+			final Class<?> srcClass = src.getClass();
+			return super.canConvert(srcClass, dest);
+		}
+		return false;
+	}
 
-    @Override
-    public boolean canConvert(final Object src, final Class<?> dest) {
-        if (src == null) return false;
-        if (src instanceof List && !(((List<?>) src).get(0) instanceof Map)) {
-            final Class<?> srcClass = src.getClass();
-            return super.canConvert(srcClass, dest);
-        }
-        return false;
-    }
+	@Override
+	public boolean canConvert(final Object src, final Class<?> dest) {
+		if (src == null)
+			return false;
+		if (src instanceof List && !(((List<?>) src).get(0) instanceof Map)) {
+			final Class<?> srcClass = src.getClass();
+			return super.canConvert(srcClass, dest);
+		}
+		return false;
+	}
 
-    @Override
-    public HTMLTableNotebookOutput convert(final Object object) {
-        final List<?> list = (List<?>) object;
+	@Override
+	public HTMLTableNotebookOutput convert(final Object object) {
+		final List<?> list = (List<?>) object;
 
-        String htmlTable = "<table class=\"converted\"><tbody>";
+		String htmlTable = "<table class=\"converted\"><tbody>";
 
-        // Append the rows
-        for (int i = 0; i < list.size(); i++) {
-            final String data = list.get(i) == null ? "&nbsp;" : asHTML(list
-                .get(i));
-            htmlTable += HTMLTableBuilder.appendData(data, true, true);
-        }
-        htmlTable += HTMLTableBuilder.endTable();
+		// Append the rows
+		for (int i = 0; i < list.size(); i++) {
+			final String data = list.get(i) == null ? "&nbsp;" : asHTML(list.get(i));
+			htmlTable += HTMLTableBuilder.appendData(data, true, true);
+		}
+		htmlTable += HTMLTableBuilder.endTable();
 
-        return new HTMLTableNotebookOutput(HTMLTableBuilder.getTableStyle(
-            false) + htmlTable);
-    }
+		return new HTMLTableNotebookOutput(HTMLTableBuilder.getTableStyle(false) + htmlTable);
+	}
 
 }

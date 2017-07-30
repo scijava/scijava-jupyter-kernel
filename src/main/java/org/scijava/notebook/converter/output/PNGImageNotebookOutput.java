@@ -25,8 +25,8 @@ package org.scijava.notebook.converter.output;
  */
 public class PNGImageNotebookOutput extends ImageNotebookOutput {
 
-    public PNGImageNotebookOutput(String content) {
-	super("image/png", content);
-    }
+	public PNGImageNotebookOutput(String content) {
+		super("image/png", content);
+	}
 
 }

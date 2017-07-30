@@ -15,7 +15,6 @@
  */
 package org.scijava.plot.specification.encoding;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
 import java.util.Arrays;
 
 /**
@@ -24,30 +23,14 @@ import java.util.Arrays;
  */
 public class EncodingAggregate extends EncodingSingleValue {
 
-    public EncodingAggregate() {
+	public EncodingAggregate() {
 
-        this.allowedValues = Arrays.asList("count",
-                "valid",
-                "missing",
-                "distinct",
-                "sum",
-                "mean",
-                "average",
-                "variance",
-                "variancep",
-                "stdev",
-                "stdevp",
-                "median",
-                "q1",
-                "q3",
-                "modeskew",
-                "min",
-                "max"
-        );
-    }
+		this.allowedValues = Arrays.asList("count", "valid", "missing", "distinct", "sum", "mean", "average",
+				"variance", "variancep", "stdev", "stdevp", "median", "q1", "q3", "modeskew", "min", "max");
+	}
 
-    public EncodingAggregate(String timeUnit) throws Exception {
-        this.setValue(timeUnit);
-    }
+	public EncodingAggregate(String timeUnit) throws Exception {
+		this.setValue(timeUnit);
+	}
 
 }

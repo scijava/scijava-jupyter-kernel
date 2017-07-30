@@ -42,41 +42,41 @@ import org.scijava.script.ScriptModule;
  */
 public class TestGroovy {
 
-    public static void main(String[] args) throws ScriptException {
-        ImageJ ij = Main.launch(args);
+	public static void main(String[] args) throws ScriptException {
+		ImageJ ij = Main.launch(args);
 
-        String code = "";
-        //code += "@Grab('org.springframework:spring-orm:3.2.5.RELEASE')\n";
-        code += "import org.springframework.jdbc.core.JdbcTemplate\nprintln JdbcTemplate\n";
-        code += "println 'test'";
-        final Reader input = new StringReader(code);
+		String code = "";
+		// code += "@Grab('org.springframework:spring-orm:3.2.5.RELEASE')\n";
+		code += "import org.springframework.jdbc.core.JdbcTemplate\nprintln JdbcTemplate\n";
+		code += "println 'test'";
+		final Reader input = new StringReader(code);
 
-        ScriptInfo info = new ScriptInfo(ij.context(), "dummy.py", input);
-        final String path = info.getPath();
+		ScriptInfo info = new ScriptInfo(ij.context(), "dummy.py", input);
+		final String path = info.getPath();
 
-        List<? extends PreprocessorPlugin> pre = ij.plugin().createInstancesOfType(PreprocessorPlugin.class);
+		List<? extends PreprocessorPlugin> pre = ij.plugin().createInstancesOfType(PreprocessorPlugin.class);
 
-        ScriptLanguage scriptLanguage = ij.script().getLanguageByName("groovy");
-        ScriptEngine scriptEngine = scriptLanguage.getScriptEngine();
+		ScriptLanguage scriptLanguage = ij.script().getLanguageByName("groovy");
+		ScriptEngine scriptEngine = scriptLanguage.getScriptEngine();
 
-        ScriptModule module;
-        module = new ScriptModule(info);
-        ij.context().inject(module);
-        module.setLanguage(scriptLanguage);
+		ScriptModule module;
+		module = new ScriptModule(info);
+		ij.context().inject(module);
+		module.setLanguage(scriptLanguage);
 
-        pre.forEach((p) -> {
-            p.process(module);
-        });
-        
-        for (final ModuleItem<?> item : info.inputs()) {
-            final String name = item.getName();
-            scriptEngine.put(name, module.getInput(name));
-        }
-        
-        scriptEngine.eval(code);
-        
-        ij.context().dispose();
-        
-    }
+		pre.forEach((p) -> {
+			p.process(module);
+		});
+
+		for (final ModuleItem<?> item : info.inputs()) {
+			final String name = item.getName();
+			scriptEngine.put(name, module.getInput(name));
+		}
+
+		scriptEngine.eval(code);
+
+		ij.context().dispose();
+
+	}
 
 }

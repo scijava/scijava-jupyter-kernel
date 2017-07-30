@@ -20,11 +20,10 @@
 
 package org.scijava.jupyter.kernel.configuration;
 
-
-
 import com.twosigma.beakerx.kernel.Config;
 import com.twosigma.beakerx.kernel.ConfigurationFile;
 import com.twosigma.beakerx.message.MessageSerializer;
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -40,34 +39,35 @@ import org.scijava.plugin.Parameter;
  */
 public class ScijavaKernelConfigurationFile implements ConfigurationFile {
 
-    @Parameter
-    private transient LogService log;
+	@Parameter
+	private transient LogService log;
 
-    private final File configFile;
-    private Config configuration;
+	private final File configFile;
+	private Config configuration;
 
-    private final String logLevel;
+	private final String logLevel;
 
-    public ScijavaKernelConfigurationFile(Context context, String logLevel, Path connectionFile) {
-        context.inject(this);
-        this.configFile = connectionFile.toFile();
-        this.logLevel = logLevel;
-    }
+	public ScijavaKernelConfigurationFile(Context context, String logLevel, Path connectionFile) {
+		context.inject(this);
+		this.configFile = connectionFile.toFile();
+		this.logLevel = logLevel;
+	}
 
-    @Override
-    public Config getConfig() {
-        if (configuration == null) {
-            try {
-                configuration = MessageSerializer.parse(new String(Files.readAllBytes(this.configFile.toPath())), Config.class);
-            } catch (IOException ex) {
-                log.error("Issue loading connection file : " + ex);
-            }
-        }
-        return configuration;
-    }
+	@Override
+	public Config getConfig() {
+		if (configuration == null) {
+			try {
+				configuration = MessageSerializer.parse(new String(Files.readAllBytes(this.configFile.toPath())),
+						Config.class);
+			} catch (IOException ex) {
+				log.error("Issue loading connection file : " + ex);
+			}
+		}
+		return configuration;
+	}
 
-    public String getLogLevel() {
-        return this.logLevel;
-    }
+	public String getLogLevel() {
+		return this.logLevel;
+	}
 
 }

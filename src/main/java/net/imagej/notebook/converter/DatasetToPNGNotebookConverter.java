@@ -32,34 +32,31 @@ import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 @Plugin(type = Converter.class)
-public class DatasetToPNGNotebookConverter
-        extends NotebookOutputConverter<Dataset, PNGImageNotebookOutput> {
+public class DatasetToPNGNotebookConverter extends NotebookOutputConverter<Dataset, PNGImageNotebookOutput> {
 
-    @Parameter
-    private ImageJNotebookService ijnb;
+	@Parameter
+	private ImageJNotebookService ijnb;
 
-    @Override
-    public Class<Dataset> getInputType() {
-        return Dataset.class;
-    }
+	@Override
+	public Class<Dataset> getInputType() {
+		return Dataset.class;
+	}
 
-    @Override
-    public Class<PNGImageNotebookOutput> getOutputType() {
-        return PNGImageNotebookOutput.class;
-    }
+	@Override
+	public Class<PNGImageNotebookOutput> getOutputType() {
+		return PNGImageNotebookOutput.class;
+	}
 
-    @Override
-    public PNGImageNotebookOutput convert(Object object) {
+	@Override
+	public PNGImageNotebookOutput convert(Object object) {
 
-        Dataset source = (Dataset) object;
+		Dataset source = (Dataset) object;
 
-        String base64Image = (String) ijnb.RAIToPNG((Img) source, //
-                source.dimensionIndex(Axes.X),
-                source.dimensionIndex(Axes.Y),
-                source.dimensionIndex(Axes.CHANNEL),
-                ImageJNotebookService.ValueScaling.AUTO);
+		String base64Image = (String) ijnb.RAIToPNG((Img) source, //
+				source.dimensionIndex(Axes.X), source.dimensionIndex(Axes.Y), source.dimensionIndex(Axes.CHANNEL),
+				ImageJNotebookService.ValueScaling.AUTO);
 
-        return new PNGImageNotebookOutput(base64Image);
-    }
+		return new PNGImageNotebookOutput(base64Image);
+	}
 
 }

@@ -22,19 +22,18 @@ package org.scijava.notebook.converter.output;
 
 import com.twosigma.beakerx.mimetype.MIMEContainer;
 
-
 /**
  *
  * @author Hadrien Mary
  */
 public abstract class NotebookOutput extends MIMEContainer {
 
-    public NotebookOutput(String mimeTypeObj, String content) {
-        super(mimeTypeObj, content);
-    }
-    
-    public NotebookOutput(String mimeTypeObj, Object content) {
-        super(mimeTypeObj, content);
-    }
+	public NotebookOutput(String mimeTypeObj, String content) {
+		super(mimeTypeObj, content);
+	}
+
+	public NotebookOutput(String mimeTypeObj, Object content) {
+		super(mimeTypeObj, content);
+	}
 
 }

@@ -25,136 +25,136 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class VegaEncoding {
 
-    @JsonProperty
-    private EncodingChannel x;
+	@JsonProperty
+	private EncodingChannel x;
 
-    @JsonProperty
-    private EncodingChannel y;
+	@JsonProperty
+	private EncodingChannel y;
 
-    @JsonProperty
-    private EncodingChannel row;
+	@JsonProperty
+	private EncodingChannel row;
 
-    @JsonProperty
-    private EncodingChannel column;
+	@JsonProperty
+	private EncodingChannel column;
 
-    @JsonProperty
-    private EncodingChannel color;
+	@JsonProperty
+	private EncodingChannel color;
 
-    @JsonProperty
-    private EncodingChannel order;
+	@JsonProperty
+	private EncodingChannel order;
 
-    @JsonProperty
-    private EncodingChannel shape;
+	@JsonProperty
+	private EncodingChannel shape;
 
-    @JsonProperty
-    private EncodingChannel size;
+	@JsonProperty
+	private EncodingChannel size;
 
-    @JsonProperty
-    private EncodingChannel opacity;
+	@JsonProperty
+	private EncodingChannel opacity;
 
-    @JsonProperty
-    private EncodingChannel text;
+	@JsonProperty
+	private EncodingChannel text;
 
-    @JsonProperty
-    private EncodingChannel tooltip;
+	@JsonProperty
+	private EncodingChannel tooltip;
 
-    @JsonProperty
-    private EncodingChannel detail;
+	@JsonProperty
+	private EncodingChannel detail;
 
-    public EncodingChannel getX() {
-        return x;
-    }
+	public EncodingChannel getX() {
+		return x;
+	}
 
-    public void setX(EncodingChannel x) {
-        this.x = x;
-    }
+	public void setX(EncodingChannel x) {
+		this.x = x;
+	}
 
-    public EncodingChannel getY() {
-        return y;
-    }
+	public EncodingChannel getY() {
+		return y;
+	}
 
-    public void setY(EncodingChannel y) {
-        this.y = y;
-    }
+	public void setY(EncodingChannel y) {
+		this.y = y;
+	}
 
-    public EncodingChannel getRow() {
-        return row;
-    }
+	public EncodingChannel getRow() {
+		return row;
+	}
 
-    public void setRow(EncodingChannel row) {
-        this.row = row;
-    }
+	public void setRow(EncodingChannel row) {
+		this.row = row;
+	}
 
-    public EncodingChannel getColumn() {
-        return column;
-    }
+	public EncodingChannel getColumn() {
+		return column;
+	}
 
-    public void setColumn(EncodingChannel column) {
-        this.column = column;
-    }
+	public void setColumn(EncodingChannel column) {
+		this.column = column;
+	}
 
-    public EncodingChannel getColor() {
-        return color;
-    }
+	public EncodingChannel getColor() {
+		return color;
+	}
 
-    public void setColor(EncodingChannel color) {
-        this.color = color;
-    }
+	public void setColor(EncodingChannel color) {
+		this.color = color;
+	}
 
-    public EncodingChannel getOrder() {
-        return order;
-    }
+	public EncodingChannel getOrder() {
+		return order;
+	}
 
-    public void setOrder(EncodingChannel order) {
-        this.order = order;
-    }
+	public void setOrder(EncodingChannel order) {
+		this.order = order;
+	}
 
-    public EncodingChannel getShape() {
-        return shape;
-    }
+	public EncodingChannel getShape() {
+		return shape;
+	}
 
-    public void setShape(EncodingChannel shape) {
-        this.shape = shape;
-    }
+	public void setShape(EncodingChannel shape) {
+		this.shape = shape;
+	}
 
-    public EncodingChannel getSize() {
-        return size;
-    }
+	public EncodingChannel getSize() {
+		return size;
+	}
 
-    public void setSize(EncodingChannel size) {
-        this.size = size;
-    }
+	public void setSize(EncodingChannel size) {
+		this.size = size;
+	}
 
-    public EncodingChannel getOpacity() {
-        return opacity;
-    }
+	public EncodingChannel getOpacity() {
+		return opacity;
+	}
 
-    public void setOpacity(EncodingChannel opacity) {
-        this.opacity = opacity;
-    }
+	public void setOpacity(EncodingChannel opacity) {
+		this.opacity = opacity;
+	}
 
-    public EncodingChannel getText() {
-        return tooltip;
-    }
+	public EncodingChannel getText() {
+		return tooltip;
+	}
 
-    public void setText(EncodingChannel text) {
-        this.text = text;
-    }
+	public void setText(EncodingChannel text) {
+		this.text = text;
+	}
 
-    public EncodingChannel getTooltip() {
-        return tooltip;
-    }
+	public EncodingChannel getTooltip() {
+		return tooltip;
+	}
 
-    public void setTooltip(EncodingChannel tooltip) {
-        this.tooltip = tooltip;
-    }
+	public void setTooltip(EncodingChannel tooltip) {
+		this.tooltip = tooltip;
+	}
 
-    public EncodingChannel getDetail() {
-        return detail;
-    }
+	public EncodingChannel getDetail() {
+		return detail;
+	}
 
-    public void setDetail(EncodingChannel detail) {
-        this.detail = detail;
-    }
+	public void setDetail(EncodingChannel detail) {
+		this.detail = detail;
+	}
 
 }

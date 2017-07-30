@@ -21,13 +21,14 @@ package org.scijava.plot;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.scijava.notebook.*;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.scijava.plot.builder.PlotBuilder;
 
+import org.scijava.notebook.NotebookService;
+import org.scijava.plot.builder.PlotBuilder;
 import org.scijava.plot.specification.VegaPlot;
 import org.scijava.plugin.Plugin;
 import org.scijava.service.AbstractService;
@@ -40,44 +41,43 @@ import org.scijava.service.Service;
  * @author Hadrien Mary
  */
 @Plugin(type = Service.class)
-public class DefaultPlotService extends AbstractService implements
-        PlotService {
+public class DefaultPlotService extends AbstractService implements PlotService {
 
-    @Override
-    public PlotBuilder builder() {
-        return new PlotBuilder();
-    }
+	@Override
+	public PlotBuilder builder() {
+		return new PlotBuilder();
+	}
 
-    @Override
-    public void writeJson(VegaPlot plot, String filePath) {
-        try {
-            ObjectMapper mapper = new ObjectMapper();
-            mapper.writeValue(new File(filePath), plot);
-        } catch (IOException ex) {
-            Logger.getLogger(DefaultPlotService.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
+	@Override
+	public void writeJson(VegaPlot plot, String filePath) {
+		try {
+			ObjectMapper mapper = new ObjectMapper();
+			mapper.writeValue(new File(filePath), plot);
+		} catch (IOException ex) {
+			Logger.getLogger(DefaultPlotService.class.getName()).log(Level.SEVERE, null, ex);
+		}
+	}
 
-    @Override
-    public String toJson(VegaPlot plot) {
-        try {
-            ObjectMapper mapper = new ObjectMapper();
-            return mapper.writeValueAsString(plot);
-        } catch (JsonProcessingException ex) {
-            Logger.getLogger(DefaultPlotService.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return null;
-    }
+	@Override
+	public String toJson(VegaPlot plot) {
+		try {
+			ObjectMapper mapper = new ObjectMapper();
+			return mapper.writeValueAsString(plot);
+		} catch (JsonProcessingException ex) {
+			Logger.getLogger(DefaultPlotService.class.getName()).log(Level.SEVERE, null, ex);
+		}
+		return null;
+	}
 
-    @Override
-    public VegaPlot readJson(String filePath) {
-        ObjectMapper mapper = new ObjectMapper();
-        try {
-            return mapper.readValue(new File(filePath), VegaPlot.class);
-        } catch (IOException ex) {
-            Logger.getLogger(DefaultPlotService.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return null;
-    }
+	@Override
+	public VegaPlot readJson(String filePath) {
+		ObjectMapper mapper = new ObjectMapper();
+		try {
+			return mapper.readValue(new File(filePath), VegaPlot.class);
+		} catch (IOException ex) {
+			Logger.getLogger(DefaultPlotService.class.getName()).log(Level.SEVERE, null, ex);
+		}
+		return null;
+	}
 
 }

@@ -24,14 +24,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class VegaSelection {
-    
-    @JsonProperty
-    private String type;
-    
-    @JsonProperty
-    private String one;
-    
-    @JsonProperty
-    private String resolve;
-    
+
+	@JsonProperty
+	private String type;
+
+	@JsonProperty
+	private String one;
+
+	@JsonProperty
+	private String resolve;
+
 }

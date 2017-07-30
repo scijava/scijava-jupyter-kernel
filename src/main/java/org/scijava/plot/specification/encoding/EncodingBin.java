@@ -25,92 +25,92 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class EncodingBin {
 
-    @JsonProperty
-    private int maxbins;
+	@JsonProperty
+	private int maxbins;
 
-    @JsonProperty
-    private int base;
+	@JsonProperty
+	private int base;
 
-    @JsonProperty
-    private int step;
+	@JsonProperty
+	private int step;
 
-    @JsonProperty
-    private int[] steps;
+	@JsonProperty
+	private int[] steps;
 
-    @JsonProperty
-    private int minstep;
+	@JsonProperty
+	private int minstep;
 
-    @JsonProperty
-    private int[] divide;
+	@JsonProperty
+	private int[] divide;
 
-    @JsonProperty
-    private int[] extent;
+	@JsonProperty
+	private int[] extent;
 
-    @JsonProperty
-    private int nice;
+	@JsonProperty
+	private int nice;
 
-    public int getMaxbins() {
-        return maxbins;
-    }
+	public int getMaxbins() {
+		return maxbins;
+	}
 
-    public void setMaxbins(int maxbins) {
-        this.maxbins = maxbins;
-    }
+	public void setMaxbins(int maxbins) {
+		this.maxbins = maxbins;
+	}
 
-    public int getBase() {
-        return base;
-    }
+	public int getBase() {
+		return base;
+	}
 
-    public void setBase(int base) {
-        this.base = base;
-    }
+	public void setBase(int base) {
+		this.base = base;
+	}
 
-    public int getStep() {
-        return step;
-    }
+	public int getStep() {
+		return step;
+	}
 
-    public void setStep(int step) {
-        this.step = step;
-    }
+	public void setStep(int step) {
+		this.step = step;
+	}
 
-    public int[] getSteps() {
-        return steps;
-    }
+	public int[] getSteps() {
+		return steps;
+	}
 
-    public void setSteps(int[] steps) {
-        this.steps = steps;
-    }
+	public void setSteps(int[] steps) {
+		this.steps = steps;
+	}
 
-    public int getMinstep() {
-        return minstep;
-    }
+	public int getMinstep() {
+		return minstep;
+	}
 
-    public void setMinstep(int minstep) {
-        this.minstep = minstep;
-    }
+	public void setMinstep(int minstep) {
+		this.minstep = minstep;
+	}
 
-    public int[] getDivide() {
-        return divide;
-    }
+	public int[] getDivide() {
+		return divide;
+	}
 
-    public void setDivide(int[] divide) {
-        this.divide = divide;
-    }
+	public void setDivide(int[] divide) {
+		this.divide = divide;
+	}
 
-    public int[] getExtent() {
-        return extent;
-    }
+	public int[] getExtent() {
+		return extent;
+	}
 
-    public void setExtent(int[] extent) {
-        this.extent = extent;
-    }
+	public void setExtent(int[] extent) {
+		this.extent = extent;
+	}
 
-    public int getNice() {
-        return nice;
-    }
+	public int getNice() {
+		return nice;
+	}
 
-    public void setNice(int nice) {
-        this.nice = nice;
-    }
+	public void setNice(int nice) {
+		this.nice = nice;
+	}
 
 }

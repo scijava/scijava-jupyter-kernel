@@ -21,6 +21,7 @@ package org.scijava.jupyter.kernel.evaluator;
 
 import com.twosigma.beakerx.jvm.object.SimpleEvaluationObject;
 import com.twosigma.beakerx.mimetype.MIMEContainer;
+
 import java.io.Reader;
 import java.io.StringReader;
 import java.lang.reflect.Field;
@@ -49,128 +50,127 @@ import org.scijava.util.ClassUtils;
 
 public class Worker implements Runnable {
 
-    @Parameter
-    private LogService log;
+	@Parameter
+	private LogService log;
 
-    @Parameter
-    private Context context;
+	@Parameter
+	private Context context;
 
-    @Parameter
-    private PluginService pluginService;
+	@Parameter
+	private PluginService pluginService;
 
-    @Parameter
-    private ConvertService convertService;
+	@Parameter
+	private ConvertService convertService;
 
-    private final Map<String, ScriptEngine> scriptEngines;
-    private final Map<String, ScriptLanguage> scriptLanguages;
-    private String languageName;
+	private final Map<String, ScriptEngine> scriptEngines;
+	private final Map<String, ScriptLanguage> scriptLanguages;
+	private String languageName;
 
-    SimpleEvaluationObject seo = null;
-    String code = null;
+	SimpleEvaluationObject seo = null;
+	String code = null;
 
-    Worker(Context context, Map<String, ScriptEngine> scriptEngines, Map<String, ScriptLanguage> scriptLanguages) {
-	context.inject(this);
-	this.scriptEngines = scriptEngines;
-	this.scriptLanguages = scriptLanguages;
-    }
-
-    public void setup(SimpleEvaluationObject seo, String code, String languageName) {
-	this.seo = seo;
-	this.code = code;
-	this.languageName = languageName;
-    }
-
-    @Override
-    public void run() {
-
-	ScriptLanguage scriptLanguage = this.scriptLanguages.get(this.languageName);
-	ScriptEngine scriptEngine = this.scriptEngines.get(this.languageName);
-
-	final Reader input = new StringReader(this.code);
-	final ScriptInfo info = new ScriptInfo(context, "dummy.py", input);
-	this.seo.setOutputHandler();
-
-	try {
-	    // create the ScriptModule instance
-	    final ScriptModule module = info.createModule();
-	    context.inject(module);
-	    module.setLanguage(scriptLanguage);
-
-	    // HACK: Inject our cached script engine instance, rather
-	    // than letting the ScriptModule instance create its own.
-	    final Field f = ClassUtils.getField(ScriptModule.class, "scriptEngine");
-	    ClassUtils.setValue(f, module, scriptEngine);
-
-	    // execute the code
-	    final List<PreprocessorPlugin> pre = pluginService.createInstancesOfType(PreprocessorPlugin.class);
-	    final List<PostprocessorPlugin> post = pluginService.createInstancesOfType(PostprocessorPlugin.class);
-	    final ModuleRunner runner = new ModuleRunner(context, module, pre, post);
-	    runner.run();
-
-	    // accumulate the outputs into an ordered map
-	    final Map<String, Object> outputTable = new LinkedHashMap<>();
-	    info.outputs().forEach(output -> {
-		final String name = output.getName();
-		final Object value = output.getValue(module);
-		if (value != null) {
-		    outputTable.put(name, value);
-		}
-	    });
-
-	    // convert result into a notebook-friendly form
-	    Object output = null;
-	    try {
-		if (outputTable.size() == 0) {
-		    output = null;
-
-		} else if (outputTable.size() == 1) {
-		    output = outputTable.values().toArray()[0];
-		    if (!(output instanceof MIMEContainer)) {
-			output = convertService.convert(output, NotebookOutput.class);
-			if (output == null) {
-			    log.warn("[WARNING] No suitable converter found");
-			    output = outputTable.values().toArray()[0];
-			}
-		    }
-
-		} else {
-		    output = convertService.convert(outputTable,
-			    NotebookOutput.class);
-		    if (output == null) {
-			log.warn("[WARNING] No suitable converter found");
-			output = outputTable;
-		    }
-		}
-	    } catch (Exception e) {
-		e.printStackTrace();
-		output = "[ERROR]";
-	    } finally {
-		this.seo.finished(output);
-	    }
-
-	    this.syncBindings(scriptEngine, scriptLanguage);
-	} catch (final ThreadDeath ex) {
-	    seo.error("Execution canceled");
-	    log.error(ex);
-	} catch (final ModuleException t) {
-	    seo.error(t.getMessage());
-	    log.error(t);
+	Worker(Context context, Map<String, ScriptEngine> scriptEngines, Map<String, ScriptLanguage> scriptLanguages) {
+		context.inject(this);
+		this.scriptEngines = scriptEngines;
+		this.scriptLanguages = scriptLanguages;
 	}
 
-	this.seo.clrOutputHandler();
-	this.seo.executeCodeCallback();
-    }
+	public void setup(SimpleEvaluationObject seo, String code, String languageName) {
+		this.seo = seo;
+		this.code = code;
+		this.languageName = languageName;
+	}
 
-    private void syncBindings(ScriptEngine scriptEngine, ScriptLanguage scriptLanguage) {
+	@Override
+	public void run() {
 
-	Bindings currentBindings = scriptEngine.getBindings(ScriptContext.ENGINE_SCOPE);
-	this.scriptEngines.forEach((String name, ScriptEngine engine) -> {
-	    Bindings bindings = engine.getBindings(ScriptContext.ENGINE_SCOPE);
-	    currentBindings.keySet().forEach((String key) -> {
-		bindings.put(key, scriptLanguage.decode(currentBindings.get(key)));
-	    });
-	});
+		ScriptLanguage scriptLanguage = this.scriptLanguages.get(this.languageName);
+		ScriptEngine scriptEngine = this.scriptEngines.get(this.languageName);
 
-    }
+		final Reader input = new StringReader(this.code);
+		final ScriptInfo info = new ScriptInfo(context, "dummy.py", input);
+		this.seo.setOutputHandler();
+
+		try {
+			// create the ScriptModule instance
+			final ScriptModule module = info.createModule();
+			context.inject(module);
+			module.setLanguage(scriptLanguage);
+
+			// HACK: Inject our cached script engine instance, rather
+			// than letting the ScriptModule instance create its own.
+			final Field f = ClassUtils.getField(ScriptModule.class, "scriptEngine");
+			ClassUtils.setValue(f, module, scriptEngine);
+
+			// execute the code
+			final List<PreprocessorPlugin> pre = pluginService.createInstancesOfType(PreprocessorPlugin.class);
+			final List<PostprocessorPlugin> post = pluginService.createInstancesOfType(PostprocessorPlugin.class);
+			final ModuleRunner runner = new ModuleRunner(context, module, pre, post);
+			runner.run();
+
+			// accumulate the outputs into an ordered map
+			final Map<String, Object> outputTable = new LinkedHashMap<>();
+			info.outputs().forEach(output -> {
+				final String name = output.getName();
+				final Object value = output.getValue(module);
+				if (value != null) {
+					outputTable.put(name, value);
+				}
+			});
+
+			// convert result into a notebook-friendly form
+			Object output = null;
+			try {
+				if (outputTable.size() == 0) {
+					output = null;
+
+				} else if (outputTable.size() == 1) {
+					output = outputTable.values().toArray()[0];
+					if (!(output instanceof MIMEContainer)) {
+						output = convertService.convert(output, NotebookOutput.class);
+						if (output == null) {
+							log.warn("[WARNING] No suitable converter found");
+							output = outputTable.values().toArray()[0];
+						}
+					}
+
+				} else {
+					output = convertService.convert(outputTable, NotebookOutput.class);
+					if (output == null) {
+						log.warn("[WARNING] No suitable converter found");
+						output = outputTable;
+					}
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+				output = "[ERROR]";
+			} finally {
+				this.seo.finished(output);
+			}
+
+			this.syncBindings(scriptEngine, scriptLanguage);
+		} catch (final ThreadDeath ex) {
+			seo.error("Execution canceled");
+			log.error(ex);
+		} catch (final ModuleException t) {
+			seo.error(t.getMessage());
+			log.error(t);
+		}
+
+		this.seo.clrOutputHandler();
+		this.seo.executeCodeCallback();
+	}
+
+	private void syncBindings(ScriptEngine scriptEngine, ScriptLanguage scriptLanguage) {
+
+		Bindings currentBindings = scriptEngine.getBindings(ScriptContext.ENGINE_SCOPE);
+		this.scriptEngines.forEach((String name, ScriptEngine engine) -> {
+			Bindings bindings = engine.getBindings(ScriptContext.ENGINE_SCOPE);
+			currentBindings.keySet().forEach((String key) -> {
+				bindings.put(key, scriptLanguage.decode(currentBindings.get(key)));
+			});
+		});
+
+	}
 
 }

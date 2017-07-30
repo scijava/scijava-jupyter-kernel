@@ -44,43 +44,43 @@ import org.scijava.script.ScriptModule;
  */
 public class TestAnnotations {
 
-    public static void main(final String[] args) throws ScriptException {
-        ImageJ ij = Main.launch(args);
-        
-        String code = "#@LogService log\n#@ImageJ ij\nprint('log')\nprint('jjjj')";
-        final Reader input = new StringReader(code);
+	public static void main(final String[] args) throws ScriptException {
+		ImageJ ij = Main.launch(args);
 
-        ScriptInfo info = new ScriptInfo(ij.context(), "dummy.py", input);
-        final String path = info.getPath();
+		String code = "#@LogService log\n#@ImageJ ij\nprint('log')\nprint('jjjj')";
+		final Reader input = new StringReader(code);
 
-        List<? extends PreprocessorPlugin> pre = ij.plugin().createInstancesOfType(PreprocessorPlugin.class);
-        List<? extends PostprocessorPlugin> post = ij.plugin().createInstancesOfType(PostprocessorPlugin.class);
+		ScriptInfo info = new ScriptInfo(ij.context(), "dummy.py", input);
+		final String path = info.getPath();
 
-        ScriptLanguage scriptLanguage = ij.script().getLanguageByName("jython");
-        ScriptEngine scriptEngine = scriptLanguage.getScriptEngine();
+		List<? extends PreprocessorPlugin> pre = ij.plugin().createInstancesOfType(PreprocessorPlugin.class);
+		List<? extends PostprocessorPlugin> post = ij.plugin().createInstancesOfType(PostprocessorPlugin.class);
 
-        ScriptModule module;
-        module = new ScriptModule(info);
-        ij.context().inject(module);
-        module.setLanguage(scriptLanguage);
+		ScriptLanguage scriptLanguage = ij.script().getLanguageByName("jython");
+		ScriptEngine scriptEngine = scriptLanguage.getScriptEngine();
 
-        for (final ModulePreprocessor p : pre) {
-            p.process(module);
-        }
+		ScriptModule module;
+		module = new ScriptModule(info);
+		ij.context().inject(module);
+		module.setLanguage(scriptLanguage);
 
-        ij.log().info(module);
-        ij.log().info(module.getInputs());
-        
-        for (final ModuleItem<?> item : info.inputs()) {
-            final String name = item.getName();
-            ij.log().info(name);
-            scriptEngine.put(name, module.getInput(name));
-        }
-        
-        scriptEngine.eval(code);
-        
-        //ij.module().run(module, true);
+		for (final ModulePreprocessor p : pre) {
+			p.process(module);
+		}
 
-    }
+		ij.log().info(module);
+		ij.log().info(module.getInputs());
+
+		for (final ModuleItem<?> item : info.inputs()) {
+			final String name = item.getName();
+			ij.log().info(name);
+			scriptEngine.put(name, module.getInput(name));
+		}
+
+		scriptEngine.eval(code);
+
+		// ij.module().run(module, true);
+
+	}
 
 }

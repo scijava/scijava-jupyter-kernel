@@ -36,26 +36,24 @@ import ij.ImagePlus;
  * @author Alison Walter
  */
 @Plugin(type = Converter.class)
-public class ImagePlusToPNGNotebookConverter extends
-    NotebookOutputConverter<ImagePlus, PNGImageNotebookOutput>
-{
-    @Parameter
-    private LogService log;
+public class ImagePlusToPNGNotebookConverter extends NotebookOutputConverter<ImagePlus, PNGImageNotebookOutput> {
+	@Parameter
+	private LogService log;
 
-    @Override
-    public Class<ImagePlus> getInputType() {
-        return ImagePlus.class;
-    }
+	@Override
+	public Class<ImagePlus> getInputType() {
+		return ImagePlus.class;
+	}
 
-    @Override
-    public Class<PNGImageNotebookOutput> getOutputType() {
-        return PNGImageNotebookOutput.class;
-    }
+	@Override
+	public Class<PNGImageNotebookOutput> getOutputType() {
+		return PNGImageNotebookOutput.class;
+	}
 
-    @Override
-    public PNGImageNotebookOutput convert(final Object object) {
-        final ImagePlus imgPlus = (ImagePlus) object;
-        final String base64Image = NotebookConverters.toPNG(imgPlus.getBufferedImage());
-        return new PNGImageNotebookOutput(base64Image);
-    }
+	@Override
+	public PNGImageNotebookOutput convert(final Object object) {
+		final ImagePlus imgPlus = (ImagePlus) object;
+		final String base64Image = NotebookConverters.toPNG(imgPlus.getBufferedImage());
+		return new PNGImageNotebookOutput(base64Image);
+	}
 }

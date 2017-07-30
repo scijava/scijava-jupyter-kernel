@@ -20,7 +20,6 @@
 
 package org.scijava.jupyter.kernel.handler;
 
-
 import static com.twosigma.beakerx.handler.KernelHandlerWrapper.wrapBusyIdle;
 import static com.twosigma.beakerx.kernel.msg.JupyterMessages.KERNEL_INFO_REPLY;
 
@@ -40,50 +39,50 @@ import java.util.List;
  */
 public class ScijavaKernelInfoHandler extends KernelHandler<Message> {
 
-    public ScijavaKernelInfoHandler(KernelFunctionality kernel) {
-        super(kernel);
-    }
+	public ScijavaKernelInfoHandler(KernelFunctionality kernel) {
+		super(kernel);
+	}
 
-    @Override
-    public void handle(Message message) {
-        wrapBusyIdle(kernel, message, () -> {
-            handleMsg(message);
-        });
-    }
+	@Override
+	public void handle(Message message) {
+		wrapBusyIdle(kernel, message, () -> {
+			handleMsg(message);
+		});
+	}
 
-    private void handleMsg(Message message) {
+	private void handleMsg(Message message) {
 
-        Message reply = new Message();
+		Message reply = new Message();
 
-        HashMap<String, Serializable> map = new HashMap<>(6);
-        map.put("protocol_version", "5.0");
-        map.put("implementation", "scijava");
-        map.put("implementation_version", "1.0");
+		HashMap<String, Serializable> map = new HashMap<>(6);
+		map.put("protocol_version", "5.0");
+		map.put("implementation", "scijava");
+		map.put("implementation_version", "1.0");
 
-        HashMap<String, Serializable> map1 = new HashMap<>(7);
-        map1.put("name", "scijava");
-        map1.put("version", "1.0");
-        map1.put("mimetype", "");
-        map1.put("file_extension", "");
-        map1.put("pygments_lexer", "groovy");
-        map1.put("codemirror_mode", "groovy");
-        map1.put("nbconverter_exporter", "");
+		HashMap<String, Serializable> map1 = new HashMap<>(7);
+		map1.put("name", "scijava");
+		map1.put("version", "1.0");
+		map1.put("mimetype", "");
+		map1.put("file_extension", "");
+		map1.put("pygments_lexer", "groovy");
+		map1.put("codemirror_mode", "groovy");
+		map1.put("nbconverter_exporter", "");
 
-        map.put("language_info", map1);
-        String banner = "SciJava Jupyter Kernel v" + getClass().getPackage().getSpecificationVersion() + " | ";
-        map.put("banner", banner);
-        map.put("beakerx", true);
+		map.put("language_info", map1);
+		String banner = "SciJava Jupyter Kernel v" + getClass().getPackage().getSpecificationVersion() + " | ";
+		map.put("banner", banner);
+		map.put("beakerx", true);
 
-        List<String> helpLinks = new ArrayList<>();
-        helpLinks.add("https://imagej.net/Jupyter");
-        helpLinks.add("https://github.com/scijava/scijava-jupyter-kernel");
-        map.put("help_links", (Serializable) helpLinks);
+		List<String> helpLinks = new ArrayList<>();
+		helpLinks.add("https://imagej.net/Jupyter");
+		helpLinks.add("https://github.com/scijava/scijava-jupyter-kernel");
+		map.put("help_links", (Serializable) helpLinks);
 
-        reply.setContent(map);
-        reply.setHeader(new Header(KERNEL_INFO_REPLY, message.getHeader().getSession()));
-        reply.setParentHeader(message.getHeader());
-        reply.setIdentities(message.getIdentities());
-        send(reply);
-    }
+		reply.setContent(map);
+		reply.setHeader(new Header(KERNEL_INFO_REPLY, message.getHeader().getSession()));
+		reply.setParentHeader(message.getHeader());
+		reply.setIdentities(message.getIdentities());
+		send(reply);
+	}
 
 }

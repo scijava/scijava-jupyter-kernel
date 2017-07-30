@@ -23,12 +23,12 @@ import java.util.Arrays;
  */
 public class EncodingSort extends EncodingSingleValue {
 
-    public EncodingSort() {
-        this.allowedValues = Arrays.asList("ascending", "descending");
-    }
+	public EncodingSort() {
+		this.allowedValues = Arrays.asList("ascending", "descending");
+	}
 
-    public EncodingSort(String timeUnit) throws Exception {
-        this.setValue(timeUnit);
-    }
+	public EncodingSort(String timeUnit) throws Exception {
+		this.setValue(timeUnit);
+	}
 
 }

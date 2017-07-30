@@ -31,51 +31,48 @@ import org.scijava.plugin.Plugin;
 
 @Plugin(type = Converter.class)
 public class TableToHTMLNotebookConverter<C extends Column<? extends T>, T>
-    extends HTMLNotebookOutputConverter<Table<C, T>, HTMLTableNotebookOutput>
-{
+		extends HTMLNotebookOutputConverter<Table<C, T>, HTMLTableNotebookOutput> {
 
-    @Override
-    @SuppressWarnings({ "rawtypes", "unchecked" })
-    public Class<Table<C, T>> getInputType() {
-        return (Class) Table.class;
-    }
+	@Override
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public Class<Table<C, T>> getInputType() {
+		return (Class) Table.class;
+	}
 
-    @Override
-    public Class<HTMLTableNotebookOutput> getOutputType() {
-        return HTMLTableNotebookOutput.class;
-    }
+	@Override
+	public Class<HTMLTableNotebookOutput> getOutputType() {
+		return HTMLTableNotebookOutput.class;
+	}
 
-    @Override
-    public HTMLTableNotebookOutput convert(final Object object) {
+	@Override
+	public HTMLTableNotebookOutput convert(final Object object) {
 
-        @SuppressWarnings("unchecked")
-        final Table<C, T> table = (Table<C, T>) object;
-        boolean rowLabels = false;
+		@SuppressWarnings("unchecked")
+		final Table<C, T> table = (Table<C, T>) object;
+		boolean rowLabels = false;
 
-        // Start table and add extra heading column in case there's row headings
-        String htmlTable = HTMLTableBuilder.startTable();
-        htmlTable += HTMLTableBuilder.appendRowLabelHeading();
+		// Start table and add extra heading column in case there's row headings
+		String htmlTable = HTMLTableBuilder.startTable();
+		htmlTable += HTMLTableBuilder.appendRowLabelHeading();
 
-        // Add headings
-        for (int i = 0; i < table.getColumnCount(); i++) {
-            htmlTable += HTMLTableBuilder.appendHeadings(asHTML(table
-                .getColumnHeader(i)), i == table.getColumnCount() - 1);
-        }
+		// Add headings
+		for (int i = 0; i < table.getColumnCount(); i++) {
+			htmlTable += HTMLTableBuilder.appendHeadings(asHTML(table.getColumnHeader(i)),
+					i == table.getColumnCount() - 1);
+		}
 
-        // Add data
-        for (int i = 0; i < table.getRowCount(); i++) {
-            if (table.getRowHeader(i) != null) rowLabels = true;
-            htmlTable += HTMLTableBuilder.appendRowLabelData(table.getRowHeader(
-                i));
-            for (int j = 0; j < table.getColumnCount(); j++) {
-                htmlTable += HTMLTableBuilder.appendData(asHTML(table.get(j,
-                    i)), false, j == table.getColumnCount());
-            }
-        }
-        htmlTable += HTMLTableBuilder.endTable();
+		// Add data
+		for (int i = 0; i < table.getRowCount(); i++) {
+			if (table.getRowHeader(i) != null)
+				rowLabels = true;
+			htmlTable += HTMLTableBuilder.appendRowLabelData(table.getRowHeader(i));
+			for (int j = 0; j < table.getColumnCount(); j++) {
+				htmlTable += HTMLTableBuilder.appendData(asHTML(table.get(j, i)), false, j == table.getColumnCount());
+			}
+		}
+		htmlTable += HTMLTableBuilder.endTable();
 
-        return new HTMLTableNotebookOutput(HTMLTableBuilder.getTableStyle(
-            rowLabels) + htmlTable);
-    }
+		return new HTMLTableNotebookOutput(HTMLTableBuilder.getTableStyle(rowLabels) + htmlTable);
+	}
 
 }

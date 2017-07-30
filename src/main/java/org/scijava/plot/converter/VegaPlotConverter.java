@@ -20,38 +20,38 @@
 
 package org.scijava.plot.converter;
 
-import groovy.json.JsonSlurper;
 import org.scijava.Priority;
-import org.scijava.notebook.converter.*;
 import org.scijava.convert.Converter;
+import org.scijava.notebook.converter.NotebookOutputConverter;
 import org.scijava.plot.PlotService;
 import org.scijava.plot.specification.VegaPlot;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
+import groovy.json.JsonSlurper;
+
 @Plugin(type = Converter.class, priority = Priority.HIGH_PRIORITY)
-public class VegaPlotConverter
-        extends NotebookOutputConverter<VegaPlot, VegaPlotOutput> {
-    
-    @Parameter
-    private PlotService plt;
+public class VegaPlotConverter extends NotebookOutputConverter<VegaPlot, VegaPlotOutput> {
 
-    @Override
-    public Class<VegaPlot> getInputType() {
-        return VegaPlot.class;
-    }
+	@Parameter
+	private PlotService plt;
 
-    @Override
-    public Class<VegaPlotOutput> getOutputType() {
-        return VegaPlotOutput.class;
-    }
+	@Override
+	public Class<VegaPlot> getInputType() {
+		return VegaPlot.class;
+	}
 
-    @Override
-    public VegaPlotOutput convert(Object plot) {
-        String jsonString = plt.toJson((VegaPlot) plot);
-        JsonSlurper jsonSlurper = new JsonSlurper();
-        Object json = jsonSlurper.parseText(jsonString);
-        return new VegaPlotOutput(json);
-    }
+	@Override
+	public Class<VegaPlotOutput> getOutputType() {
+		return VegaPlotOutput.class;
+	}
+
+	@Override
+	public VegaPlotOutput convert(Object plot) {
+		String jsonString = plt.toJson((VegaPlot) plot);
+		JsonSlurper jsonSlurper = new JsonSlurper();
+		Object json = jsonSlurper.parseText(jsonString);
+		return new VegaPlotOutput(json);
+	}
 
 }

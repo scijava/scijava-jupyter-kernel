@@ -33,35 +33,35 @@ import org.scijava.plugin.Plugin;
 
 @Plugin(type = Converter.class)
 public class RAIToPNGNotebookConverter<T extends RealType<T>>
-        extends NotebookOutputConverter<RandomAccessibleInterval<T>, PNGImageNotebookOutput> {
+		extends NotebookOutputConverter<RandomAccessibleInterval<T>, PNGImageNotebookOutput> {
 
-    @Parameter
-    private ImageJNotebookService ijnb;
+	@Parameter
+	private ImageJNotebookService ijnb;
 
-    @Override
-    @SuppressWarnings({ "rawtypes", "unchecked" })
-    public Class<RandomAccessibleInterval<T>> getInputType() {
-        return (Class) RandomAccessibleInterval.class;
-    }
+	@Override
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public Class<RandomAccessibleInterval<T>> getInputType() {
+		return (Class) RandomAccessibleInterval.class;
+	}
 
-    @Override
-    public Class<PNGImageNotebookOutput> getOutputType() {
-        return PNGImageNotebookOutput.class;
-    }
+	@Override
+	public Class<PNGImageNotebookOutput> getOutputType() {
+		return PNGImageNotebookOutput.class;
+	}
 
-    @Override
-    public PNGImageNotebookOutput convert(Object object) {
+	@Override
+	public PNGImageNotebookOutput convert(Object object) {
 
-        RandomAccessibleInterval<T> source = (RandomAccessibleInterval<T>) object;
+		RandomAccessibleInterval<T> source = (RandomAccessibleInterval<T>) object;
 
-        // NB: Assume <=3 samples in the 3rd dimension means channels. Of course,
-        // we have no metadata with a vanilla RAI, but this is a best guess;
-        // 3rd dimensions with >3 samples are probably something like Z or time.
-        final int cAxis = source.numDimensions() > 2 && source.dimension(2) <= 3 ? 2 : -1;
+		// NB: Assume <=3 samples in the 3rd dimension means channels. Of course,
+		// we have no metadata with a vanilla RAI, but this is a best guess;
+		// 3rd dimensions with >3 samples are probably something like Z or time.
+		final int cAxis = source.numDimensions() > 2 && source.dimension(2) <= 3 ? 2 : -1;
 
-        String base64Image = (String) ijnb.RAIToPNG(source, 0, 1, cAxis, ValueScaling.AUTO);
+		String base64Image = (String) ijnb.RAIToPNG(source, 0, 1, cAxis, ValueScaling.AUTO);
 
-        return new PNGImageNotebookOutput(base64Image);
-    }
+		return new PNGImageNotebookOutput(base64Image);
+	}
 
 }

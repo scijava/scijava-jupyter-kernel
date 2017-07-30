@@ -30,20 +30,20 @@ import org.scijava.script.ScriptService;
  */
 public class TestInstallKernel {
 
-    public static void main(String... args) {
+	public static void main(String... args) {
 
-        String pythonBinaryPath = "/home/hadim/local/conda/bin/python";
+		String pythonBinaryPath = "/home/hadim/local/conda/bin/python";
 
-        Context context = new Context();
-        JupyterService jupyter = context.service(JupyterService.class);
-        ScriptService scriptService = context.service(ScriptService.class);
-        
-        //jupyter.installKernel("groovy", "info", pythonBinaryPath);
-        
-        System.out.println(scriptService.getLanguages());
-        
-        context.dispose();
+		Context context = new Context();
+		JupyterService jupyter = context.service(JupyterService.class);
+		ScriptService scriptService = context.service(ScriptService.class);
 
-    }
+		// jupyter.installKernel("groovy", "info", pythonBinaryPath);
+
+		System.out.println(scriptService.getLanguages());
+
+		context.dispose();
+
+	}
 
 }

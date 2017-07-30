@@ -26,26 +26,24 @@ import org.scijava.notebook.converter.output.HTMLNotebookOutput;
 import org.scijava.plugin.Plugin;
 
 @Plugin(type = Converter.class)
-public class ObjectToHTMLNotebookConverter extends
-    NotebookOutputConverter<Object, HTMLNotebookOutput>
-{
+public class ObjectToHTMLNotebookConverter extends NotebookOutputConverter<Object, HTMLNotebookOutput> {
 
-    @Override
-    public Class<Object> getInputType() {
-        return Object.class;
-    }
+	@Override
+	public Class<Object> getInputType() {
+		return Object.class;
+	}
 
-    @Override
-    public Class<HTMLNotebookOutput> getOutputType() {
-        return HTMLNotebookOutput.class;
-    }
+	@Override
+	public Class<HTMLNotebookOutput> getOutputType() {
+		return HTMLNotebookOutput.class;
+	}
 
-    @Override
-    public HTMLNotebookOutput convert(final Object object) {
-        final String escaped = StringEscapeUtils.escapeHtml4(object.toString());
-        // Add in zero width space character (&#8203;) before @, ., $, _, and #
-        final String wordBreaks = escaped.replaceAll("([@.$_#])", "&#8203;$1");
-        return new HTMLNotebookOutput(wordBreaks);
-    }
+	@Override
+	public HTMLNotebookOutput convert(final Object object) {
+		final String escaped = StringEscapeUtils.escapeHtml4(object.toString());
+		// Add in zero width space character (&#8203;) before @, ., $, _, and #
+		final String wordBreaks = escaped.replaceAll("([@.$_#])", "&#8203;$1");
+		return new HTMLNotebookOutput(wordBreaks);
+	}
 
 }

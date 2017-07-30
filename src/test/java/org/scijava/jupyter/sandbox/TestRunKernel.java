@@ -29,13 +29,14 @@ import org.scijava.jupyter.service.JupyterService;
  */
 public class TestRunKernel {
 
-    public static void main(final String[] args) {
+	public static void main(final String[] args) {
 
-        // Warning : if run from your IDE the classpath won't be set to your Fiji installation
-        Context context = new Context();
-        JupyterService jupyter = context.service(JupyterService.class);
-        jupyter.runKernel("jython", "info", "");
-        context.dispose();
-    }
+		// Warning : if run from your IDE the classpath won't be set to your Fiji
+		// installation
+		Context context = new Context();
+		JupyterService jupyter = context.service(JupyterService.class);
+		jupyter.runKernel("jython", "info", "");
+		context.dispose();
+	}
 
 }

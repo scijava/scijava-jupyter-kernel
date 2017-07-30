@@ -37,17 +37,17 @@ import org.scijava.plugin.Parameter;
  */
 public class NotebookConverters {
 
-    @Parameter
-    private static LogService log;
+	@Parameter
+	private static LogService log;
 
-    // TODO: Move this further upstream, possible in SciJava AWT?
-    public static String toPNG(BufferedImage bi) {
-        final ByteArrayOutputStream os = new ByteArrayOutputStream();
-        try {
-            ImageIO.write(bi, "PNG", os);
-        } catch (IOException ex) {
-            log.error(ex);
-        }
-        return Base64.getEncoder().encodeToString(os.toByteArray());
-    }
+	// TODO: Move this further upstream, possible in SciJava AWT?
+	public static String toPNG(BufferedImage bi) {
+		final ByteArrayOutputStream os = new ByteArrayOutputStream();
+		try {
+			ImageIO.write(bi, "PNG", os);
+		} catch (IOException ex) {
+			log.error(ex);
+		}
+		return Base64.getEncoder().encodeToString(os.toByteArray());
+	}
 }

@@ -35,87 +35,85 @@ import org.scijava.plugin.Plugin;
  * number of columns the table has.
  *
  * @author Alison Walter
- * @param <K> data type of keys
- * @param <V> data type of values
+ * @param <K>
+ *            data type of keys
+ * @param <V>
+ *            data type of values
  */
 @Plugin(type = Converter.class)
-public class ListMapToHTMLTableNotebookConverter<K, V> extends
-    HTMLNotebookOutputConverter<List<Map<K, V>>, HTMLTableNotebookOutput>
-{
+public class ListMapToHTMLTableNotebookConverter<K, V>
+		extends HTMLNotebookOutputConverter<List<Map<K, V>>, HTMLTableNotebookOutput> {
 
-    @Override
-    @SuppressWarnings({ "rawtypes", "unchecked" })
-    public Class<List<Map<K, V>>> getInputType() {
-        return (Class) List.class;
-    }
+	@Override
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public Class<List<Map<K, V>>> getInputType() {
+		return (Class) List.class;
+	}
 
-    @Override
-    public Class<HTMLTableNotebookOutput> getOutputType() {
-        return HTMLTableNotebookOutput.class;
-    }
+	@Override
+	public Class<HTMLTableNotebookOutput> getOutputType() {
+		return HTMLTableNotebookOutput.class;
+	}
 
-    @Override
-    public boolean canConvert(final ConversionRequest request) {
-        final Object src = request.sourceObject();
-        if (src != null && src instanceof List && ((List<?>) src).get(
-            0) instanceof Map)
-        {
-            return super.canConvert(request);
-        }
-        return false;
+	@Override
+	public boolean canConvert(final ConversionRequest request) {
+		final Object src = request.sourceObject();
+		if (src != null && src instanceof List && ((List<?>) src).get(0) instanceof Map) {
+			return super.canConvert(request);
+		}
+		return false;
 
-    }
+	}
 
-    @Override
-    public boolean canConvert(final Object src, final Type dest) {
-        if (src == null) return false;
-        if (src instanceof List && ((List<?>)src).get(0) instanceof Map) {
-            final Class<?> srcClass = src.getClass();
-            return super.canConvert(srcClass, dest);
-        }
-        return false;
-    }
+	@Override
+	public boolean canConvert(final Object src, final Type dest) {
+		if (src == null)
+			return false;
+		if (src instanceof List && ((List<?>) src).get(0) instanceof Map) {
+			final Class<?> srcClass = src.getClass();
+			return super.canConvert(srcClass, dest);
+		}
+		return false;
+	}
 
-    @Override
-    public boolean canConvert(final Object src, final Class<?> dest) {
-        if (src == null) return false;
-        if (src instanceof List && ((List<?>)src).get(0) instanceof Map) {
-            final Class<?> srcClass = src.getClass();
-            return super.canConvert(srcClass, dest);
-        }
-        return false;
-    }
+	@Override
+	public boolean canConvert(final Object src, final Class<?> dest) {
+		if (src == null)
+			return false;
+		if (src instanceof List && ((List<?>) src).get(0) instanceof Map) {
+			final Class<?> srcClass = src.getClass();
+			return super.canConvert(srcClass, dest);
+		}
+		return false;
+	}
 
-    @Override
-    public HTMLTableNotebookOutput convert(final Object object) {
-        @SuppressWarnings("unchecked")
-        final List<Map<K, V>> table = (List<Map<K, V>>) object;
+	@Override
+	public HTMLTableNotebookOutput convert(final Object object) {
+		@SuppressWarnings("unchecked")
+		final List<Map<K, V>> table = (List<Map<K, V>>) object;
 
-        String htmlTable = HTMLTableBuilder.startTable();
-        final Object[] headers = table.get(0).keySet().toArray();
-        final int numCols = headers.length;
+		String htmlTable = HTMLTableBuilder.startTable();
+		final Object[] headers = table.get(0).keySet().toArray();
+		final int numCols = headers.length;
 
-        // Add column headers
-        for (int i = 0; i < numCols; i++) {
-            htmlTable += HTMLTableBuilder.appendHeadings(asHTML(headers[i]),
-                i == numCols - 1);
-        }
+		// Add column headers
+		for (int i = 0; i < numCols; i++) {
+			htmlTable += HTMLTableBuilder.appendHeadings(asHTML(headers[i]), i == numCols - 1);
+		}
 
-        // Append the rows
-        for (int i = 0; i < table.size(); i++) {
-            for (int j = 0; j < numCols; j++) {
-                final Map<?, ?> row = table.get(i);
-                if (row.containsKey(headers[j])) htmlTable += HTMLTableBuilder
-                    .appendData(asHTML(row.get(headers[j])), j == 0,
-                        j == numCols - 1);
-                else htmlTable += HTMLTableBuilder.appendData("&nbsp;", j == 0,
-                    j == numCols - 1);
-            }
-        }
-        htmlTable += HTMLTableBuilder.endTable();
+		// Append the rows
+		for (int i = 0; i < table.size(); i++) {
+			for (int j = 0; j < numCols; j++) {
+				final Map<?, ?> row = table.get(i);
+				if (row.containsKey(headers[j]))
+					htmlTable += HTMLTableBuilder.appendData(asHTML(row.get(headers[j])), j == 0, j == numCols - 1);
+				else
+					htmlTable += HTMLTableBuilder.appendData("&nbsp;", j == 0, j == numCols - 1);
+			}
+		}
+		htmlTable += HTMLTableBuilder.endTable();
 
-        return new HTMLTableNotebookOutput(HTMLTableBuilder.getTableStyle(
-            false) + htmlTable);
-    }
+		return new HTMLTableNotebookOutput(HTMLTableBuilder.getTableStyle(false) + htmlTable);
+	}
 
 }

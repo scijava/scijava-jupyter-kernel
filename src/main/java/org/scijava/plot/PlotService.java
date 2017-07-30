@@ -24,10 +24,13 @@ import org.scijava.service.SciJavaService;
  * @author hadim
  */
 public interface PlotService extends SciJavaService {
-    
-    public PlotBuilder builder();
-    public void writeJson(VegaPlot plot, String filePath);
-    public VegaPlot readJson(String jsonString);
-    public String toJson(VegaPlot plot);
-    
+
+	public PlotBuilder builder();
+
+	public void writeJson(VegaPlot plot, String filePath);
+
+	public VegaPlot readJson(String jsonString);
+
+	public String toJson(VegaPlot plot);
+
 }
