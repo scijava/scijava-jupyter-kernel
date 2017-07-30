@@ -28,158 +28,166 @@ import org.scijava.plot.specification.encoding.VegaEncoding;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class VegaPlot {
 
-    public static String SCHEMA = "https://vega.github.io/schema/vega-lite/v2.json";
+	public static String SCHEMA = "https://vega.github.io/schema/vega-lite/v2.json";
 
-    @JsonProperty("$schema")
-    private String schema = SCHEMA;
+	@JsonProperty("$schema")
+	private String schema = SCHEMA;
 
-    @JsonProperty
-    private String background;
+	@JsonProperty
+	private String background;
 
-    @JsonProperty
-    private Integer padding;
+	@JsonProperty
+	private Integer padding;
 
-    @JsonProperty
-    private Boolean autoResize;
+	@JsonProperty
+	private Boolean autoResize;
 
-    @JsonProperty
-    private VegaConfig config;
+	@JsonProperty
+	private String name;
 
-    @JsonProperty
-    private String name;
+	@JsonProperty
+	private String description;
 
-    @JsonProperty
-    private String description;
+	@JsonProperty
+	private Integer width;
 
-    @JsonProperty
-    private Integer width;
+	@JsonProperty
+	private Integer height;
 
-    @JsonProperty
-    private Integer height;
+	@JsonProperty
+	private VegaConfig config;
 
-    @JsonProperty
-    private VegaData data;
+	@JsonProperty
+	private VegaData data;
 
-    @JsonProperty
-    private VegaTransforms transform;
+	@JsonProperty
+	private VegaTransforms transform;
 
-    @JsonProperty
-    private VegaSelection selection;
+	@JsonProperty
+	private VegaSelection selection;
 
-    @JsonProperty
-    private VegaMark mark;
+	@JsonProperty
+	private VegaMark mark;
 
-    @JsonProperty
-    private VegaEncoding encoding;
+	@JsonProperty
+	private VegaEncoding encoding;
 
-    public VegaPlot() {
-        this.data = new VegaData();
-        this.mark = new VegaMark();
-        this.encoding = new VegaEncoding();
-    }
+	public VegaPlot() {
+		this.data = new VegaData();
+		this.mark = new VegaMark();
+		this.encoding = new VegaEncoding();
+	}
 
-    public String getBackground() {
-        return background;
-    }
+	public String getSchema() {
+		return schema;
+	}
 
-    public void setBackground(String background) {
-        this.background = background;
-    }
+	public void setSchema(String schema) {
+		this.schema = schema;
+	}
 
-    public Integer getPadding() {
-        return padding;
-    }
+	public String getBackground() {
+		return background;
+	}
 
-    public void setPadding(int padding) {
-        this.padding = padding;
-    }
+	public void setBackground(String background) {
+		this.background = background;
+	}
 
-    public Boolean getAutoResize() {
-        return autoResize;
-    }
+	public Integer getPadding() {
+		return padding;
+	}
 
-    public void setAutoResize(Boolean autoResize) {
-        this.autoResize = autoResize;
-    }
+	public void setPadding(int padding) {
+		this.padding = padding;
+	}
 
-    public VegaConfig getConfig() {
-        return config;
-    }
+	public Boolean getAutoResize() {
+		return autoResize;
+	}
 
-    public void setConfig(VegaConfig config) {
-        this.config = config;
-    }
+	public void setAutoResize(Boolean autoResize) {
+		this.autoResize = autoResize;
+	}
 
-    public String getName() {
-        return name;
-    }
+	public VegaConfig getConfig() {
+		return config;
+	}
 
-    public void setName(String name) {
-        this.name = name;
-    }
+	public void setConfig(VegaConfig config) {
+		this.config = config;
+	}
 
-    public String getDescription() {
-        return description;
-    }
+	public String getName() {
+		return name;
+	}
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
+	public void setName(String name) {
+		this.name = name;
+	}
 
-    public Integer getWidth() {
-        return width;
-    }
+	public String getDescription() {
+		return description;
+	}
 
-    public void setWidth(Integer width) {
-        this.width = width;
-    }
+	public void setDescription(String description) {
+		this.description = description;
+	}
 
-    public Integer getHeight() {
-        return height;
-    }
+	public Integer getWidth() {
+		return width;
+	}
 
-    public void setHeight(Integer height) {
-        this.height = height;
-    }
+	public void setWidth(Integer width) {
+		this.width = width;
+	}
 
-    public VegaData getData() {
-        return data;
-    }
+	public Integer getHeight() {
+		return height;
+	}
 
-    public void setData(VegaData data) {
-        this.data = data;
-    }
+	public void setHeight(Integer height) {
+		this.height = height;
+	}
 
-    public VegaTransforms getTransform() {
-        return transform;
-    }
+	public VegaData getData() {
+		return data;
+	}
 
-    public void setTransform(VegaTransforms transform) {
-        this.transform = transform;
-    }
+	public void setData(VegaData data) {
+		this.data = data;
+	}
 
-    public VegaSelection getSelection() {
-        return selection;
-    }
+	public VegaTransforms getTransform() {
+		return transform;
+	}
 
-    public void setSelection(VegaSelection selection) {
-        this.selection = selection;
-    }
+	public void setTransform(VegaTransforms transform) {
+		this.transform = transform;
+	}
 
-    public VegaMark getMark() {
-        return mark;
-    }
+	public VegaSelection getSelection() {
+		return selection;
+	}
 
-    public void setMark(VegaMark mark) {
-        this.mark = mark;
-    }
+	public void setSelection(VegaSelection selection) {
+		this.selection = selection;
+	}
 
-    public VegaEncoding getEncoding() {
-        return encoding;
-    }
+	public VegaMark getMark() {
+		return mark;
+	}
 
-    public void setEncoding(VegaEncoding encoding) {
-        this.encoding = encoding;
-    }
+	public void setMark(VegaMark mark) {
+		this.mark = mark;
+	}
+
+	public VegaEncoding getEncoding() {
+		return encoding;
+	}
+
+	public void setEncoding(VegaEncoding encoding) {
+		this.encoding = encoding;
+	}
 
 }
