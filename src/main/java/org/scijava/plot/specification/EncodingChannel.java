@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.scijava.plot.specification.encoding;
+package org.scijava.plot.specification;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -37,19 +37,16 @@ public class EncodingChannel {
 	private String type;
 
 	@JsonProperty
-	private EncodingBin bin;
+	private String timeUnit;
 
 	@JsonProperty
-	private EncodingTimeUnit timeUnit;
+	private String aggregate;
 
 	@JsonProperty
-	private EncodingAggregate aggregate;
+	private String stack;
 
 	@JsonProperty
-	private EncodingStack stack;
-
-	@JsonProperty
-	private EncodingSort sort;
+	private String sort;
 
 	@JsonProperty
 	private String value;
@@ -65,6 +62,9 @@ public class EncodingChannel {
 	// TODO
 	@JsonProperty
 	private Boolean legend;
+
+	@JsonProperty
+	private EncodingBin bin;
 
 	private final List<String> allowedType = Arrays.asList("quantitative", "temporal", "ordinal", "nominal", "Q", "T",
 			"O", "N");
@@ -101,35 +101,35 @@ public class EncodingChannel {
 		this.bin = bin;
 	}
 
-	public EncodingTimeUnit getTimeUnit() {
+	public String getTimeUnit() {
 		return timeUnit;
 	}
 
-	public void setTimeUnit(EncodingTimeUnit timeUnit) {
+	public void setTimeUnit(String timeUnit) {
 		this.timeUnit = timeUnit;
 	}
 
-	public EncodingAggregate getAggregate() {
+	public String getAggregate() {
 		return aggregate;
 	}
 
-	public void setAggregate(EncodingAggregate aggregate) {
+	public void setAggregate(String aggregate) {
 		this.aggregate = aggregate;
 	}
 
-	public EncodingStack getStack() {
+	public String getStack() {
 		return stack;
 	}
 
-	public void setStack(EncodingStack stack) {
+	public void setStack(String stack) {
 		this.stack = stack;
 	}
 
-	public EncodingSort getSort() {
+	public String getSort() {
 		return sort;
 	}
 
-	public void setSort(EncodingSort sort) {
+	public void setSort(String sort) {
 		this.sort = sort;
 	}
 

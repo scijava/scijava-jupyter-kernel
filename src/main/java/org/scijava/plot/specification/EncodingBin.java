@@ -13,10 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.scijava.plot.specification.encoding;
+package org.scijava.plot.specification;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.util.List;
 
 /**
  *
@@ -26,90 +28,90 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class EncodingBin {
 
 	@JsonProperty
-	private int maxbins;
+	private Integer maxbins;
 
 	@JsonProperty
-	private int base;
+	private Integer base;
 
 	@JsonProperty
-	private int step;
+	private Integer step;
 
 	@JsonProperty
-	private int[] steps;
+	private List<Integer> steps;
 
 	@JsonProperty
-	private int minstep;
+	private Integer minstep;
 
 	@JsonProperty
-	private int[] divide;
+	private List<Integer> divide;
 
 	@JsonProperty
-	private int[] extent;
+	private List<Integer> extent;
 
 	@JsonProperty
-	private int nice;
+	private Integer nice;
 
-	public int getMaxbins() {
+	public Integer getMaxbins() {
 		return maxbins;
 	}
 
-	public void setMaxbins(int maxbins) {
+	public void setMaxbins(Integer maxbins) {
 		this.maxbins = maxbins;
 	}
 
-	public int getBase() {
+	public Integer getBase() {
 		return base;
 	}
 
-	public void setBase(int base) {
+	public void setBase(Integer base) {
 		this.base = base;
 	}
 
-	public int getStep() {
+	public Integer getStep() {
 		return step;
 	}
 
-	public void setStep(int step) {
+	public void setStep(Integer step) {
 		this.step = step;
 	}
 
-	public int[] getSteps() {
+	public List<Integer> getSteps() {
 		return steps;
 	}
 
-	public void setSteps(int[] steps) {
+	public void setSteps(List<Integer> steps) {
 		this.steps = steps;
 	}
 
-	public int getMinstep() {
+	public Integer getMinstep() {
 		return minstep;
 	}
 
-	public void setMinstep(int minstep) {
+	public void setMinstep(Integer minstep) {
 		this.minstep = minstep;
 	}
 
-	public int[] getDivide() {
+	public List<Integer> getDivide() {
 		return divide;
 	}
 
-	public void setDivide(int[] divide) {
+	public void setDivide(List<Integer> divide) {
 		this.divide = divide;
 	}
 
-	public int[] getExtent() {
+	public List<Integer> getExtent() {
 		return extent;
 	}
 
-	public void setExtent(int[] extent) {
+	public void setExtent(List<Integer> extent) {
 		this.extent = extent;
 	}
 
-	public int getNice() {
+	public Integer getNice() {
 		return nice;
 	}
 
-	public void setNice(int nice) {
+	public void setNice(Integer nice) {
 		this.nice = nice;
 	}
 

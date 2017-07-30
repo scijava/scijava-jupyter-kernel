@@ -15,6 +15,7 @@
  */
 package org.scijava.plot.builder;
 
+import org.scijava.plot.specification.VegaEncoding;
 import org.scijava.plot.specification.VegaPlot;
 
 /**
@@ -80,6 +81,17 @@ public class PlotBuilder {
 
 	public DataBuilder data() {
 		return new DataBuilder(this);
+	}
+	
+	public MarkBuilder mark() {
+		return new MarkBuilder(this);
+	}
+	
+	public ChannelBuilder channel(String channelName) {
+		if(plot.getEncoding() == null) {
+			plot.setEncoding(new VegaEncoding());
+		}
+		return new ChannelBuilder(this, channelName);
 	}
 
 }

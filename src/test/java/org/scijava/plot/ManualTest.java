@@ -24,8 +24,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.scijava.plot.specification.EncodingChannel;
 import org.scijava.plot.specification.VegaPlot;
-import org.scijava.plot.specification.encoding.EncodingChannel;
 
 /**
  *

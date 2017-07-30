@@ -18,8 +18,6 @@ package org.scijava.plot.specification;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import org.scijava.plot.specification.encoding.VegaEncoding;
-
 /**
  * A plot represents a Vega-Lite visualization. It contains the top-level
  * specifications defined here: https://vega.github.io/vega-lite/docs/spec.html
