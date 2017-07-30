@@ -15,8 +15,8 @@
  */
 package org.scijava.plot;
 
+import org.scijava.plot.builder.PlotBuilder;
 import org.scijava.plot.specification.VegaPlot;
-import org.scijava.plot.specification.encoding.EncodingChannel;
 import org.scijava.service.SciJavaService;
 
 /**
@@ -25,10 +25,7 @@ import org.scijava.service.SciJavaService;
  */
 public interface PlotService extends SciJavaService {
     
-    public VegaPlot newPlot();
-    public VegaPlot newPlot(String name);
-    public EncodingChannel newChannel();
-    public EncodingChannel newChannel(String field, String type);
+    public PlotBuilder builder();
     public void writeJson(VegaPlot plot, String filePath);
     public VegaPlot readJson(String jsonString);
     public String toJson(VegaPlot plot);

@@ -23,20 +23,55 @@ import org.scijava.plot.specification.VegaPlot;
  */
 public class PlotBuilder {
 
-    private final VegaPlot plot = new VegaPlot();
+	private final VegaPlot plot = new VegaPlot();
 
-    public VegaPlot build() {
-        // TODO: Check if plot contains all the required fields
-        return plot;
-    }
+	public VegaPlot build() {
+		// TODO: Check if plot contains all the required fields
+		return plot;
+	}
 
-    public VegaPlot bld() {
-        return build();
-    }
+	public VegaPlot bld() {
+		return build();
+	}
 
-    public PlotBuilder schema(String schema) {
-        plot.setSchema(schema);
-        return this;
-    }
+	public PlotBuilder schema(String schema) {
+		plot.setSchema(schema);
+		return this;
+	}
+
+	public PlotBuilder background(String background) {
+		plot.setBackground(background);
+		return this;
+	}
+
+	public PlotBuilder padding(Integer padding) {
+		plot.setPadding(padding);
+		return this;
+	}
+
+	public PlotBuilder autoResize(Boolean autoResize) {
+		plot.setAutoResize(autoResize);
+		return this;
+	}
+
+	public PlotBuilder name(String name) {
+		plot.setName(name);
+		return this;
+	}
+
+	public PlotBuilder description(String description) {
+		plot.setDescription(description);
+		return this;
+	}
+
+	public PlotBuilder width(Integer width) {
+		plot.setWidth(width);
+		return this;
+	}
+
+	public PlotBuilder height(Integer height) {
+		plot.setHeight(height);
+		return this;
+	}
 
 }

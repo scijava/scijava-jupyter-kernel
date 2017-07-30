@@ -26,9 +26,9 @@ import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.scijava.plot.builder.PlotBuilder;
 
 import org.scijava.plot.specification.VegaPlot;
-import org.scijava.plot.specification.encoding.EncodingChannel;
 import org.scijava.plugin.Plugin;
 import org.scijava.service.AbstractService;
 import org.scijava.service.Service;
@@ -44,30 +44,10 @@ public class DefaultPlotService extends AbstractService implements
         PlotService {
 
     @Override
-    public VegaPlot newPlot() {
-        return new VegaPlot();
+    public PlotBuilder builder() {
+        return new PlotBuilder();
     }
-    
-    @Override
-    public VegaPlot newPlot(String name) {
-        VegaPlot plot = new VegaPlot();
-        plot.setName(name);
-        return plot;
-    }
-    
-    @Override
-    public EncodingChannel newChannel() {
-        return new EncodingChannel();
-    }
-    
-    @Override
-    public EncodingChannel newChannel(String field, String type) {
-        EncodingChannel channel = new EncodingChannel();
-        channel.setField(field);
-        channel.setType(type);
-        return channel;
-    }
-    
+
     @Override
     public void writeJson(VegaPlot plot, String filePath) {
         try {
@@ -77,9 +57,9 @@ public class DefaultPlotService extends AbstractService implements
             Logger.getLogger(DefaultPlotService.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     @Override
-    public String toJson(VegaPlot plot) { 
+    public String toJson(VegaPlot plot) {
         try {
             ObjectMapper mapper = new ObjectMapper();
             return mapper.writeValueAsString(plot);
