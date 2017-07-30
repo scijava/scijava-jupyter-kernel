@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package Main;
+package org.scijava.plot;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.File;
@@ -35,7 +35,7 @@ public class ManualTest {
 
         VegaPlot plot = new VegaPlot();
 
-        plot.setDescription("A simple bar chart with embedded data.");
+        plot.setDescription("A simple bar hart with embedded data.");
 
         plot.getMark().setType("bar");
 

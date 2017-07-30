@@ -17,6 +17,7 @@ package org.scijava.plot.specification;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -27,94 +28,82 @@ import java.util.List;
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class VegaMark {
 
-    @JsonProperty
-    private String type;
+	@JsonProperty
+	private String type;
 
-    @JsonProperty
-    private String role;
+	@JsonProperty
+	private String role;
 
-    @JsonProperty
-    private Boolean filled;
+	@JsonProperty
+	private Boolean filled;
 
-    @JsonProperty
-    private String orient;
+	@JsonProperty
+	private String orient;
 
-    @JsonProperty
-    private String interpolate;
+	@JsonProperty
+	private String interpolate;
 
-    @JsonProperty
-    private String tension;
+	@JsonProperty
+	private String tension;
 
-    public VegaMark() {
-        this.interpolate = "";
+	public VegaMark() {
+		this.interpolate = "";
 
-    }
+	}
 
-    private final List<String> allowedInterpolate = Arrays.asList(
-            "",
-            "linear",
-            "linear-closed",
-            "step",
-            "step-before",
-            "step-after",
-            "basis",
-            "basis-open",
-            "basis-closed",
-            "cardinal",
-            "cardinal-open",
-            "cardinal-closed",
-            "bundle",
-            "monotone");
+	private final List<String> allowedInterpolate = Arrays.asList("", "linear", "linear-closed", "step", "step-before",
+			"step-after", "basis", "basis-open", "basis-closed", "cardinal", "cardinal-open", "cardinal-closed",
+			"bundle", "monotone");
 
-    public String getType() {
-        return type;
-    }
+	public String getType() {
+		return type;
+	}
 
-    public void setType(String type) {
-        this.type = type;
-    }
+	public void setType(String type) {
+		this.type = type;
+	}
 
-    public String getRole() {
-        return role;
-    }
+	public String getRole() {
+		return role;
+	}
 
-    public void setRole(String role) {
-        this.role = role;
-    }
+	public void setRole(String role) {
+		this.role = role;
+	}
 
-    public Boolean getFilled() {
-        return filled;
-    }
+	public Boolean getFilled() {
+		return filled;
+	}
 
-    public void setFilled(Boolean filled) {
-        this.filled = filled;
-    }
+	public void setFilled(Boolean filled) {
+		this.filled = filled;
+	}
 
-    public String getOrient() {
-        return orient;
-    }
+	public String getOrient() {
+		return orient;
+	}
 
-    public void setOrient(String orient) {
-        this.orient = orient;
-    }
+	public void setOrient(String orient) {
+		this.orient = orient;
+	}
 
-    public String getInterpolate() {
-        return interpolate;
-    }
+	public String getInterpolate() {
+		return interpolate;
+	}
 
-    public void setInterpolate(String interpolate) throws Exception {
-        if (!this.allowedInterpolate.contains(interpolate)) {
-            throw new Exception("'" + interpolate + "' is not allowed. Please choose in this lis: "
-                    + this.allowedInterpolate.toString());
-        }
-        this.interpolate = interpolate;
-    }
+	public void setInterpolate(String interpolate) throws Exception {
+		if (!this.allowedInterpolate.contains(interpolate)) {
+			throw new Exception("'" + interpolate + "' is not allowed. Please choose in this lis: "
+					+ this.allowedInterpolate.toString());
+		}
+		this.interpolate = interpolate;
+	}
 
-    public String getTension() {
-        return tension;
-    }
+	public String getTension() {
+		return tension;
+	}
 
-    public void setTension(String tension) {
-        this.tension = tension;
-    }
+	public void setTension(String tension) {
+		this.tension = tension;
+	}
 }

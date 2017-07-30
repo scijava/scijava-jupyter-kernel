@@ -34,6 +34,10 @@ public class PlotBuilder {
 		return build();
 	}
 
+	public VegaPlot getPlot() {
+		return this.plot;
+	}
+
 	public PlotBuilder schema(String schema) {
 		plot.setSchema(schema);
 		return this;
@@ -72,6 +76,10 @@ public class PlotBuilder {
 	public PlotBuilder height(Integer height) {
 		plot.setHeight(height);
 		return this;
+	}
+
+	public DataBuilder data() {
+		return new DataBuilder(this);
 	}
 
 }
