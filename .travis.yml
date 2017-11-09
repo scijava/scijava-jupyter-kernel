@@ -4,5 +4,3 @@ branches:
   only: master
 install: ".travis/build.sh"
 script: ".travis/test.sh"
-after_success: ".travis/notify.sh Travis-Success"
-after_failure: ".travis/notify.sh Travis-Failure"
