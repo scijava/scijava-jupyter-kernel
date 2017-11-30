@@ -21,12 +21,9 @@ package org.scijava.jupyter.kernel;
 
 import com.twosigma.beakerx.handler.KernelHandler;
 import com.twosigma.beakerx.kernel.Kernel;
-import com.twosigma.beakerx.kernel.KernelParameters;
 import com.twosigma.beakerx.kernel.KernelSocketsFactory;
 import com.twosigma.beakerx.kernel.handler.CommOpenHandler;
 import com.twosigma.beakerx.message.Message;
-import java.util.HashMap;
-import java.util.Map;
 
 import net.imagej.table.process.ResultsPostprocessor;
 
@@ -56,7 +53,6 @@ public class ScijavaKernel extends Kernel {
     private transient LogService log;
 
     private final ScijavaKernelConfigurationFile config;
-    private final ScijavaEvaluator evaluator;
 
     public ScijavaKernel(final Context context, final String id, final ScijavaEvaluator evaluator,
 	    ScijavaKernelConfigurationFile config, KernelSocketsFactory kernelSocketsFactory) {
@@ -65,7 +61,6 @@ public class ScijavaKernel extends Kernel {
 	this.context = context;
 	this.context.inject(this);
 	this.config = config;
-	this.evaluator = evaluator;
 	
 	// Don't show output when it is null
 	Kernel.showNullExecutionResult = false;
@@ -104,12 +99,6 @@ public class ScijavaKernel extends Kernel {
 		this.log.setLevel(LogService.INFO);
 		break;
 	}
-    }
-
-    @Override
-    public KernelParameters getKernelParameters() {
-	Map<String, Object> kernelParameters = new HashMap<>();
-	return new KernelParameters(kernelParameters);
     }
 
     public static void main(String... args) {

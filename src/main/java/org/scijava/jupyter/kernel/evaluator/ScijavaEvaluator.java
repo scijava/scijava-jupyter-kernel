@@ -23,10 +23,11 @@ import com.twosigma.beakerx.autocomplete.AutocompleteResult;
 import com.twosigma.beakerx.evaluator.Evaluator;
 import com.twosigma.beakerx.jvm.object.SimpleEvaluationObject;
 import com.twosigma.beakerx.kernel.Classpath;
+import com.twosigma.beakerx.kernel.EvaluatorParameters;
 import com.twosigma.beakerx.kernel.ImportPath;
 import com.twosigma.beakerx.kernel.Imports;
-import com.twosigma.beakerx.kernel.KernelParameters;
 import com.twosigma.beakerx.kernel.PathToJar;
+
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -48,6 +49,7 @@ import org.scijava.script.AutoCompletionResult;
 import org.scijava.script.ScriptLanguage;
 import org.scijava.script.ScriptService;
 import org.scijava.thread.ThreadService;
+import org.scijava.util.FileUtils;
 
 /**
  *
@@ -92,7 +94,7 @@ public class ScijavaEvaluator implements Evaluator {
     }
 
     @Override
-    public void setShellOptions(KernelParameters kp) throws IOException {
+    public void setShellOptions(EvaluatorParameters kp) throws IOException {
         log.debug("Set shell options : " + kp);
     }
 
@@ -113,7 +115,7 @@ public class ScijavaEvaluator implements Evaluator {
         if (completer != null) {
             AutoCompletionResult result = completer.autocomplete(line, index, scriptEngine);
 
-            matches = (List<String>) result.getMatches();
+            matches = result.getMatches();
             startIndex = index;
 
         } else {
@@ -253,11 +255,6 @@ public class ScijavaEvaluator implements Evaluator {
     }
 
     @Override
-    public void initKernel(KernelParameters kp) {
-        log.debug("initKernel()");
-    }
-
-    @Override
     public List<Path> addJarsToClasspath(List<PathToJar> list) {
         log.debug("addJarsToClasspath()");
         return null;
@@ -267,6 +264,30 @@ public class ScijavaEvaluator implements Evaluator {
     public boolean addJarToClasspath(PathToJar ptj) {
         log.debug("addJarToClasspath()");
         return true;
+    }
+
+    @Override
+    public void cancelExecution() {
+        log.debug("cancelExecution()");
+    }
+
+    @Override
+    public Path getTempFolder() {
+        log.debug("getTempFolder()");
+        try {
+            return FileUtils.createTemporaryDirectory("scijava-jupyter-kernel", null).toPath();
+        }
+        catch (final IOException exc) {
+            throw new RuntimeException(exc);
+        }
+    }
+
+    @Override
+    public Class<?> loadClass(String clazzName) throws ClassNotFoundException {
+        log.debug("loadClass()");
+        final ClassLoader ccl = Thread.currentThread().getContextClassLoader();
+        final ClassLoader cl = ccl == null ? ClassLoader.getSystemClassLoader() : ccl;
+        return cl.loadClass(clazzName);
     }
 
 }
