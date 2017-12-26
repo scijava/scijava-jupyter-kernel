@@ -88,13 +88,13 @@ public class Worker implements Runnable {
 
 	final Reader input = new StringReader(this.code);
 	final ScriptInfo info = new ScriptInfo(context, "dummy.py", input);
+	info.setLanguage(scriptLanguage);
 	this.seo.setOutputHandler();
 
 	try {
 	    // create the ScriptModule instance
 	    final ScriptModule module = info.createModule();
 	    context.inject(module);
-	    module.setLanguage(scriptLanguage);
 
 	    // HACK: Inject our cached script engine instance, rather
 	    // than letting the ScriptModule instance create its own.

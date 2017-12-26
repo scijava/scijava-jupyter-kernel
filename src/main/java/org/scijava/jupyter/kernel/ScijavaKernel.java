@@ -34,6 +34,7 @@ import org.scijava.jupyter.kernel.configuration.ScijavaKernelConfigurationFile;
 import org.scijava.jupyter.kernel.evaluator.ScijavaEvaluator;
 import org.scijava.jupyter.kernel.handler.ScijavaKernelInfoHandler;
 import org.scijava.jupyter.service.JupyterService;
+import org.scijava.log.LogLevel;
 import org.scijava.log.LogService;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.PluginInfo;
@@ -84,19 +85,19 @@ public class ScijavaKernel extends Kernel {
     private void setLogLevel(String logLevel) {
 	switch (logLevel) {
 	    case "debug":
-		this.log.setLevel(LogService.DEBUG);
+		this.log.setLevel(LogLevel.DEBUG);
 		break;
 	    case "error":
-		this.log.setLevel(LogService.ERROR);
+		this.log.setLevel(LogLevel.ERROR);
 		break;
 	    case "info":
-		this.log.setLevel(LogService.INFO);
+		this.log.setLevel(LogLevel.INFO);
 		break;
 	    case "none":
-		this.log.setLevel(LogService.NONE);
+		this.log.setLevel(LogLevel.NONE);
 		break;
 	    default:
-		this.log.setLevel(LogService.INFO);
+		this.log.setLevel(LogLevel.INFO);
 		break;
 	}
     }

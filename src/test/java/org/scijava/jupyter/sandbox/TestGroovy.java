@@ -28,7 +28,6 @@ import javax.script.ScriptEngine;
 import javax.script.ScriptException;
 
 import net.imagej.ImageJ;
-import net.imagej.Main;
 
 import org.scijava.module.ModuleItem;
 import org.scijava.module.process.PreprocessorPlugin;
@@ -43,7 +42,8 @@ import org.scijava.script.ScriptModule;
 public class TestGroovy {
 
     public static void main(String[] args) throws ScriptException {
-        ImageJ ij = Main.launch(args);
+        ImageJ ij = new ImageJ();
+        ij.launch(args);
 
         String code = "";
         //code += "@Grab('org.springframework:spring-orm:3.2.5.RELEASE')\n";
@@ -57,12 +57,12 @@ public class TestGroovy {
         List<? extends PreprocessorPlugin> pre = ij.plugin().createInstancesOfType(PreprocessorPlugin.class);
 
         ScriptLanguage scriptLanguage = ij.script().getLanguageByName("groovy");
+        info.setLanguage(scriptLanguage);
         ScriptEngine scriptEngine = scriptLanguage.getScriptEngine();
 
         ScriptModule module;
         module = new ScriptModule(info);
         ij.context().inject(module);
-        module.setLanguage(scriptLanguage);
 
         pre.forEach((p) -> {
             p.process(module);

@@ -25,7 +25,7 @@ import org.scijava.convert.Converter;
 import org.scijava.notebook.converter.output.PlainNotebookOutput;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Converter.class, priority = Priority.VERY_HIGH_PRIORITY)
+@Plugin(type = Converter.class, priority = Priority.VERY_HIGH)
 public class StringToPlainNotebookConverter
         extends NotebookOutputConverter<String, PlainNotebookOutput> {
 

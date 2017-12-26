@@ -28,7 +28,6 @@ import javax.script.ScriptEngine;
 import javax.script.ScriptException;
 
 import net.imagej.ImageJ;
-import net.imagej.Main;
 
 import org.scijava.module.ModuleItem;
 import org.scijava.module.process.ModulePreprocessor;
@@ -45,7 +44,8 @@ import org.scijava.script.ScriptModule;
 public class TestAnnotations {
 
     public static void main(final String[] args) throws ScriptException {
-        ImageJ ij = Main.launch(args);
+        ImageJ ij = new ImageJ();
+        ij.launch(args);
         
         String code = "#@LogService log\n#@ImageJ ij\nprint('log')\nprint('jjjj')";
         final Reader input = new StringReader(code);
@@ -57,12 +57,12 @@ public class TestAnnotations {
         List<? extends PostprocessorPlugin> post = ij.plugin().createInstancesOfType(PostprocessorPlugin.class);
 
         ScriptLanguage scriptLanguage = ij.script().getLanguageByName("jython");
+        info.setLanguage(scriptLanguage);
         ScriptEngine scriptEngine = scriptLanguage.getScriptEngine();
 
         ScriptModule module;
         module = new ScriptModule(info);
         ij.context().inject(module);
-        module.setLanguage(scriptLanguage);
 
         for (final ModulePreprocessor p : pre) {
             p.process(module);

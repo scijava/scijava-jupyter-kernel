@@ -34,6 +34,7 @@ import org.scijava.jupyter.service.JupyterService;
 import org.scijava.jupyter.utils.JupyterUtil;
 import org.scijava.jupyter.utils.ProcessUtil;
 import org.scijava.jupyter.utils.SystemUtil;
+import org.scijava.log.LogLevel;
 import org.scijava.log.LogService;
 import org.scijava.plugin.Menu;
 import org.scijava.plugin.Parameter;
@@ -157,7 +158,7 @@ public class InstallScijavaKernel implements Command {
         Context context = new Context();
 
         LogService log = context.service(LogService.class);
-        log.setLevel(LogService.INFO);
+        log.setLevel(LogLevel.INFO);
 
         JupyterService jupyter = context.service(JupyterService.class);
         jupyter.installKernel(args);
