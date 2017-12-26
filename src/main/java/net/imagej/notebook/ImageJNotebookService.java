@@ -123,12 +123,12 @@ public interface ImageJNotebookService extends ImageJService {
      * <p>
      * For example, passing a grid layout of {2, 2} with four images {A, B, C, D} will result in
      * them being laid out along the first two axes (let's call them X and Y) in a 2 x 2 grid:
+     * </p>
      *
      * <pre>
      * AB
      * CD
      * </pre>
-     * </p>
      * <p>
      * The images do not need to be of equal size; images will be padded along each dimension as
      * needed so that everything lines up in a grid. In the example above, if A and C have different
