@@ -84,6 +84,9 @@
 		<license.copyrightOwners>Hadrien Mary</license.copyrightOwners>
 		<netbeans.hint.license>apache20</netbeans.hint.license>
 
+		<!-- NB: Deploy releases to the ImageJ Maven repository. -->
+		<releaseProfiles>deploy-to-imagej</releaseProfiles>
+
 		<commons-cli.version>1.4</commons-cli.version>
 		<json-simple.version>1.1.1</json-simple.version>
 		<beaker-kernel-base.version>0.9.1</beaker-kernel-base.version>
