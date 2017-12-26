@@ -93,6 +93,8 @@
 		<jai-imageio-core.version>1.3.1</jai-imageio-core.version>
 		<groovy-json.version>2.5.0-beta-1</groovy-json.version>
 		<xchart.version>3.4.0</xchart.version>
+
+		<imagej-notebook.version>0.2.3</imagej-notebook.version>
 	</properties>
 
 	<repositories>
