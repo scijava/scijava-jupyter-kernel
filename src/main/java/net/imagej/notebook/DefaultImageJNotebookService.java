@@ -43,7 +43,6 @@ import net.imglib2.util.IntervalIndexer;
 import net.imglib2.util.Pair;
 import net.imglib2.util.Util;
 import net.imglib2.view.IntervalView;
-import net.imglib2.view.MixedTransformView;
 
 import org.scijava.log.LogService;
 import org.scijava.notebook.converter.NotebookConverters;
@@ -73,7 +72,7 @@ public class DefaultImageJNotebookService extends AbstractService implements
             final int xAxis, final int yAxis, final int cAxis, //
             final ValueScaling scaling, final long... pos) {
 
-        final IntervalView<T> image = ops.transform().zeroMin(source);
+        final IntervalView<T> image = ops.transform().zeroMinView(source);
 
         final int w = xAxis >= 0 ? (int) image.dimension(xAxis) : 1;
         final int h = yAxis >= 0 ? (int) image.dimension(yAxis) : 1;
@@ -92,7 +91,7 @@ public class DefaultImageJNotebookService extends AbstractService implements
             max = image.firstElement().getMaxValue();
         } else {
             // scale the intensities based on the sample values
-            final IterableInterval<T> ii = ops.transform().flatIterable(source);
+            final IterableInterval<T> ii = ops.transform().flatIterableView(source);
             final Pair<T, T> minMax = ops.stats().minMax(ii);
             min = minMax.getA().getRealDouble();
             max = minMax.getB().getRealDouble();
@@ -194,32 +193,18 @@ public class DefaultImageJNotebookService extends AbstractService implements
             for (int d = 0; d < numDims; d++) {
                 offset[d] = offsets[d][pos[d]];
             }
-            final MixedTransformView<T> translated
-                    = //
-                    ops.transform().translate(ops.transform().zeroMin(images[i]), offset);
-
-            // Unfortunately, this operation loses the "Interval" from the RAI:
-            // translated objects are RAs, not RAIs.
-            // So, we readd the bounds to match the newly translated coordinates.
-            // NB: The max bound is _inclusive_, so we must subtract 1.
-            final long[] max = new long[numDims];
-            for (int d = 0; d < numDims; d++) {
-                max[d] = offset[d] + images[i].dimension(d) - 1;
-            }
-            final FinalInterval bounds = new FinalInterval(offset, max);
-            final RandomAccessibleInterval<T> bounded
-                    = //
-                    ops.transform().interval(translated, bounds);
+            final IntervalView<T> translated = //
+                    ops.transform().translateView(ops.transform().zeroMinView(images[i]), offset);
 
             // Declare that all values outside the interval proper will be 0.
             // If we do not perform this step, we will get an error when querying
             // out-of-bounds coordinates.
-            final RandomAccessible<T> extended = ops.transform().extendZero(bounded);
+            final RandomAccessible<T> extended = ops.transform().extendZeroView(translated);
 
             // Define the interval of the image to match the size of the mosaic.
             final RandomAccessibleInterval<T> expanded
                     = //
-                    ops.transform().interval(extended, mosaicBox);
+                    ops.transform().intervalView(extended, mosaicBox);
 
             // Add the full-size zero-padded translated image into the mosaic.
             Inplaces.binary1(ops, Ops.Math.Add.class, result, expanded).mutate1(
