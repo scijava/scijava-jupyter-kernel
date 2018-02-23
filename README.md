@@ -3,7 +3,7 @@
 [![License](https://img.shields.io/github/license/scijava/scijava-jupyter-kernel.svg?style=flat-square)](https://github.com/scijava/scijava-jupyter-kernel/blob/master/LICENSE)
 [![Anaconda-Server Badge](https://anaconda.org/conda-forge/scijava-jupyter-kernel/badges/version.svg)](https://anaconda.org/conda-forge/scijava-jupyter-kernel)
 [![Anaconda-Server Badge](https://anaconda.org/conda-forge/scijava-jupyter-kernel/badges/downloads.svg)](https://anaconda.org/conda-forge/scijava-jupyter-kernel)
-
+[![Binder](https://mybinder.org/badge.svg)](https://mybinder.org/v2/gh/4QuantOSS/scijava-jupyter-kernel/master)
 ---
 
 `scijava-jupyter-kernel` aims to be a polyglot [Jupyter](http://jupyter.org/) kernel. It uses the [Scijava scripting languages](https://imagej.net/Scripting#Supported_languages) to execute the code in Jupyter client and it's possible to use different languages in the same notebook.
@@ -13,6 +13,11 @@ Some of the supported languages are Groovy (default), Python, Beanshell, Clojure
 The kernel has been originally created to work with ImageJ. See [here](https://imagej.net/Scijava_Jupyter_Kernel) for more details.
 
 *Under the hood `scijava-jupyter-kernel` uses the [Beaker base kernel](https://github.com/twosigma/beakerx/tree/master/kernel/base).*
+
+## Binder Usage
+
+- [ImageJ notebook](https://mybinder.org/v2/gh/4QuantOSS/scijava-jupyter-kernel/master?filepath=notebooks%2FImageJ.ipynb)
+- [JupyterLab](https://mybinder.org/v2/gh/4QuantOSS/scijava-jupyter-kernel/master?urlpath=lab)
 
 ## Documentation
 
