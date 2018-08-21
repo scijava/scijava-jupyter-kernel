@@ -3,7 +3,7 @@
 [![License](https://img.shields.io/github/license/scijava/scijava-jupyter-kernel.svg?style=flat-square)](https://github.com/scijava/scijava-jupyter-kernel/blob/master/LICENSE)
 [![Anaconda-Server Badge](https://anaconda.org/conda-forge/scijava-jupyter-kernel/badges/version.svg)](https://anaconda.org/conda-forge/scijava-jupyter-kernel)
 [![Anaconda-Server Badge](https://anaconda.org/conda-forge/scijava-jupyter-kernel/badges/downloads.svg)](https://anaconda.org/conda-forge/scijava-jupyter-kernel)
-[![Binder](https://mybinder.org/badge.svg)](https://mybinder.org/v2/gh/4QuantOSS/scijava-jupyter-kernel/master)
+[![Binder](https://mybinder.org/badge.svg)](https://mybinder.org/v2/gh/scijava/scijava-jupyter-kernel/master)
 ---
 
 `scijava-jupyter-kernel` aims to be a polyglot [Jupyter](http://jupyter.org/) kernel. It uses the [Scijava scripting languages](https://imagej.net/Scripting#Supported_languages) to execute the code in Jupyter client and it's possible to use different languages in the same notebook.
