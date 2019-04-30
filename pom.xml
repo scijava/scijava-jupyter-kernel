@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.scijava</groupId>
 		<artifactId>pom-scijava</artifactId>
-		<version>19.2.0</version>
+		<version>26.0.0</version>
 	</parent>
 
 	<artifactId>scijava-jupyter-kernel</artifactId>
@@ -93,8 +93,8 @@
 		<license.copyrightOwners>Hadrien Mary</license.copyrightOwners>
 		<netbeans.hint.license>apache20</netbeans.hint.license>
 
-		<!-- NB: Deploy releases to the ImageJ Maven repository. -->
-		<releaseProfiles>deploy-to-imagej</releaseProfiles>
+		<!-- NB: Deploy releases to the SciJava Maven repository. -->
+		<releaseProfiles>deploy-to-scijava</releaseProfiles>
 
 		<commons-cli.version>1.4</commons-cli.version>
 		<json-simple.version>1.1.1</json-simple.version>
@@ -108,8 +108,8 @@
 
 	<repositories>
 		<repository>
-			<id>imagej.public</id>
-			<url>https://maven.imagej.net/content/groups/public</url>
+			<id>scijava.public</id>
+			<url>https://maven.scijava.org/content/groups/public</url>
 		</repository>
 	</repositories>
 
