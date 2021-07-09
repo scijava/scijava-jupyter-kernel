@@ -94,7 +94,7 @@
 		<netbeans.hint.license>apache20</netbeans.hint.license>
 
 		<!-- NB: Deploy releases to the SciJava Maven repository. -->
-		<releaseProfiles>deploy-to-scijava</releaseProfiles>
+		<releaseProfiles>sign,deploy-to-scijava</releaseProfiles>
 
 		<commons-cli.version>1.4</commons-cli.version>
 		<json-simple.version>1.1.1</json-simple.version>
