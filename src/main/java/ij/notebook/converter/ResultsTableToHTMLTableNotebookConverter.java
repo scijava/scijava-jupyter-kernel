@@ -20,14 +20,13 @@
 
 package ij.notebook.converter;
 
-import net.imagej.table.GenericTable;
-
 import org.scijava.convert.ConvertService;
 import org.scijava.convert.Converter;
 import org.scijava.notebook.converter.HTMLNotebookOutputConverter;
 import org.scijava.notebook.converter.output.HTMLTableNotebookOutput;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
+import org.scijava.table.GenericTable;
 
 import ij.measure.ResultsTable;
 

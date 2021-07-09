@@ -25,8 +25,6 @@ import com.twosigma.beakerx.kernel.KernelSocketsFactory;
 import com.twosigma.beakerx.kernel.handler.CommOpenHandler;
 import com.twosigma.beakerx.message.Message;
 
-import net.imagej.table.process.ResultsPostprocessor;
-
 import org.scijava.Context;
 import org.scijava.display.DisplayPostprocessor;
 import org.scijava.jupyter.kernel.comm.ScijavaCommOpenHandler;
@@ -40,6 +38,7 @@ import org.scijava.plugin.Parameter;
 import org.scijava.plugin.PluginInfo;
 import org.scijava.plugin.PluginService;
 import org.scijava.plugin.SciJavaPlugin;
+import org.scijava.table.process.ResultsPostprocessor;
 
 /**
  *

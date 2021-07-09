@@ -20,14 +20,13 @@
 
 package net.imagej.notebook.converter;
 
-import net.imagej.table.Column;
-import net.imagej.table.Table;
-
 import org.scijava.convert.Converter;
 import org.scijava.notebook.converter.HTMLNotebookOutputConverter;
 import org.scijava.notebook.converter.HTMLTableBuilder;
 import org.scijava.notebook.converter.output.HTMLTableNotebookOutput;
 import org.scijava.plugin.Plugin;
+import org.scijava.table.Column;
+import org.scijava.table.Table;
 
 @Plugin(type = Converter.class)
 public class TableToHTMLNotebookConverter<C extends Column<? extends T>, T>
