@@ -83,8 +83,8 @@
 		<url>https://github.com/scijava/scijava-jupyter-kernel/issues</url>
 	</issueManagement>
 	<ciManagement>
-		<system>Travis CI</system>
-		<url>https://travis-ci.org/scijava/scijava-jupyter-kernel</url>
+		<system>GitHub Actions</system>
+		<url>https://github.com/scijava/scijava-jupyter-kernel/actions</url>
 	</ciManagement>
 
 	<properties>
