@@ -1,3 +1,5 @@
+[![](https://github.com/scijava/scijava-jupyter-kernel/actions/workflows/build-main.yml/badge.svg)](https://github.com/scijava/scijava-jupyter-kernel/actions/workflows/build-main.yml)
+
 # scijava-jupyter-kernel
 [![Travis branch](https://img.shields.io/travis/scijava/scijava-jupyter-kernel/master.svg?style=flat-square)](https://travis-ci.org/scijava/scijava-jupyter-kernel)
 [![License](https://img.shields.io/github/license/scijava/scijava-jupyter-kernel.svg?style=flat-square)](https://github.com/scijava/scijava-jupyter-kernel/blob/master/LICENSE)
